@@ -5,6 +5,7 @@ const path = require('path');
 //Navigation
 const clientPath =path.join(__dirname, '../client/');
 const staticPath = path.join(clientPath, '/static/');
+const viewsPath = path.join(clientPath, '/views/');
 
 
 const app = express();
