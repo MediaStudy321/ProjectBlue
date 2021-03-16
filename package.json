@@ -1,0 +1,30 @@
+{
+  "name": "projectblue",
+  "version": "1.0.0",
+  "description": "Dice game",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server/index.js",
+    "start": "node server/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MediaStudy321/ProjectBlue.git"
+  },
+  "keywords": [
+    "dice",
+    "game",
+    "rpg"
+  ],
+  "author": "Blue Studio",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/MediaStudy321/ProjectBlue/issues"
+  },
+  "homepage": "https://github.com/MediaStudy321/ProjectBlue#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7"
+  }
+}
