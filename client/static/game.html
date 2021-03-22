@@ -2,22 +2,174 @@
 
 <head>
 	<title>Welcome to *insert game name here*!</title>
+<style>
+	body{font-family: 'Times New Roman', Times, serif;}
 
+	.modal {
+		display:none; /*hidden*/
+		position: fixed;
+		z-index: 1; /*stay on top*/
+		padding-top: 100px; /*location*/
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		overflow: auto; /*enable scroll*/
+		background-color: black;
+		background-color: rgb(0,0,0,0,0.8); /*opactiy*/
+	}
+
+	.modal-content{
+		background-color: black;
+		margin:auto;
+		padding: 20px;
+		border: 10px solid goldenrod;
+		width: 80%;
+	}
+
+	.close {
+		color: azure;
+		float: right;
+		font-size: 28px;
+		font-weight: bold;
+	}
+
+	.close:hover,
+	.close:focus {
+		color: rgb(255, 255, 255);
+		text-decoration: none;
+		cursor: pointer;
+	}
+</style>
 </head>
 
 <body>
-
 	<div id="mainpanel">
-Welcome to *blank*, an RPG Rougelite game you can play by yourself or with friends! Choose your class:
+	<p>Welcome to *blank*, an RPG Rougelite game you can play by yourself or with friends! Choose your class:</p>
 
-<ol>
+<p><button id="Mage.B">Mage</button></p>
+<p><button id="Rouge.B">Rouge</button></p>
+<p><button id="Warrior.B">Warrior</button></p>
+<p><button id="Bard.B">Bard</button></p>
+
+<div id="Mage Class" class="modal">
+	<div class="modal-content">
+		<span class = "close">&times;</span>
+		<p style="color: white;">Mage Description</p>
+		<p style="color: white;">Hp</p>
+		<p style="color: white;">Mp</p>
+		<p style="color: white;">Atk</p>
+		<p style="color: white;">P.Def</p>
+		<p style="color: white;">Mag</p>
+		<p style="color: white;">M.Def</p>
+		<p style="color: white;">Spd</p>
+		<li><button><a href="mission.html">Select Class</a></button></li>
+
+	</div>
+</div>
+<div id="Rouge Class" class="modal">
+	<div class="modal-content">
+		<span class = "close">&times;</span>
+		<p style="color: white;">Rouge Description</p>
+		<p style="color: white;">Hp</p>
+		<p style="color: white;">Mp</p>
+		<p style="color: white;">Atk</p>
+		<p style="color: white;">P.Def</p>
+		<p style="color: white;">Mag</p>
+		<p style="color: white;">M.Def</p>
+		<p style="color: white;">Spd</p>
+		<li><button><a href="mission.html">Select Class</a></button></li>
+	</div>
+</div>
+<div id="Warrior Class" class="modal">
+	<div class="modal-content">
+		<span class = "close">&times;</span>
+		<p style="color: white;">Warrior Description</p>
+		<p style="color: white;">Hp</p>
+		<p style="color: white;">Mp</p>
+		<p style="color: white;">Atk</p>
+		<p style="color: white;">P.Def</p>
+		<p style="color: white;">Mag</p>
+		<p style="color: white;">M.Def</p>
+		<p style="color: white;">Spd</p>
+		<li><button><a href="mission.html">Select Class</a></button></li>
+	</div>
+</div>
+<div id="Bard Class" class="modal">
+	<div class="modal-content">
+		<span class = "close">&times;</span>
+		<p style="color: white;">Bard Description</p>
+		<p style="color: white;">Hp</p>
+		<p style="color: white;">Mp</p>
+		<p style="color: white;">Atk</p>
+		<p style="color: white;">P.Def</p>
+		<p style="color: white;">Mag</p>
+		<p style="color: white;">M.Def</p>
+		<p style="color: white;">Spd</p>
+		<li><button><a href="mission.html">Select Class</a></button></li>
+	</div>
+</div>
+
+
+<!---- <ol>
 	<li><button><a href="mission.html">Mage</a></button></li>
 	<li><button><a href="mission.html">Rouge</a></button></li>
 	<li><button><a href="mission.html">Warrior</a></button></li>
 	<li><button><a href="mission.html">Bard</a></button></li>
 
-</ol>
+</ol>-->
 </div>
+
+<script>
+var Mage = document.getElementById("Mage Class");
+var MagBtn = document.getElementById("Mage.B");
+
+var Rouge = document.getElementById("Rouge Class");
+var RouBtn = document.getElementById("Rouge.B");
+
+var Warrior = document.getElementById("Warrior Class");
+var WarBtn = document.getElementById("Warrior.B");
+
+var Bard = document.getElementById("Bard Class");
+var BarBtn = document.getElementById("Bard.B");
+
+var span = document.getElementsByClassName("close")[0];
+
+MagBtn.onclick = function(){
+	Mage.style.display = "block";
+}
+RouBtn.onclick = function(){
+	Rouge.style.display = "block";
+}
+WarBtn.onclick = function(){
+	Warrior.style.display = "block";
+}
+BarBtn.onclick = function(){
+	Bard.style.display = "block";
+}
+span.onclick = function(){
+	Mage.style.display = "none";
+	Rouge.style.display = "none";
+	Warrior.style.display = "none";
+	Bard.style.display = "none";
+}
+window.onclick = function(){
+	if(event.target == Mage){
+		Mage.style.display = "none";
+	}
+	else if(event.target == Rouge){
+		Rouge.style.display = "none";
+	}
+	else if(event.target == Warrior){
+		Warrior.style.display = "none";
+	}
+	else if(event.target == Bard){
+		Bard.style.display = "none";
+	}
+}
+
+
+</script>
 
 
 </body>
