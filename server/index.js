@@ -7,7 +7,7 @@ const session = require('express-session');
 const dotenv = require('dotenv').config();
 const dburl = process.env.DB_URL;
 const sessionSecret = process.env.SECRET;
-const port = process.env.PORT;
+const port = process.env.PORT || 2000;
 
 //mongoose.connect(dburl, {useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -35,4 +35,4 @@ app.use(session({
 
 app.use(express.static(staticPath));
 
-app.listen();
+app.listen(port);
