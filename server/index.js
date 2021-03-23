@@ -35,4 +35,4 @@ app.use(session({
 
 app.use(express.static(staticPath));
 
-app.listen(2000);
+app.listen();
