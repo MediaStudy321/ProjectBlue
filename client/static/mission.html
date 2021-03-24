@@ -2,10 +2,19 @@
 
 <head>
 	<title>Choose your Mission</title>
+	<!-- This if used for displaying profile in mission-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script>
+	$(document).ready(function(){
+	
+	$('#content').load("profile.html");
 
+	});
+	</script>
 </head>
 
 <body>
+
 
 	<div id="mainpanel">
 Welcome to Town! Stock up on supplies at a store or Vote on a mission to start with your party!
@@ -18,6 +27,8 @@ Welcome to Town! Stock up on supplies at a store or Vote on a mission to start w
 
 </ol>
 </div>
+
+<div id = "content"></div>
 
 </body>
 </html>

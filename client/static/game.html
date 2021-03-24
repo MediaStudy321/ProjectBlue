@@ -54,59 +54,63 @@
 
 <div id="Mage Class" class="modal">
 	<div class="modal-content">
-		<span class = "close">&times;</span>
+		<span id = "closeM" class = "close">&times;</span>
 		<p style="color: white;">Mage Description</p>
-		<p style="color: white;">Hp</p>
-		<p style="color: white;">Mp</p>
-		<p style="color: white;">Atk</p>
-		<p style="color: white;">P.Def</p>
-		<p style="color: white;">Mag</p>
-		<p style="color: white;">M.Def</p>
-		<p style="color: white;">Spd</p>
-		<li><button><a href="mission.html">Select Class</a></button></li>
+		<p style="color: white;">Stats</p>
+		<p style="color: white;">Health: [][]</p>
+		<p style="color: white;">Mana: [][][][][][]</p>
+		<p style="color: white;">Phy.Attack: []</p>
+		<p style="color: white;">Phy.Defense: [][]</p>
+		<p style="color: white;">Mag.Attack: [][][]</p>
+		<p style="color: white;">Mag.Defense: [][]</p>
+		<p style="color: white;">Dexterity: [][]</p>
+		<li><button><a href="CharacterCreation.html">Select Class</a></button></li>
 
 	</div>
 </div>
 <div id="Rouge Class" class="modal">
 	<div class="modal-content">
-		<span class = "close">&times;</span>
+		<span id = "closeR" class = "close">&times;</span>
 		<p style="color: white;">Rouge Description</p>
-		<p style="color: white;">Hp</p>
-		<p style="color: white;">Mp</p>
-		<p style="color: white;">Atk</p>
-		<p style="color: white;">P.Def</p>
-		<p style="color: white;">Mag</p>
-		<p style="color: white;">M.Def</p>
-		<p style="color: white;">Spd</p>
-		<li><button><a href="mission.html">Select Class</a></button></li>
+		<p style="color: white;">Stats</p>
+		<p style="color: white;">Health: [][][][]</p>
+		<p style="color: white;">Mana: [][][][]</p>
+		<p style="color: white;">Phy.Attack: [][]</p>
+		<p style="color: white;">Phy.Defense: [][]</p>
+		<p style="color: white;">Mag.Attack: []</p>
+		<p style="color: white;">Mag.Defense: [][]</p>
+		<p style="color: white;">Dexterity: [][][]</p>
+		<li><button><a href="CharacterCreation.html">Select Class</a></button></li>
 	</div>
 </div>
 <div id="Warrior Class" class="modal">
 	<div class="modal-content">
-		<span class = "close">&times;</span>
+		<span id = "closeW" class = "close">&times;</span>
 		<p style="color: white;">Warrior Description</p>
-		<p style="color: white;">Hp</p>
-		<p style="color: white;">Mp</p>
-		<p style="color: white;">Atk</p>
-		<p style="color: white;">P.Def</p>
-		<p style="color: white;">Mag</p>
-		<p style="color: white;">M.Def</p>
-		<p style="color: white;">Spd</p>
-		<li><button><a href="mission.html">Select Class</a></button></li>
+		<p style="color: white;">Stats</p>
+		<p style="color: white;">Health: [][][][][][]</p>
+		<p style="color: white;">Mana: [][]</p>
+		<p style="color: white;">Phy.Attack: [][][]</p>
+		<p style="color: white;">Phy.Defense: [][][]</p>
+		<p style="color: white;">Mag.Attack: []</p>
+		<p style="color: white;">Mag.Defense: [][]</p>
+		<p style="color: white;">Dexterity: []</p>
+		<li><button><a href="CharacterCreation.html">Select Class</a></button></li>
 	</div>
 </div>
 <div id="Bard Class" class="modal">
-	<div class="modal-content">
+	<div id = "closeB" class="modal-content">
 		<span class = "close">&times;</span>
 		<p style="color: white;">Bard Description</p>
-		<p style="color: white;">Hp</p>
-		<p style="color: white;">Mp</p>
-		<p style="color: white;">Atk</p>
-		<p style="color: white;">P.Def</p>
-		<p style="color: white;">Mag</p>
-		<p style="color: white;">M.Def</p>
-		<p style="color: white;">Spd</p>
-		<li><button><a href="mission.html">Select Class</a></button></li>
+		<h3 style="color: white;">Stats</h3>
+		<p style="color: white;">Health:[][][]</p>
+		<p style="color: white;">Mana: [][][][][]</p>
+		<p style="color: white;">Phy.Attack: [][]</p>
+		<p style="color: white;">Phy.Defense: [][]</p>
+		<p style="color: white;">Mag.Attack: [][]</p>
+		<p style="color: white;">Mag.Defense: [][]</p>
+		<p style="color: white;">Dexterity: [][]</p>
+		<li><button><a href="CharacterCreation.html">Select Class</a></button></li>
 	</div>
 </div>
 
@@ -123,15 +127,19 @@
 <script>
 var Mage = document.getElementById("Mage Class");
 var MagBtn = document.getElementById("Mage.B");
+var cloM = document.getElementById("closeM");
 
 var Rouge = document.getElementById("Rouge Class");
 var RouBtn = document.getElementById("Rouge.B");
+var cloR = document.getElementById("closeR");
 
 var Warrior = document.getElementById("Warrior Class");
 var WarBtn = document.getElementById("Warrior.B");
+var cloW = document.getElementById("closeW");
 
 var Bard = document.getElementById("Bard Class");
 var BarBtn = document.getElementById("Bard.B");
+var cloB = document.getElementById("closeB");
 
 var span = document.getElementsByClassName("close")[0];
 
@@ -147,12 +155,24 @@ WarBtn.onclick = function(){
 BarBtn.onclick = function(){
 	Bard.style.display = "block";
 }
-span.onclick = function(){
+cloM.onclick = function(){
 	Mage.style.display = "none";
-	Rouge.style.display = "none";
+}
+cloW.onclick = function(){
 	Warrior.style.display = "none";
+}
+cloR.onclick = function(){
+	Rouge.style.display = "none";
+}
+cloB.onclick = function(){
 	Bard.style.display = "none";
 }
+/*span.onclick = function(){
+		Mage.style.display = "none";
+		Rouge.style.display = "none";
+		Warrior.style.display = "none";
+		Bard.style.display = "none";
+}*/
 window.onclick = function(){
 	if(event.target == Mage){
 		Mage.style.display = "none";
