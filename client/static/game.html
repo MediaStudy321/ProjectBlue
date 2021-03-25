@@ -64,7 +64,7 @@
 		<p style="color: white;">Mag.Attack: [][][]</p>
 		<p style="color: white;">Mag.Defense: [][]</p>
 		<p style="color: white;">Dexterity: [][]</p>
-		<li><button><a href="CharacterCreation.html">Select Class</a></button></li>
+		<li><button id="MageClassbt"><a href="CharacterCreation.html">Select Class</a></button></li>
 
 	</div>
 </div>
@@ -73,14 +73,14 @@
 		<span id = "closeR" class = "close">&times;</span>
 		<p style="color: white;">Rouge Description</p>
 		<p style="color: white;">Stats</p>
-		<p style="color: white;">Health: [][][][]</p>
-		<p style="color: white;">Mana: [][][][]</p>
+		<p style="color: white;">Health: [][][][][]</p>
+		<p style="color: white;">Mana: [][][]</p>
 		<p style="color: white;">Phy.Attack: [][]</p>
 		<p style="color: white;">Phy.Defense: [][]</p>
 		<p style="color: white;">Mag.Attack: []</p>
 		<p style="color: white;">Mag.Defense: [][]</p>
 		<p style="color: white;">Dexterity: [][][]</p>
-		<li><button><a href="CharacterCreation.html">Select Class</a></button></li>
+		<li><button id="RougeClassbt"><a href="CharacterCreation.html">Select Class</a></button></li>
 	</div>
 </div>
 <div id="Warrior Class" class="modal">
@@ -88,14 +88,14 @@
 		<span id = "closeW" class = "close">&times;</span>
 		<p style="color: white;">Warrior Description</p>
 		<p style="color: white;">Stats</p>
-		<p style="color: white;">Health: [][][][][][]</p>
-		<p style="color: white;">Mana: [][]</p>
+		<p style="color: white;">Health: [][][][][][][]</p>
+		<p style="color: white;">Mana: []</p>
 		<p style="color: white;">Phy.Attack: [][][]</p>
 		<p style="color: white;">Phy.Defense: [][][]</p>
 		<p style="color: white;">Mag.Attack: []</p>
 		<p style="color: white;">Mag.Defense: [][]</p>
 		<p style="color: white;">Dexterity: []</p>
-		<li><button><a href="CharacterCreation.html">Select Class</a></button></li>
+		<li><button id="WarriorClassbt"><a href="CharacterCreation.html">Select Class</a></button></li>
 	</div>
 </div>
 <div id="Bard Class" class="modal">
@@ -103,28 +103,44 @@
 		<span class = "close">&times;</span>
 		<p style="color: white;">Bard Description</p>
 		<h3 style="color: white;">Stats</h3>
-		<p style="color: white;">Health:[][][]</p>
-		<p style="color: white;">Mana: [][][][][]</p>
+		<p style="color: white;">Health:[][][][]</p>
+		<p style="color: white;">Mana: [][][][]</p>
 		<p style="color: white;">Phy.Attack: [][]</p>
 		<p style="color: white;">Phy.Defense: [][]</p>
 		<p style="color: white;">Mag.Attack: [][]</p>
 		<p style="color: white;">Mag.Defense: [][]</p>
 		<p style="color: white;">Dexterity: [][]</p>
-		<li><button><a href="CharacterCreation.html">Select Class</a></button></li>
+		<li><button id="BardClassbt"><a href="CharacterCreation.html">Select Class</a></button></li>
 	</div>
 </div>
-
-
-<!---- <ol>
-	<li><button><a href="mission.html">Mage</a></button></li>
-	<li><button><a href="mission.html">Rouge</a></button></li>
-	<li><button><a href="mission.html">Warrior</a></button></li>
-	<li><button><a href="mission.html">Bard</a></button></li>
-
-</ol>-->
 </div>
 
 <script>
+var Charclass = "";
+
+/*class selection button*/
+var MagS = document.getElementById("MageClassbt");
+var WarS = document.getElementById("WarriorClassbt");
+var RouS = document.getElementById("RougeClassbt");
+var BarS = document.getElementById("BardClassbt");
+
+MagS.onclick = function(){
+	Charclass = "Mage";
+	sessionStorage.setItem("Class",Charclass);
+}
+WarS.onclick = function(){
+	Charclass = "Warrior";
+	sessionStorage.setItem("Class",Charclass);
+}
+RouS.onclick = function(){
+	Charclass = "Rouge";
+	sessionStorage.setItem("Class",Charclass);
+}
+BarS.onclick = function(){
+	Charclass = "Bard";
+	sessionStorage.setItem("Class",Charclass);
+} 
+
 var Mage = document.getElementById("Mage Class");
 var MagBtn = document.getElementById("Mage.B");
 var cloM = document.getElementById("closeM");

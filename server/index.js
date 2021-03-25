@@ -36,3 +36,4 @@ app.use(session({
 app.use(express.static(staticPath));
 
 app.listen(port);
+
