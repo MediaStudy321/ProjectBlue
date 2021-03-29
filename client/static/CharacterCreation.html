@@ -22,6 +22,8 @@
 
     <script>
             var Charclass = sessionStorage.getItem("Class");
+            var Level = 0
+            sessionStorage.setItem("Level",Level);
             document.getElementById("class").innerHTML = "Class: " + Charclass;
 
             var Hp, Mp , PhyAtk, PhyDef, MagAtk, MagDef, Dex;
@@ -91,6 +93,7 @@
                 }
                 if(Hp == 0){
                     document.getElementById("dhp").style.display = "none";
+                    sessionStorage.setItem("hp",Rhp);
                 }
             }
             bmp.onclick = function(){
@@ -101,6 +104,7 @@
                 }
                 if(Mp == 0){
                     document.getElementById("dmp").style.display = "none";
+                    sessionStorage.setItem("mp",Rmp);
                 }
             }
             bpa.onclick = function(){
@@ -111,6 +115,7 @@
                 }
                 if(PhyAtk == 0){
                     document.getElementById("dpa").style.display = "none";
+                    sessionStorage.setItem("pa",Rpa);
                 }
             }
             bpd.onclick = function(){
@@ -121,6 +126,7 @@
                 }
                 if(PhyDef == 0){
                     document.getElementById("dpd").style.display = "none";
+                    sessionStorage.setItem("pd",Rpd);
                 }
             }
             bma.onclick = function(){
@@ -131,6 +137,7 @@
                 }
                 if(MagAtk == 0){
                     document.getElementById("dma").style.display = "none";
+                    sessionStorage.setItem("ma",Rma);
                 }
             }
             bmd.onclick = function(){
@@ -141,6 +148,7 @@
                 }
                 if(MagDef == 0){
                     document.getElementById("dmd").style.display = "none";
+                    sessionStorage.setItem("md",Rmd);
                 }
             }
             bd.onclick = function(){
@@ -151,6 +159,7 @@
                 }
                 if(Dex == 0){
                     document.getElementById("dd").style.display = "none";
+                    sessionStorage.setItem("d",Rd);
                 }
             }
 

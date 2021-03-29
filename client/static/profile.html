@@ -14,6 +14,11 @@
 			top:0%;
 			bottom: 0%;
 		}
+		#shift{
+			position: relative;
+			left: 3%;
+		}
+
 		/*style*/
 		.tab{
 			overflow:hidden;
@@ -52,8 +57,11 @@
 <body>
 
 <div id="boxloc">
-	<h1>Character Name</h1>
-	<h3>Class:______ Lv:_____</h3>
+	<div id="shift">
+		<h1> Character Name</h1>
+		<h3> Class: <a id="class"></a></h3>
+		<h3> Lv: <a id="lv"></a></h3>
+	</div>
 
 	<div class="tab">
 		<button class="tablinks" onclick="openProfile(event, 'Stats')">Stats</button>
@@ -63,13 +71,13 @@
 	</div>
 
 	<div id="Stats" class="tabcontent">
-		<p>Health: </p>
-		<p>Mana: </p>
-		<p>Phy.Attack: </p>
-		<p>Phy.Defense: </p>
-		<p>Mag.Attack: </p>
-		<p>Mag.Defense: </p>
-		<p>Dexterity: </p>
+		<p>Health: <a id="hp"></a></p>
+		<p>Mana: <a id="mp"></a></p>
+		<p>Phy.Attack: <a id="pa"></a></p>
+		<p>Phy.Defense: <a id="pd"></a></p>
+		<p>Mag.Attack: <a id="ma"></a></p>
+		<p>Mag.Defense: <a id="md"></a></p>
+		<p>Dexterity: <a id="d"></a></p>
 
 	</div>
 
@@ -96,6 +104,15 @@
 </div>
 
 <script>
+	document.getElementById("class").innerHTML = sessionStorage.getItem("Class");
+	document.getElementById("lv").innerHTML = sessionStorage.getItem("Level");
+	document.getElementById("hp").innerHTML = sessionStorage.getItem("hp");
+	document.getElementById("mp").innerHTML = sessionStorage.getItem("mp");
+	document.getElementById("pa").innerHTML = sessionStorage.getItem("pa");
+	document.getElementById("pd").innerHTML = sessionStorage.getItem("pd");
+	document.getElementById("ma").innerHTML = sessionStorage.getItem("ma");
+	document.getElementById("md").innerHTML = sessionStorage.getItem("md");
+	document.getElementById("d").innerHTML = sessionStorage.getItem("d");
 	function openProfile(evt, profileTab){
 		var i, tabcontent, tablinks;
 		tabcontent = document.getElementsByClassName("tabcontent");
@@ -109,6 +126,8 @@
 		document.getElementById(profileTab).style.display = "block";
 		evt.currentTarget.className += " active";
 	}
+
+
 </script>
 
 
