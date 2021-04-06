@@ -7,32 +7,60 @@
 </head>
 
 <body>
-<table>
+<table width="90%">
 
 <tr>
-<th>Welcome to the Dicecapades</th>
+<th colspan="2">Welcome to the Dicecapades</th>
 </tr>
 
 <tr>
 <td>
-	<div id="chattext"></div>
+	<ul id="chattext"></ul>
 </td>
-<td>
-<b>Channels</b>
-<ul id="channels"></ul>
+<td width="200">
+	<b>Channels</b>
+	<div id="channels">
+		<button>Lobby</button><br/>
+		<button>Channel1</button><br/>
+		<button>Channel2</button>
+	</div>
 </td>
 </tr>
 
+<tr>
+	<td colspan="2"><input type="text" id="chatter" /></td>
+</tr>
 </table>
 
 <script>
 
-// JQuery after page loads:
+const socket = io();
+
+socket.on('chat', printMessage);
+
+// Get value of text input, display it on the chat log, and send it to the server.
+function chatMessage() {
+	let message = $('#chatter').val();
+	$('#chatter').val('');
+	printMessage(message);
+	socket.emit('chat', message);
+}
+
+// Add a line to the chat log
+function printMessage(message) {
+	$('#chattext').append('<li>'+message+'</li>');
+}
+
+// JQuery after page loads for UI elements:
 $(()=>{
 
-	const socket = io();
+	$('#chatter').on('keyup', (event)=>{
+		if(event.key=="Enter") chatMessage();
+	});
 
-	socket.emit('connection');
+	$('#channels > button').on('click', (event)=>{
+		socket.emit('joinchannel', event.target.textContent.toLowerCase());
+	});
 
 });
 
