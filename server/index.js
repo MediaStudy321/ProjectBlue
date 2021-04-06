@@ -7,37 +7,46 @@ const {UserProfile} = require("./model.js");
 
 const dotenv = require('dotenv').config();
 const dburl = process.env.DB_URL;
-const sessionSecret = process.env.SECRET;
+const sessionSecret = process.env.SECRET || 'dice';
 const port = process.env.PORT || 2000;
-
-//mongoose.connect(dburl, {useNewUrlParser: true, useUnifiedTopology: true});
 
 
 
 //Navigation
 const clientPath =path.join(__dirname, '../client/');
 const staticPath = path.join(clientPath, '/static/');
-//const viewsPath = path.join(clientPath, '/views/');
+
+// Launch server(s)
 
 const app = express();
-app.use(express.static(path.join(clientPath,'static/')))
+const server = http.createServer(app);
+//mongoose.connect(dburl, {useNewUrlParser: true, useUnifiedTopology: true});
+server.listen(port);
 
+
+// Site-wide middleware
+
+app.use(express.static(staticPath));
 app.use(session({
     cookie: {
         maxAge: 1000*60*60*24*7,
         secure: false
     },
     key: 'user_sid',
-    secret: /*sessionSecret,*/ 'dice',
+    secret: sessionSecret,
     resave: false,
     saveUninitialized: false,
     name: 'dicecapades'
 }));
 
 
-app.use(express.static(staticPath));
 
-app.listen(port);
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(clientPath, '/views/'));
+
+
+// Routing
 
 app.get('/CharacterCreation', (res,req) => {
     res.render('CharacterCreation', {data: req.session});
@@ -47,3 +56,20 @@ app.post('/characterName', (req,res) => {
     console.log(req.body);
 });
 
+app.get('/chat/', (req,res) => {
+   res.render('chat');
+})
+
+
+
+// Debug
+
+app.use((req,res,next)=>{
+    console.log(req.originalUrl);
+    next();
+});
+
+// Chat server
+
+const chatserver = require('./chatserver');
+chatserver.launch(server);
