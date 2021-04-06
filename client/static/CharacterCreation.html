@@ -1,0 +1,220 @@
+<html>
+
+<head>
+    <title>Character Creation</title>
+</head>
+
+<style>
+    .hidden{
+        display: none;
+    }
+    .show{
+        display: inline;
+    }
+</style>
+
+<body>
+    <p>Name: <a id="name"></a></p>
+    <input id="UserName" name="UserName" type="text" value =""><button id="setname">Set Name</button><br/>
+    <p id="class">Class: </p>
+    <p>Health: <a id="hp">0</a> <button id="dhp">Roll For Stats</button></p>
+    <p>Mana: <a id="mp">0</a> <button id="dmp">Roll For Stats</button></p>
+    <p>Phy.Attack: <a id="pa">0</a> <button id="dpa">Roll For Stats</button></p>
+    <p>Phy.Defense: <a id="pd">0</a> <button id="dpd">Roll For Stats</button></p>
+    <p>Mag.Attack: <a id="ma">0</a> <button id="dma">Roll For Stats</button></p>
+    <p>Mag.Defense: <a id="md">0</a> <button id="dmd">Roll For Stats</button></p>
+    <p>Dexterity: <a id="d">0</a> <button id="dd">Roll For Stats</button></p>
+
+
+
+
+    <button id="mission" type="submit" class = "hidden"><a href="mission.html">Finish Roll</a></button>
+</body>
+
+<script>
+    var next = document.getElementById("mission");
+    var Charclass = sessionStorage.getItem("Class");
+    var Level = 0
+    sessionStorage.setItem("Level", Level);
+    document.getElementById("class").innerHTML = "Class: " + Charclass;
+
+    var Hp, Mp, PhyAtk, PhyDef, MagAtk, MagDef, Dex;
+    var Rhp = 0, Rmp = 0, Rpa = 0, Rpd = 0, Rma = 0, Rmd = 0, Rd = 0;
+    var exp = 0;
+    var statroll = 0;
+    sessionStorage.setItem("statroll", statroll);
+    var bhp = document.getElementById("dhp");
+    var bmp = document.getElementById("dmp");
+    var bpa = document.getElementById("dpa");
+    var bpd = document.getElementById("dpd");
+    var bma = document.getElementById("dma");
+    var bmd = document.getElementById("dmd");
+    var bd = document.getElementById("dd");
+    var setname = document.getElementById("setname");
+    var UName = document.getElementById("UserName").value;
+
+    if (Charclass == "Mage") {
+        Rmp = 3;
+        Rma = 3;
+        Hp = 2;
+        Mp = 6;
+        PhyAtk = 1;
+        PhyDef = 1;
+        MagAtk = 3;
+        MagDef = 3;
+        Dex = 2;
+
+    }
+    if (Charclass == "Warrior") {
+        Rhp = 3;
+        Rpa = 3;
+        Hp = 7;
+        Mp = 1;
+        PhyAtk = 3;
+        PhyDef = 3;
+        MagAtk = 1;
+        MagDef = 2;
+        Dex = 1;
+    }
+    if (Charclass == "Rouge") {
+        Rd = 3;
+        Rpa = 3;
+        Hp = 5;
+        Mp = 3;
+        PhyAtk = 2;
+        PhyDef = 2;
+        MagAtk = 1;
+        MagDef = 2;
+        Dex = 3;
+    }
+    if (Charclass == "Bard") {
+        Rhp = 2;
+        Rmp = 2;
+        Rpd = 1;
+        Rmd = 1;
+        Hp = 4;
+        Mp = 4;
+        PhyAtk = 2;
+        PhyDef = 2;
+        MagAtk = 2;
+        MagDef = 2;
+        Dex = 2;
+    }
+
+    var exp = 0;
+    sessionStorage.setItem("exp", exp);
+    var classADV = 1;
+    sessionStorage.setItem("classADV", classADV);
+    /*hp too little means you die too quickly*/
+    function hpdice() {
+        var dice = [2, 3, 4];
+        var roll = dice[Math.floor(Math.random() * dice.length)];
+        return roll;
+    }
+
+    function statdice() {
+        var dice = [1, 2, 3];
+        var roll = dice[Math.floor(Math.random() * dice.length)];
+        return roll;
+    }
+
+    bhp.onclick = function () {
+        Rhp += hpdice();
+        if (Hp > 0) {
+            document.getElementById("hp").innerHTML = Rhp;
+            Hp -= 1;
+        }
+        if (Hp == 0) {
+            document.getElementById("dhp").style.display = "none";
+            sessionStorage.setItem("hp", Rhp);
+            toggleButton();
+        }
+    }
+    bmp.onclick = function () {
+        Rmp += statdice();
+        if (Mp > 0) {
+            document.getElementById("mp").innerHTML = Rmp;
+            Mp -= 1;
+        }
+        if (Mp == 0) {
+            document.getElementById("dmp").style.display = "none";
+            sessionStorage.setItem("mp", Rmp);
+            toggleButton();
+        }
+    }
+    bpa.onclick = function () {
+        Rpa += statdice();
+        if (PhyAtk > 0) {
+            document.getElementById("pa").innerHTML = Rpa;
+            PhyAtk -= 1;
+        }
+        if (PhyAtk == 0) {
+            document.getElementById("dpa").style.display = "none";
+            sessionStorage.setItem("pa", Rpa);
+            toggleButton();
+        }
+    }
+    bpd.onclick = function () {
+        Rpd += statdice();
+        if (PhyDef > 0) {
+            document.getElementById("pd").innerHTML = Rpd;
+            PhyDef -= 1;
+        }
+        if (PhyDef == 0) {
+            document.getElementById("dpd").style.display = "none";
+            sessionStorage.setItem("pd", Rpd);
+            toggleButton();
+        }
+    }
+    bma.onclick = function () {
+        Rma += statdice();
+        if (MagAtk > 0) {
+            document.getElementById("ma").innerHTML = Rma;
+            MagAtk -= 1;
+        }
+        if (MagAtk == 0) {
+            document.getElementById("dma").style.display = "none";
+            sessionStorage.setItem("ma", Rma);
+            toggleButton();
+        }
+    }
+    bmd.onclick = function () {
+        Rmd += statdice();
+        if (MagDef > 0) {
+            document.getElementById("md").innerHTML = Rmd;
+            MagDef -= 1;
+        }
+        if (MagDef == 0) {
+            document.getElementById("dmd").style.display = "none";
+            sessionStorage.setItem("md", Rmd);
+            toggleButton();
+        }
+    }
+    bd.onclick = function () {
+        Rd += statdice();
+        if (Dex > 0) {
+            document.getElementById("d").innerHTML = Rd;
+            Dex -= 1;
+        }
+        if (Dex == 0) {
+            document.getElementById("dd").style.display = "none";
+            sessionStorage.setItem("d", Rd);
+            toggleButton();
+        }
+    }
+    setname.onclick = function (){
+        UName = document.getElementById("UserName").value;
+        document.getElementById("name").innerHTML = UName;
+        sessionStorage.setItem("UserName",UName);
+        toggleButton();
+    }
+    function toggleButton(){
+        
+        if(UName != "" && Hp == 0 && Mp == 0 && PhyAtk == 0 && PhyDef == 0 && MagAtk == 0 && MagDef == 0 && Dex == 0){
+            document.getElementById("mission").className = 'show';
+        }
+    }
+
+</script>
+
+</html>
