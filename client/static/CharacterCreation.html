@@ -4,8 +4,18 @@
     <title>Character Creation</title>
 </head>
 
+<style>
+    .hidden{
+        display: none;
+    }
+    .show{
+        display: inline;
+    }
+</style>
+
 <body>
-    <p id="name">Name: </p>
+    <p>Name: <a id="name"></a></p>
+    <input id="UserName" name="UserName" type="text" value =""><button id="setname">Set Name</button><br/>
     <p id="class">Class: </p>
     <p>Health: <a id="hp">0</a> <button id="dhp">Roll For Stats</button></p>
     <p>Mana: <a id="mp">0</a> <button id="dmp">Roll For Stats</button></p>
@@ -18,10 +28,11 @@
 
 
 
-    <button><a href="mission.html">Finish Roll</a></button>
+    <button id="mission" type="submit" class = "hidden"><a href="mission.html">Finish Roll</a></button>
 </body>
 
 <script>
+    var next = document.getElementById("mission");
     var Charclass = sessionStorage.getItem("Class");
     var Level = 0
     sessionStorage.setItem("Level", Level);
@@ -39,6 +50,8 @@
     var bma = document.getElementById("dma");
     var bmd = document.getElementById("dmd");
     var bd = document.getElementById("dd");
+    var setname = document.getElementById("setname");
+    var UName = document.getElementById("UserName").value;
 
     if (Charclass == "Mage") {
         Rmp = 3;
@@ -87,6 +100,7 @@
         MagDef = 2;
         Dex = 2;
     }
+
     var exp = 0;
     sessionStorage.setItem("exp", exp);
     var classADV = 1;
@@ -113,6 +127,7 @@
         if (Hp == 0) {
             document.getElementById("dhp").style.display = "none";
             sessionStorage.setItem("hp", Rhp);
+            toggleButton();
         }
     }
     bmp.onclick = function () {
@@ -124,6 +139,7 @@
         if (Mp == 0) {
             document.getElementById("dmp").style.display = "none";
             sessionStorage.setItem("mp", Rmp);
+            toggleButton();
         }
     }
     bpa.onclick = function () {
@@ -135,6 +151,7 @@
         if (PhyAtk == 0) {
             document.getElementById("dpa").style.display = "none";
             sessionStorage.setItem("pa", Rpa);
+            toggleButton();
         }
     }
     bpd.onclick = function () {
@@ -146,6 +163,7 @@
         if (PhyDef == 0) {
             document.getElementById("dpd").style.display = "none";
             sessionStorage.setItem("pd", Rpd);
+            toggleButton();
         }
     }
     bma.onclick = function () {
@@ -157,6 +175,7 @@
         if (MagAtk == 0) {
             document.getElementById("dma").style.display = "none";
             sessionStorage.setItem("ma", Rma);
+            toggleButton();
         }
     }
     bmd.onclick = function () {
@@ -168,6 +187,7 @@
         if (MagDef == 0) {
             document.getElementById("dmd").style.display = "none";
             sessionStorage.setItem("md", Rmd);
+            toggleButton();
         }
     }
     bd.onclick = function () {
@@ -179,6 +199,19 @@
         if (Dex == 0) {
             document.getElementById("dd").style.display = "none";
             sessionStorage.setItem("d", Rd);
+            toggleButton();
+        }
+    }
+    setname.onclick = function (){
+        UName = document.getElementById("UserName").value;
+        document.getElementById("name").innerHTML = UName;
+        sessionStorage.setItem("UserName",UName);
+        toggleButton();
+    }
+    function toggleButton(){
+        
+        if(UName != "" && Hp == 0 && Mp == 0 && PhyAtk == 0 && PhyDef == 0 && MagAtk == 0 && MagDef == 0 && Dex == 0){
+            document.getElementById("mission").className = 'show';
         }
     }
 

@@ -54,6 +54,14 @@
 			border: 1px solid grey;
 			border-top: none;
 		}
+
+		.hidden {
+			display: none;
+		}
+
+		.show {
+			display: inline;
+		}
 	</style>
 </head>
 
@@ -61,7 +69,7 @@
 
 	<div id="boxloc">
 		<div id="shift">
-			<h1> Character Name</h1>
+			<h1><a id="charname"></a> </h1>
 			<h3> Class: <a id="class"></a></h3>
 			<h3> Lv: <a id="lv"></a></h3>
 			<h5> Exp: <a id="exp"></a></h5>
@@ -76,13 +84,13 @@
 		</div>
 
 		<div id="Stats" class="tabcontent">
-			<p>Health: <a id="hp">0</a> <button id="dhp">Roll For Stats</button></p>
-			<p>Mana: <a id="mp">0</a> <button id="dmp">Roll For Stats</button></p>
-			<p>Phy.Attack: <a id="pa">0</a> <button id="dpa">Roll For Stats</button></p>
-			<p>Phy.Defense: <a id="pd">0</a> <button id="dpd">Roll For Stats</button></p>
-			<p>Mag.Attack: <a id="ma">0</a> <button id="dma">Roll For Stats</button></p>
-			<p>Mag.Defense: <a id="md">0</a> <button id="dmd">Roll For Stats</button></p>
-			<p>Dexterity: <a id="d">0</a> <button id="dd">Roll For Stats</button></p>
+			<p>Health: <a id="hp">0</a> <button id="dhp" class="hidden">Roll For Stats</button></p>
+			<p>Mana: <a id="mp">0</a> <button id="dmp" class="hidden">Roll For Stats</button></p>
+			<p>Phy.Attack: <a id="pa">0</a> <button id="dpa" class="hidden">Roll For Stats</button></p>
+			<p>Phy.Defense: <a id="pd">0</a> <button id="dpd" class="hidden">Roll For Stats</button></p>
+			<p>Mag.Attack: <a id="ma">0</a> <button id="dma" class="hidden">Roll For Stats</button></p>
+			<p>Mag.Defense: <a id="md">0</a> <button id="dmd" class="hidden">Roll For Stats</button></p>
+			<p>Dexterity: <a id="d">0</a> <button id="dd" class="hidden">Roll For Stats</button></p>
 			<p> </p>
 			<p id="statsrolls"></p>
 			<button id="free exp">free lv up</button>
@@ -117,6 +125,7 @@
 	</div>
 
 	<script>
+		document.getElementById("charname").innerHTML = sessionStorage.getItem("UserName");
 		var EXPLV = 0;
 		var statsRoll = parseInt(sessionStorage.getItem("statroll"));
 
@@ -275,26 +284,26 @@
 			document.getElementById("md").innerHTML = sessionStorage.getItem("md");
 			document.getElementById("d").innerHTML = sessionStorage.getItem("d");
 			if (statsRoll != 0) {
-				document.getElementById("statsrolls").style.display = "block";
-				document.getElementById("dhp").style.display = "compact";
-				document.getElementById("dmp").style.display = "compact";
-				document.getElementById("dpa").style.display = "compact";
-				document.getElementById("dpd").style.display = "compact";
-				document.getElementById("dma").style.display = "compact";
-				document.getElementById("dmd").style.display = "compact";
-				document.getElementById("dd").style.display = "compact";
+				document.getElementById("statsrolls").className = "show"
+				document.getElementById("dhp").className = "show"
+				document.getElementById("dmp").className = "show"
+				document.getElementById("dpa").className = "show"
+				document.getElementById("dpd").className = "show"
+				document.getElementById("dma").className = "show"
+				document.getElementById("dmd").className = "show"
+				document.getElementById("dd").className = "show"
 				document.getElementById("statsrolls").innerHTML = "Stats Rolls: " + statsRoll;
 				sessionStorage.setItem("statroll", statsRoll);
 			}
 			else if (statsRoll == 0) {
-				document.getElementById("statsrolls").style.display = "none";
-				document.getElementById("dhp").style.display = "none";
-				document.getElementById("dmp").style.display = "none";
-				document.getElementById("dpa").style.display = "none";
-				document.getElementById("dpd").style.display = "none";
-				document.getElementById("dma").style.display = "none";
-				document.getElementById("dmd").style.display = "none";
-				document.getElementById("dd").style.display = "none";
+				document.getElementById("statsrolls").className = "hidden"
+				document.getElementById("dhp").className = "hidden"
+				document.getElementById("dmp").className = "hidden"
+				document.getElementById("dpa").className = "hidden"
+				document.getElementById("dpd").className = "hidden"
+				document.getElementById("dma").className = "hidden"
+				document.getElementById("dmd").className = "hidden"
+				document.getElementById("dd").className = "hidden"
 				sessionStorage.setItem("statroll", statsRoll);
 			}
 			if (sessionStorage.getItem("exp") >= EXPLV && (sessionStorage.getItem("Level") != 20)) {

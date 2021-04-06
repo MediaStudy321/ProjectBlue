@@ -1,8 +1,9 @@
 const express = require('express');
 const http = require('http');
 const path = require('path');
-//const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const session = require('express-session');
+const {UserProfile} = require("./model.js");
 
 const dotenv = require('dotenv').config();
 const dburl = process.env.DB_URL;
@@ -10,6 +11,7 @@ const sessionSecret = process.env.SECRET;
 const port = process.env.PORT || 2000;
 
 //mongoose.connect(dburl, {useNewUrlParser: true, useUnifiedTopology: true});
+
 
 
 //Navigation
@@ -26,7 +28,7 @@ app.use(session({
         secure: false
     },
     key: 'user_sid',
-    secret: sessionSecret,
+    secret: /*sessionSecret,*/ 'dice',
     resave: false,
     saveUninitialized: false,
     name: 'dicecapades'
@@ -36,4 +38,12 @@ app.use(session({
 app.use(express.static(staticPath));
 
 app.listen(port);
+
+app.get('/CharacterCreation', (res,req) => {
+    res.render('CharacterCreation', {data: req.session});
+});
+
+app.post('/characterName', (req,res) => {
+    console.log(req.body);
+});
 
