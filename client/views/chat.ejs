@@ -1,0 +1,71 @@
+<html>
+
+<head>
+<title>Chat room</title>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+</head>
+
+<body>
+<table width="90%">
+
+<tr>
+<th colspan="2">Welcome to the Dicecapades</th>
+</tr>
+
+<tr>
+<td>
+	<ul id="chattext"></ul>
+</td>
+<td width="200">
+	<b>Channels</b>
+	<div id="channels">
+		<button>Lobby</button><br/>
+		<button>Channel1</button><br/>
+		<button>Channel2</button>
+	</div>
+</td>
+</tr>
+
+<tr>
+	<td colspan="2"><input type="text" id="chatter" /></td>
+</tr>
+</table>
+
+<script>
+
+const socket = io();
+
+socket.on('chat', printMessage);
+
+// Get value of text input, display it on the chat log, and send it to the server.
+function chatMessage() {
+	let message = $('#chatter').val();
+	$('#chatter').val('');
+	printMessage(message);
+	socket.emit('chat', message);
+}
+
+// Add a line to the chat log
+function printMessage(message) {
+	$('#chattext').append('<li>'+message+'</li>');
+}
+
+// JQuery after page loads for UI elements:
+$(()=>{
+
+	$('#chatter').on('keyup', (event)=>{
+		if(event.key=="Enter") chatMessage();
+	});
+
+	$('#channels > button').on('click', (event)=>{
+		socket.emit('joinchannel', event.target.textContent.toLowerCase());
+	});
+
+});
+
+</script>
+
+</body>
+
+</html>
