@@ -204,9 +204,14 @@
     }
     setname.onclick = function (){
         UName = document.getElementById("UserName").value;
-        document.getElementById("name").innerHTML = UName;
-        sessionStorage.setItem("UserName",UName);
-        toggleButton();
+        if(UName != ""){
+            document.getElementById("name").innerHTML = UName;
+            sessionStorage.setItem("UserName",UName);
+            toggleButton();
+        }
+        else{
+            alert("Invalid Name");
+        }
     }
     function toggleButton(){
         

@@ -1,0 +1,32 @@
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $('#content').load("actionbox.html");
+
+        });
+        function pickMob(){
+            var Mobs = ["Slime_A"];
+            var encounter = Mobs[Math.floor(Math.random() * Mobs.length)];
+            return encounter;
+        }
+        var MobEncountered = pickMob() + ".html";
+        $(document).ready(function () {
+
+            $('#mob').load(MobEncountered);
+
+        });
+    </script>
+
+</head>
+
+<body>
+    <div id="mob"></div>
+    <div id="content"></div>
+
+</body>
+
+</html>

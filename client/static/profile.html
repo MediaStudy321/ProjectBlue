@@ -98,20 +98,17 @@
 		</div>
 
 		<div id="Skills & Talents" class="tabcontent">
-			<h5>Skills</h5>
+			<h5><a id="skill">Skills</a></h5>
 			<h5>Talents</h5>
 		</div>
 
 		<div id="Equipment" class="tabcontent">
 			<p>Weapon: <a id="weapon"></a></p>
 			<p>Head: <a id="head"></a></p>
-			<p>Overlayer: <a id="coat"></a></p>
-			<p>Underlayer: <a id="shirt"></a></p>
-			<p>R.Gloves: <a id="r.g"></a></p>
-			<p>L.Gloves: <a id="l.g"></a></p>
+			<p>Armor: <a id="armor"></a></p>
+			<p>Gloves: <a id="gloves"></a></p>
 			<p>Pants: <a id="pants"></a></p>
-			<p>R.Shoe: <a id="r.s"></a></p>
-			<p>L.Shoe: <a id="l.s"></a></p>
+			<p>Shoes: <a id="shoes"></a></p>
 
 		</div>
 
@@ -138,6 +135,14 @@
 		var bmd = document.getElementById("dmd");
 		var bd = document.getElementById("dd");
 		/////
+
+		if(sessionStorage.getItem("Class") == "Mage"){
+			document.getElementById("skill").innerHTML = "Magic"
+		}
+		else if(sessionStorage.getItem("Class") == "Bard"){
+			document.getElementById("skill").innerHTML = "Songs"
+		}
+
 		/*rolling stats*/
 		if (statsRoll != 0) {
 			var Rhp = parseInt(sessionStorage.getItem("hp"));
@@ -312,6 +317,19 @@
 		}
 		////////
 
+		var EQweapon = "Hands";
+
+		function loadEquipments(){
+			if(sessionStorage.getItem("Weapon") == null || sessionStorage.getItem("Weapon") == ""){
+				sessionStorage.setItem("Weapon",EQweapon);
+			}
+			else{
+				EQweapon = (sessionStorage.getItem("Weapon"));
+			}
+			document.getElementById("weapon").innerHTML = EQweapon;
+		}
+
+		loadEquipments();
 
 
 

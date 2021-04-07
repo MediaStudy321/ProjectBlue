@@ -1,0 +1,69 @@
+<html>
+    <title>Slime_A</title>
+
+    <style>
+        .hidden{
+            display: "none";
+        }
+        .button{
+            padding: auto;
+            position: relative;
+        }
+        .shift{
+            position: absolute;
+            left:40%;
+            top:11%;
+        }
+    </style>
+
+    <body>
+        <div class="shift">
+        <button class="button">         
+            ████░░░░░░░░░░████      <br/> 
+          ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██    <br/>
+        ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██  <br/>
+        ██▒▒▒▒██▒▒▒▒▒▒▒▒▒▒██▒▒▒▒██  <br/>
+      ██▒▒▒▒▒▒██▒▒▒▒▒▒▒▒▒▒██▒▒▒▒▒▒██<br/>
+      ██▒▒▒▒▒▒██▒▒▒▒▒▒▒▒▒▒██▒▒▒▒▒▒██<br/>
+      ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██<br/>
+      ██▒▒▒▒▒▒▒▒██▒▒▒▒▒▒██▒▒▒▒▒▒▒▒██<br/>
+      ██▓▓▒▒▒▒▒▒▒▒██████▒▒▒▒▒▒▒▒▓▓██<br/>
+        ██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██  <br/>
+          ██████████████████████ </button>
+
+          </div>
+
+        <p class="hidden">Name: <a id ="Mob Name">Slime A</a></p>
+        <p class="hidden">Level: <a id="lv">1</a> </p>
+        <p class="hidden">Health: <a id="hp">6</a> </p>
+        <p class="hidden">Mana: <a id="mp">2</a> </p>
+        <p class="hidden">Phy.Attack: <a id="pa">3</a> </p>
+        <p class="hidden">Phy.Defense: <a id="pd">5</a> </p>
+        <p class="hidden">Mag.Attack: <a id="ma">1</a> </p>
+        <p class="hidden">Mag.Defense: <a id="md">1</a> </p>
+        <p class="hidden">Dexterity: <a id="d">1</a> </p>
+
+        <script>
+            var MobName = document.getElementById("Mob Name").innerHTML;
+            var Level = document.getElementById("lv").innerHTML;
+            var Hp = document.getElementById("hp").innerHTML;
+            var Mp = document.getElementById("mp").innerHTML;
+            var PhyAtk = document.getElementById("pa").innerHTML;
+            var PhyDef = document.getElementById("pd").innerHTML;
+            var MagAtk = document.getElementById("ma").innerHTML;
+            var MagDef = document.getElementById("md").innerHTML;
+            var Dex = document.getElementById("d").innerHTML;
+
+            sessionStorage.setItem("Mob name",MobName);
+            sessionStorage.setItem("Mob level",Level);
+            sessionStorage.setItem("Mob hp",Hp);
+            sessionStorage.setItem("Mob mp",Mp);
+            sessionStorage.setItem("Mob patk",PhyAtk);
+            sessionStorage.setItem("Mob pdef",PhyDef);
+            sessionStorage.setItem("Mob matk",MagAtk);
+            sessionStorage.setItem("Mob mdef",MagDef);
+            sessionStorage.setItem("Mob d",Dex);
+
+        </script>
+    </body>
+</html>
