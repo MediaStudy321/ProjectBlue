@@ -3,7 +3,6 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>actionbox</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
         var LoadWeaponBeforeHand = sessionStorage.getItem("Weapon") + ".html";
         $(document).ready(function () {
@@ -215,7 +214,7 @@
         var Weapon = sessionStorage.getItem("Weapon");
         var Attack = document.getElementById("basic");
         var Skill = document.getElementById("skill");
-        var Item = document.getElementById("item");
+        var Item = document.getElementById("items");
         var Run = document.getElementById("run");
         var ESCRoll = document.getElementById("ESCRoll");
         var ESCclose = document.getElementById("closeESC");
@@ -254,6 +253,10 @@
             MobMDEF = parseInt(sessionStorage.getItem("Mob md"));
             MobDEX = parseInt(sessionStorage.getItem("Mob d"));
         }
+        function updateMobHPandMP() {
+            document.getElementById("hp").innerHTML = sessionStorage.getItem("Mob hp");
+            document.getElementById("mp").innerHTML = sessionStorage.getItem("Mob mp");
+        }
         var weaponPDMG = sessionStorage.getItem("weapon P.DMG");
         var weaponMDMG = sessionStorage.getItem("weapon M.DMG");
         function checkWEAP() {
@@ -270,9 +273,31 @@
         loadMOB();
         checkWEAP();
 
+        function rollfordmg(attacker){
+            var dice = [1,2,3,4,5,6];
+            var roll = dice[Math.floor(Math.random() * dice.length)];
+            if(attacker == "player"){
+                roll += parseInt(sessionStorage.getItem("pa"));
+            }
+            console.log(roll);
+            return roll;
+        }
+        function DMGcalc(){
+            var rollDMG = rollfordmg("player");
+                rollDMG += weaponPDMG - sessionStorage.getItem("Mob def");
+                MobHP -= rollDMG;
+                sessionStorage.setItem("Mob hp", MobHP);
+                updateMobHPandMP();
+        }
 
         Attack.onclick = function () {
             AttackOptions.className = "show";
+            AttackOptions.onclick = function(){
+                DMGcalc();
+            }
+
+        }
+        AttackOptions.onclick = function(){
 
         }
         Skill.onclick = function () {
