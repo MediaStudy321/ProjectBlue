@@ -32,7 +32,7 @@
 
     <body>
         <div class="shift showABL">
-        <button class="button">         
+        <button id="MOB" class="button">         
             ████░░░░░░░░░░████      <br/> 
           ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██    <br/>
         ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██  <br/>
@@ -61,24 +61,24 @@
 
         <script>
             var MobName = document.getElementById("Mob Name").innerHTML;
-            var Level = document.getElementById("mlv").innerHTML;
-            var Hp = document.getElementById("mhp").innerHTML;
-            var Mp = document.getElementById("mmp").innerHTML;
-            var PhyAtk = document.getElementById("mpa").innerHTML;
-            var PhyDef = document.getElementById("mpd").innerHTML;
-            var MagAtk = document.getElementById("mma").innerHTML;
-            var MagDef = document.getElementById("mmd").innerHTML;
-            var Dex = document.getElementById("md").innerHTML;
+            var MobLevel = document.getElementById("mlv").innerHTML;
+            var MobHP = document.getElementById("mhp").innerHTML;
+            var MobMP = document.getElementById("mmp").innerHTML;
+            var MobPATK = document.getElementById("mpa").innerHTML;
+            var MobPDEF = document.getElementById("mpd").innerHTML;
+            var MobMATK = document.getElementById("mma").innerHTML;
+            var MobMDEF = document.getElementById("mmd").innerHTML;
+            var MobDEX = document.getElementById("md").innerHTML;
+            sessionStorage.setItem("mob name",MobName);
+            sessionStorage.setItem("mob level",MobLevel);
+            sessionStorage.setItem("mob hp",MobHP);
+            sessionStorage.setItem("mob mp",MobMP);
+            sessionStorage.setItem("mob patk",MobPATK);
+            sessionStorage.setItem("mob pdef",MobPDEF);
+            sessionStorage.setItem("mob matk",MobMATK);
+            sessionStorage.setItem("mob mdef",MobMDEF);
+            sessionStorage.setItem("mob dex",MobDEX);
 
-            sessionStorage.setItem("Mob name",MobName);
-            sessionStorage.setItem("Mob level",Level);
-            sessionStorage.setItem("Mob hp",Hp);
-            sessionStorage.setItem("Mob mp",Mp);
-            sessionStorage.setItem("Mob patk",PhyAtk);
-            sessionStorage.setItem("Mob pdef",PhyDef);
-            sessionStorage.setItem("Mob matk",MagAtk);
-            sessionStorage.setItem("Mob mdef",MagDef);
-            sessionStorage.setItem("Mob d",Dex);
 
         </script>
     </body>

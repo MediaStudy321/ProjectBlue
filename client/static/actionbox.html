@@ -8,7 +8,7 @@
         $(document).ready(function () {
 
             $('#loadweapon').load(LoadWeaponBeforeHand);
-            console.log("loaded");
+            console.log("weapon loaded");
         });
         
     </script>
@@ -73,6 +73,7 @@
             padding: 0.4%;
             width: 20%;
             cursor: pointer;
+            background-color: white;
         }
 
         .hidden {
@@ -86,7 +87,6 @@
         .showABL:hover+.hidden {
             display: block;
         }
-
         .modal {
             display: none;
             /*hidden*/
@@ -176,7 +176,7 @@
 
         <div id="boxloc3">
             <div id="Attack Button" class="hidden">
-                <div class="showABL"><button id="Standard Attack" class="buttonwidth2"></button></div>
+                <div class="showABL"><button id="Standard Attack" class="buttonwidth2 buttonclick"></button></div>
                 <div class="hidden"><a id="loadedweapon" style="position: absolute; top: 1%; left:21%"></a>
                     <br\>
                         <a id="weaponstats" style="position: absolute; left:21%"></a>
@@ -202,18 +202,6 @@
         var matk = parseInt(sessionStorage.getItem("ma"));
         var mdef = parseInt(sessionStorage.getItem("md"));
         var dex = parseInt(sessionStorage.getItem("d"));
-
-        var MobName = "";
-        var MobLevel = "";
-        var MobHP = "";
-        var MobMP = "";
-        var MobPATK = "";
-        var MobPDEF = "";
-        var MobMATK = "";
-        var MobMDEF = "";
-        var MobDEX = "";
-
-
         var Weapon = sessionStorage.getItem("Weapon");
         var Attack = document.getElementById("basic");
         var Skill = document.getElementById("skill");
@@ -225,6 +213,9 @@
         var StandardATK = document.getElementById("Standard Attack");
         var GloveATK = document.getElementById("Glove Ability");
         var ShoeATK = document.getElementById("Shoe Ability");
+        var weaponPDMG = parseInt(sessionStorage.getItem("weapon P.DMG"));
+        var weaponMDMG = parseInt(sessionStorage.getItem("weapon M.DMG"));
+        entering = sessionStorage.getItem("entering");
 
         function loadClass() {
             document.getElementById("p1name").innerHTML = sessionStorage.getItem("UserName");
@@ -236,6 +227,11 @@
                 Mp = MaxMp;
                 sessionStorage.setItem("currentMP", Mp);
             }
+            else if(entering == "true"){
+                Hp = MaxHp;
+                Mp = MaxMp;
+                entering = "false";
+            }
             else {
                 Hp = parseInt(sessionStorage.getItem("currentHP"))
                 Mp = parseInt(sessionStorage.getItem("currentMP"));
@@ -245,20 +241,6 @@
             document.getElementById("p1mp").innerHTML = Mp + " / " + MaxMp;
             document.getElementById("p1mp").value = Mp;
         }
-        function loadMOB() {
-            MobName = sessionStorage.getItem("Mob name");
-            MobLevel = sessionStorage.getItem("Mob level");
-            MobHP = parseInt(sessionStorage.getItem("Mob hp"));
-            MobMP = parseInt(sessionStorage.getItem("Mob mp"));
-            MobPATK = parseInt(sessionStorage.getItem("Mob pa"));
-            MobPDEF = parseInt(sessionStorage.getItem("Mob pd"));
-            MobMATK = parseInt(sessionStorage.getItem("Mob ma"));
-            MobMDEF = parseInt(sessionStorage.getItem("Mob md"));
-            MobDEX = parseInt(sessionStorage.getItem("Mob d"));
-        }
-        var weaponPDMG = sessionStorage.getItem("weapon P.DMG");
-        var weaponMDMG = sessionStorage.getItem("weapon M.DMG");
-
         function checkWEAP() {
             if (Weapon == "Hands") {
                 StandardATK.innerHTML = "Catch These Hands";
@@ -277,74 +259,91 @@
 
         }
         loadClass();
-        loadMOB();
         checkWEAP();
         function DMGdice(DmgType){
             var dice = [];
             if(DmgType == "physical"){
-                var characterPHY = sessionStorage.getItem("pa");
-                var crits = Math.floor(characterPHY * 1.75) + 1;
-                var fail = characterPHY/2;
+                var highRoll = Math.floor(patk * 1.75) + 1;
+                var fail = Math.floor(patk/2);
                 var slice = 0;
                 dice.push(fail)
-                if(characterPHY > 12){
-                    slice = characterPHY/12;
+                if(patk > 12){
+                    slice = patk/12;
                     slice = Math.floor(slice);
                     for(var a = 4; a > -1; a--){
-                        dice.push(characterPHY - (slice * a));
+                        dice.push(patk - (slice * a));
                     }
                     for(var a = 0; a < 5; a++){
-                        dice.push(parseInt(characterPHY) + (slice * a));
+                        dice.push(parseInt(patk) + (slice * a));
                     }
                 }
                 else{
-                    for(var a = characterPHY; a > -1; a--){
-                        if((characterPHY - a) <= 0){
-                            dice.push(1);
+                    for(var a = patk; a > -1; a--){
+                        if((patk - a) <= fail){
+                            dice.push(fail);
                         }
                         else{
-                            dice.push(characterPHY - a);
+                            dice.push(patk - a);
                         }
                     }
-                    for(var a = 0; a < characterPHY; a++){
-                        dice.push(parseInt(characterPHY) + a);
+                    for(var a = 0; a < patk - 1; a++){
+                        dice.push(parseInt(patk) + a);
                     }
                 }
-                dice.push(crits);
+                dice.push(highRoll);
             }
+            console.log("dice: " + dice)
             return dice;
         }
         function rollfordmg(attacker,type) {
             var dice = DMGdice(type);
             var roll = dice[Math.floor(Math.random() * dice.length)];
-            if (attacker == "player") {
-                roll += parseInt(sessionStorage.getItem("pa"));
-            }
+            console.log("roll: " + roll)
             return roll;
         }
-        function DMGcalc() {
+        function IfMobAlive(MobType){
+            
+        }
+        function critchance(){
+            var crit = [0,0,0,0,0,0,0,0,0,1];
+            var rollcrit = crit[Math.floor(Math.random()*crit.length)];
+            return rollcrit;
+        }
+        function DMGcalc(MOBNumber) {
             var rollDMG = rollfordmg("player","physical");
-            rollDMG += weaponPDMG - sessionStorage.getItem("Mob def");
-            console.log(rollDMG);
+            console.log("pre rolldmg: " + rollDMG);
+            if(critchance() == 1){
+                rollDMG = rollDMG + weaponPDMG;
+            }
+            else{
+                rollDMG = rollDMG + weaponPDMG - MOBNumber.pdef;
+            }
+            console.log("post rollDMG: " + rollDMG);
             if(rollDMG < 0){
                 rollDMG = 0;
             }
-            MobHP -= rollDMG;
-            console.log(MobHP)
+            MOBNumber.hp -= rollDMG;
+            var newHP = MOBNumber.hp;
+            MOBNumber.hp = newHP;
+            console.log(MOBNumber.hp)
             console.log("before: " + document.getElementById("mhp").innerHTML);  
-            document.getElementById("mhp").innerHTML = MobHP;
+            document.getElementById("mhp").innerHTML = MOBNumber.hp;
             console.log("after: " + document.getElementById("mhp").innerHTML);  
         }
-
         Attack.onclick = function () {
             AttackOptions.className = "show";
-            AttackOptions.onclick = function () {
-                DMGcalc();
-                console.log("dmg")
-            }
+            StandardATK.onclick = function () {
+                var MOB1 = document.getElementById("MOB");
+                MOB1.onclick = function(){
+                    DMGcalc(mob_1);
+                    AttackOptions.className = "hidden";
+                    if(mob_1.hp <= 0){
+                        console.log("game set");
+                        window.location = window.location.herf = "mission.html"
+                    }
 
-        }
-        AttackOptions.onclick = function () {
+                }
+            }
 
         }
         Skill.onclick = function () {
@@ -374,6 +373,8 @@
         ESCclose.onclick = function () {
             ESCRoll.style.display = "none";
         }
+
+        
 
     </script>
 
