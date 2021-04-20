@@ -10,8 +10,6 @@ const dburl = process.env.DB_URL;
 const sessionSecret = process.env.SECRET || 'dice';
 const port = process.env.PORT || 2000;
 
-
-
 //Navigation
 const clientPath =path.join(__dirname, '../client/');
 const staticPath = path.join(clientPath, '/static/');
@@ -26,6 +24,8 @@ server.listen(port);
 
 // Site-wide middleware
 
+
+
 app.use(express.static(staticPath));
 app.use(session({
     cookie: {
@@ -39,6 +39,7 @@ app.use(session({
     name: 'dicecapades'
 }));
 
+app.listen(5000);
 
 
 

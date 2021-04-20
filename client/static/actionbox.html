@@ -10,7 +10,7 @@
             $('#loadweapon').load(LoadWeaponBeforeHand);
             console.log("weapon loaded");
         });
-        
+
     </script>
     <style>
         body {
@@ -87,6 +87,7 @@
         .showABL:hover+.hidden {
             display: block;
         }
+
         .modal {
             display: none;
             /*hidden*/
@@ -137,13 +138,14 @@
 </head>
 
 <body>
-    <div id="loadweapon" class = "hidden"></div>
+    <div id="loadweapon" class="hidden"></div>
     <div id="boxloc4">
-        <button id="Int Roll">Roll For Initiative!</button>
-        <a id="t1"></a><a id="t2"></a><a id="t3"></a><a id="t4"></a><a id="t5"></a><a id="t6"></a><a id="t7"></a><a
-            id="t8"></a>
+        <button id="Int Roll" class="show">Roll For Initiative!</button>
+        <a id="turns"></a>
         <br />
-        <a id="player roll"></a><a id="mob roll"></a>
+        <a id="player roll"></a>
+        <br/>
+        <a id="mob roll"></a>
     </div>
     <div id="boxloc1">
         <p>[P1: <a id="p1name"></a>] HP: [<a id="p1hp" vaule=0></a>] MP: [<a id="p1mp" value=0></a>]</p>
@@ -192,6 +194,7 @@
     </div>
 
     <script>
+        const frames = 400;
         var userclass = sessionStorage.getItem("Class");
         var MaxHp = parseInt(sessionStorage.getItem("hp"));
         var Hp = "";
@@ -215,6 +218,8 @@
         var ShoeATK = document.getElementById("Shoe Ability");
         var weaponPDMG = parseInt(sessionStorage.getItem("weapon P.DMG"));
         var weaponMDMG = parseInt(sessionStorage.getItem("weapon M.DMG"));
+
+        var introll = document.getElementById("Int Roll");
         entering = sessionStorage.getItem("entering");
 
         function loadClass() {
@@ -227,7 +232,7 @@
                 Mp = MaxMp;
                 sessionStorage.setItem("currentMP", Mp);
             }
-            else if(entering == "true"){
+            else if (entering == "true") {
                 Hp = MaxHp;
                 Mp = MaxMp;
                 entering = "false";
@@ -245,7 +250,7 @@
             if (Weapon == "Hands") {
                 StandardATK.innerHTML = "Catch These Hands";
                 var weDIS = sessionStorage.getItem("weapon discription");
-                if(weDIS == null){
+                if (weDIS == null) {
                     setInterval(() => {
                         window.location = window.location.href;
                         console.log("refreshed");
@@ -255,38 +260,82 @@
                 document.getElementById("weaponstats").innerHTML = "[P.ATK+ " + weaponPDMG + "]   [M.ATK+ " + weaponMDMG + "]"
             }
         }
-        function RollForInt() {
 
+        var turnarray = [];
+
+        function loadturn(){
+            var printstring = ""
+            for(var a = 0; a < turnarray.length; a++){
+                printstring = printstring + "[ " + turnarray[a] + " ] ";
+                console.log(turnarray[a]);
+            }
+            document.getElementById("turns").innerHTML = printstring;
         }
-        loadClass();
-        checkWEAP();
-        function DMGdice(DmgType){
-            var dice = [];
-            if(DmgType == "physical"){
-                var highRoll = Math.floor(patk * 1.75) + 1;
-                var fail = Math.floor(patk/2);
-                var slice = 0;
-                dice.push(fail)
-                if(patk > 12){
-                    slice = patk/12;
-                    slice = Math.floor(slice);
-                    for(var a = 4; a > -1; a--){
-                        dice.push(patk - (slice * a));
-                    }
-                    for(var a = 0; a < 5; a++){
-                        dice.push(parseInt(patk) + (slice * a));
+
+        function RollForInt() {
+            function dice(){
+                var dice = [1,2,3,4,5,6]
+                var roll = dice[Math.floor(Math.random() * dice.length)];
+                console.log("turn roll: " + roll);
+                return roll;
+            }
+            introll.onclick = function(){
+                var playerroll = dice();
+                document.getElementById("player roll").innerHTML = "player Roll: " + playerroll;
+                var monsterroll = dice();
+                document.getElementById("mob roll").innerHTML = "mob Roll: " + monsterroll;
+                if(playerroll >= monsterroll){
+                    for(var a = 0; a < 8; a++){
+                        if(a%2 == 0){
+                            turnarray.push("player");
+                        }
+                        else{
+                            turnarray.push("mob");
+                        }
                     }
                 }
                 else{
-                    for(var a = patk; a > -1; a--){
-                        if((patk - a) <= fail){
-                            dice.push(fail);
+                    for(var a = 0; a < 8; a++){
+                        if(a%2 == 0){
+                            turnarray.push("mob");
                         }
                         else{
+                            turnarray.push("player");
+                        }
+                    }
+                }
+            introll.className = "hidden";
+            console.log(turnarray);
+            loadturn()
+            }
+        }
+        function DMGdice(DmgType) {
+            var dice = [];
+            if (DmgType == "physical") {
+                var highRoll = Math.floor(patk * 1.75) + 1;
+                var fail = Math.floor(patk / 2);
+                var slice = 0;
+                dice.push(fail)
+                if (patk > 12) {
+                    slice = patk / 12;
+                    slice = Math.floor(slice);
+                    for (var a = 4; a > -1; a--) {
+                        dice.push(patk - (slice * a));
+                    }
+                    for (var a = 0; a < 5; a++) {
+                        dice.push(parseInt(patk) + (slice * a));
+                    }
+                }
+                else {
+                    for (var a = patk; a > -1; a--) {
+                        if ((patk - a) <= fail) {
+                            dice.push(fail);
+                        }
+                        else {
                             dice.push(patk - a);
                         }
                     }
-                    for(var a = 0; a < patk - 1; a++){
+                    for (var a = 0; a < patk - 1; a++) {
                         dice.push(parseInt(patk) + a);
                     }
                 }
@@ -295,86 +344,106 @@
             console.log("dice: " + dice)
             return dice;
         }
-        function rollfordmg(attacker,type) {
+        function rollfordmg(attacker, type) {
             var dice = DMGdice(type);
             var roll = dice[Math.floor(Math.random() * dice.length)];
             console.log("roll: " + roll)
             return roll;
         }
-        function IfMobAlive(MobType){
-            
-        }
-        function critchance(){
-            var crit = [0,0,0,0,0,0,0,0,0,1];
-            var rollcrit = crit[Math.floor(Math.random()*crit.length)];
+
+        function critchance() {
+            var crit = [0, 0, 0, 0, 0, 0, 0, 0, 0, 1];
+            var rollcrit = crit[Math.floor(Math.random() * crit.length)];
             return rollcrit;
         }
         function DMGcalc(MOBNumber) {
-            var rollDMG = rollfordmg("player","physical");
+            var rollDMG = rollfordmg("player", "physical");
             console.log("pre rolldmg: " + rollDMG);
-            if(critchance() == 1){
+            if (critchance() == 1) {
                 rollDMG = rollDMG + weaponPDMG;
             }
-            else{
+            else {
                 rollDMG = rollDMG + weaponPDMG - MOBNumber.pdef;
             }
             console.log("post rollDMG: " + rollDMG);
-            if(rollDMG < 0){
+            if (rollDMG < 0) {
                 rollDMG = 0;
             }
             MOBNumber.hp -= rollDMG;
             var newHP = MOBNumber.hp;
             MOBNumber.hp = newHP;
             console.log(MOBNumber.hp)
-            console.log("before: " + document.getElementById("mhp").innerHTML);  
+            console.log("before: " + document.getElementById("mhp").innerHTML);
             document.getElementById("mhp").innerHTML = MOBNumber.hp;
-            console.log("after: " + document.getElementById("mhp").innerHTML);  
+            console.log("after: " + document.getElementById("mhp").innerHTML);
         }
-        Attack.onclick = function () {
-            AttackOptions.className = "show";
-            StandardATK.onclick = function () {
-                var MOB1 = document.getElementById("MOB");
-                MOB1.onclick = function(){
-                    DMGcalc(mob_1);
-                    AttackOptions.className = "hidden";
-                    if(mob_1.hp <= 0){
-                        console.log("game set");
-                        window.location = window.location.herf = "mission.html"
+        function loadbuttons() {
+            Attack.onclick = function () {
+                AttackOptions.className = "show";
+                StandardATK.onclick = function () {
+                    var MOB1 = document.getElementById("MOB");
+                    MOB1.onclick = function () {
+                        DMGcalc(mob_1);
+                        AttackOptions.className = "hidden";
+                        if (mob_1.hp <= 0) {
+                            console.log("game set");
+                            window.location = window.location.herf = "mission.html"
+                        }
+
                     }
+                }
 
+            }
+            Skill.onclick = function () {
+
+            }
+            Item.onclick = function () {
+
+            }
+            Run.onclick = function () {
+                ESCRoll.style.display = "block";
+                var rolled = 0;
+                function ESCroll() {
+                    var dice = [1, 2, 3, 4, 5, 6];
+                    var roll = dice[Math.floor(Math.random() * dice.length)];
+                    return roll;
+                }
+                var ESCbt = document.getElementById("escape roll");
+                ESCbt.onclick = function () {
+                    rolled = ESCroll();
+                    document.getElementById("ESC result").innerHTML = rolled;
+                    if (rolled > 0) {
+                        document.getElementById("ESC success").className = "show";
+                    }
                 }
             }
 
-        }
-        Skill.onclick = function () {
-
-        }
-        Item.onclick = function () {
-
-        }
-        Run.onclick = function () {
-            ESCRoll.style.display = "block";
-            var rolled = 0;
-            function ESCroll() {
-                var dice = [1, 2, 3, 4, 5, 6];
-                var roll = dice[Math.floor(Math.random() * dice.length)];
-                return roll;
-            }
-            var ESCbt = document.getElementById("escape roll");
-            ESCbt.onclick = function () {
-                rolled = ESCroll();
-                document.getElementById("ESC result").innerHTML = rolled;
-                if (rolled > 0) {
-                    document.getElementById("ESC success").className = "show";
-                }
+            ESCclose.onclick = function () {
+                ESCRoll.style.display = "none";
             }
         }
 
-        ESCclose.onclick = function () {
-            ESCRoll.style.display = "none";
+        function monsterattack(){
+            
         }
 
-        
+        function loadgame(){
+            loadClass();
+            checkWEAP();
+            loadbuttons();
+            if(introll.className == "show"){
+                RollForInt();
+            }
+            if(introll.className == "hidden"){
+                loadturn();
+            }
+            
+        }
+
+        loadgame();
+
+
+
 
     </script>
 
