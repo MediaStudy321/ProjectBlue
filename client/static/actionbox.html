@@ -366,8 +366,8 @@
                 rollDMG = rollDMG + weaponPDMG - MOBNumber.pdef;
             }
             console.log("post rollDMG: " + rollDMG);
-            if (rollDMG < 0) {
-                rollDMG = 0;
+            if (rollDMG < 1) {
+                rollDMG = 1;
             }
             MOBNumber.hp -= rollDMG;
             var newHP = MOBNumber.hp;

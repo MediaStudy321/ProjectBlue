@@ -3,7 +3,8 @@ const http = require('http');
 const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
-const {UserProfile} = require("./model.js");
+const {Character} = require("./gamemodels.js");
+const ejs = require('ejs');
 
 const dotenv = require('dotenv').config();
 const dburl = process.env.DB_URL;
@@ -13,6 +14,7 @@ const port = process.env.PORT || 2000;
 //Navigation
 const clientPath =path.join(__dirname, '../client/');
 const staticPath = path.join(clientPath, '/static/');
+const router = require('./router')
 
 // Launch server(s)
 
@@ -46,16 +48,15 @@ app.listen(5000);
 app.set('view engine', 'ejs');
 app.set('views', path.join(clientPath, '/views/'));
 
+// constant sets
+
+app.use((req, res, next)=>{console.log(req.originalUrl); next();})
+app.use(express.static(staticPath));
+app.use('/', router);
+
 
 // Routing
 
-app.get('/CharacterCreation', (res,req) => {
-    res.render('CharacterCreation', {data: req.session});
-});
-
-app.post('/characterName', (req,res) => {
-    console.log(req.body);
-});
 
 app.get('/chat/', (req,res) => {
    res.render('chat');
@@ -73,4 +74,6 @@ app.use((req,res,next)=>{
 // Chat server
 
 const chatserver = require('./chatserver');
+const { render } = require('ejs');
 chatserver.launch(server);
+

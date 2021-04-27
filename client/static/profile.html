@@ -121,237 +121,237 @@
 		</div>
 	</div>
 
-	<script>
-		document.getElementById("charname").innerHTML = sessionStorage.getItem("UserName");
-		var EXPLV = 0;
-		var statsRoll = parseInt(sessionStorage.getItem("statroll"));
+</body>
+<script>
+	document.getElementById("charname").innerHTML = sessionStorage.getItem("UserName");
+	var EXPLV = 0;
+	var statsRoll = parseInt(sessionStorage.getItem("statroll"));
 
-		/*stat dice*/
-		var bhp = document.getElementById("dhp");
-		var bmp = document.getElementById("dmp");
-		var bpa = document.getElementById("dpa");
-		var bpd = document.getElementById("dpd");
-		var bma = document.getElementById("dma");
-		var bmd = document.getElementById("dmd");
-		var bd = document.getElementById("dd");
-		/////
+	/*stat dice*/
+	var bhp = document.getElementById("dhp");
+	var bmp = document.getElementById("dmp");
+	var bpa = document.getElementById("dpa");
+	var bpd = document.getElementById("dpd");
+	var bma = document.getElementById("dma");
+	var bmd = document.getElementById("dmd");
+	var bd = document.getElementById("dd");
+	/////
 
-		if(sessionStorage.getItem("Class") == "Mage"){
-			document.getElementById("skill").innerHTML = "Magic"
+	if (sessionStorage.getItem("Class") == "Mage") {
+		document.getElementById("skill").innerHTML = "Magic"
+	}
+	else if (sessionStorage.getItem("Class") == "Bard") {
+		document.getElementById("skill").innerHTML = "Songs"
+	}
+
+	/*rolling stats*/
+	if (statsRoll != 0) {
+		var Rhp = parseInt(sessionStorage.getItem("hp"));
+		var Rmp = parseInt(sessionStorage.getItem("mp"));
+		var Rpa = parseInt(sessionStorage.getItem("pa"));
+		var Rpd = parseInt(sessionStorage.getItem("pd"));
+		var Rma = parseInt(sessionStorage.getItem("ma"));
+		var Rmd = parseInt(sessionStorage.getItem("md"));
+		var Rd = parseInt(sessionStorage.getItem("d"));
+
+		function hpdice() {
+			var dice = [2, 3, 4];
+			var roll = dice[Math.floor(Math.random() * dice.length)];
+			return roll;
 		}
-		else if(sessionStorage.getItem("Class") == "Bard"){
-			document.getElementById("skill").innerHTML = "Songs"
+
+		function statdice() {
+			var dice = [1, 2, 3];
+			var roll = dice[Math.floor(Math.random() * dice.length)];
+			return roll;
 		}
 
-		/*rolling stats*/
-		if (statsRoll != 0) {
-			var Rhp = parseInt(sessionStorage.getItem("hp"));
-			var Rmp = parseInt(sessionStorage.getItem("mp"));
-			var Rpa = parseInt(sessionStorage.getItem("pa"));
-			var Rpd = parseInt(sessionStorage.getItem("pd"));
-			var Rma = parseInt(sessionStorage.getItem("ma"));
-			var Rmd = parseInt(sessionStorage.getItem("md"));
-			var Rd = parseInt(sessionStorage.getItem("d"));
-
-			function hpdice() {
-				var dice = [2, 3, 4];
-				var roll = dice[Math.floor(Math.random() * dice.length)];
-				return roll;
-			}
-
-			function statdice() {
-				var dice = [1, 2, 3];
-				var roll = dice[Math.floor(Math.random() * dice.length)];
-				return roll;
-			}
-
-			bhp.onclick = function () {
-				Rhp += hpdice();
-				if (statsRoll > 0) {
-					sessionStorage.setItem("hp", Rhp);
-					statsRoll -= 1;
-					getstats();
-				}
-			}
-			bmp.onclick = function () {
-				Rmp += statdice();
-				if (statsRoll > 0) {
-					sessionStorage.setItem("mp", Rmp);
-					statsRoll -= 1;
-					getstats();
-				}
-			}
-			bpa.onclick = function () {
-				Rpa += statdice();
-				if (statsRoll > 0) {
-					sessionStorage.setItem("pa", Rpa);
-					statsRoll -= 1;
-					getstats();
-				}
-			}
-			bpd.onclick = function () {
-				Rpd += statdice();
-				if (statsRoll > 0) {
-					sessionStorage.setItem("pd", Rpd);
-					statsRoll -= 1;
-					getstats();
-				}
-			}
-			bma.onclick = function () {
-				Rma += statdice();
-				if (statsRoll > 0) {
-					sessionStorage.setItem("ma", Rma);
-					statsRoll -= 1;
-					getstats();
-				}
-			}
-			bmd.onclick = function () {
-				Rmd += statdice();
-				if (statsRoll > 0) {
-					sessionStorage.setItem("md", Rmd);
-					statsRoll -= 1;
-					getstats();
-				}
-			}
-			bd.onclick = function () {
-				Rd += statdice();
-				if (statsRoll > 0) {
-					sessionStorage.setItem("d", Rd);
-					statsRoll -= 1;
-					getstats();
-				}
+		bhp.onclick = function () {
+			Rhp += hpdice();
+			if (statsRoll > 0) {
+				sessionStorage.setItem("hp", Rhp);
+				statsRoll -= 1;
+				getstats();
 			}
 		}
-		///
+		bmp.onclick = function () {
+			Rmp += statdice();
+			if (statsRoll > 0) {
+				sessionStorage.setItem("mp", Rmp);
+				statsRoll -= 1;
+				getstats();
+			}
+		}
+		bpa.onclick = function () {
+			Rpa += statdice();
+			if (statsRoll > 0) {
+				sessionStorage.setItem("pa", Rpa);
+				statsRoll -= 1;
+				getstats();
+			}
+		}
+		bpd.onclick = function () {
+			Rpd += statdice();
+			if (statsRoll > 0) {
+				sessionStorage.setItem("pd", Rpd);
+				statsRoll -= 1;
+				getstats();
+			}
+		}
+		bma.onclick = function () {
+			Rma += statdice();
+			if (statsRoll > 0) {
+				sessionStorage.setItem("ma", Rma);
+				statsRoll -= 1;
+				getstats();
+			}
+		}
+		bmd.onclick = function () {
+			Rmd += statdice();
+			if (statsRoll > 0) {
+				sessionStorage.setItem("md", Rmd);
+				statsRoll -= 1;
+				getstats();
+			}
+		}
+		bd.onclick = function () {
+			Rd += statdice();
+			if (statsRoll > 0) {
+				sessionStorage.setItem("d", Rd);
+				statsRoll -= 1;
+				getstats();
+			}
+		}
+	}
+	///
+	getstats();
+
+	/*tab functions*/
+	function openProfile(evt, profileTab) {
+		var i, tabcontent, tablinks;
+		tabcontent = document.getElementsByClassName("tabcontent");
+		for (i = 0; i < tabcontent.length; i++) {
+			tabcontent[i].style.display = "none";
+		}
+		tablinks = document.getElementsByClassName("tablinks");
+		for (i = 0; i < tablinks.length; i++) {
+			tablinks[i].className = tablinks[i].className.replace(" active", "");
+		}
+		document.getElementById(profileTab).style.display = "block";
+		evt.currentTarget.className += " active";
+	}
+	/*leveling up stuff*/
+	function StatsUp() {
+		var newHp = parseInt(sessionStorage.getItem("hp")) + 2;
+		var newMp = parseInt(sessionStorage.getItem("mp")) + 2;
+		var newPa = parseInt(sessionStorage.getItem("pa")) + 1;
+		var newPd = parseInt(sessionStorage.getItem("pd")) + 1;
+		var newMa = parseInt(sessionStorage.getItem("ma")) + 1;
+		var newMd = parseInt(sessionStorage.getItem("md")) + 1;
+		var newD = parseInt(sessionStorage.getItem("d")) + 1;
+
+		sessionStorage.setItem("hp", newHp);
+		sessionStorage.setItem("mp", newMp);
+		sessionStorage.setItem("pa", newPa);
+		sessionStorage.setItem("pd", newPd);
+		sessionStorage.setItem("ma", newMa);
+		sessionStorage.setItem("md", newMd);
+		sessionStorage.setItem("d", newD);
+	}
+
+	function LvUp() {
+		var NewLevel = parseInt(sessionStorage.getItem("Level"));
+		var OldMaxExpCap = EXPLV;
+		var NewExpSet = parseInt(sessionStorage.getItem("exp"));
+		if (NewExpSet >= OldMaxExpCap) {
+			NewExpSet -= OldMaxExpCap;
+		}
+		NewLevel = NewLevel + 1;
+		statsRoll += 2;
+		sessionStorage.setItem("Level", NewLevel);
+		sessionStorage.setItem("exp", NewExpSet);
+		StatsUp();
 		getstats();
+		window.location = window.location.href;
 
-		/*tab functions*/
-		function openProfile(evt, profileTab) {
-			var i, tabcontent, tablinks;
-			tabcontent = document.getElementsByClassName("tabcontent");
-			for (i = 0; i < tabcontent.length; i++) {
-				tabcontent[i].style.display = "none";
-			}
-			tablinks = document.getElementsByClassName("tablinks");
-			for (i = 0; i < tablinks.length; i++) {
-				tablinks[i].className = tablinks[i].className.replace(" active", "");
-			}
-			document.getElementById(profileTab).style.display = "block";
-			evt.currentTarget.className += " active";
+	}
+
+
+	/*stat display */
+	function getstats() {
+		EXPLV = sessionStorage.getItem("classADV") * 10 + (sessionStorage.getItem("Level") * 15);
+		document.getElementById("class").innerHTML = sessionStorage.getItem("Class");
+		document.getElementById("lv").innerHTML = sessionStorage.getItem("Level");
+		document.getElementById("exp").innerHTML = sessionStorage.getItem("exp") + "/" + EXPLV;
+		document.getElementById("hp").innerHTML = sessionStorage.getItem("hp");
+		document.getElementById("mp").innerHTML = sessionStorage.getItem("mp");
+		document.getElementById("pa").innerHTML = sessionStorage.getItem("pa");
+		document.getElementById("pd").innerHTML = sessionStorage.getItem("pd");
+		document.getElementById("ma").innerHTML = sessionStorage.getItem("ma");
+		document.getElementById("md").innerHTML = sessionStorage.getItem("md");
+		document.getElementById("d").innerHTML = sessionStorage.getItem("d");
+		if (statsRoll != 0) {
+			document.getElementById("statsrolls").className = "show"
+			document.getElementById("dhp").className = "show"
+			document.getElementById("dmp").className = "show"
+			document.getElementById("dpa").className = "show"
+			document.getElementById("dpd").className = "show"
+			document.getElementById("dma").className = "show"
+			document.getElementById("dmd").className = "show"
+			document.getElementById("dd").className = "show"
+			document.getElementById("statsrolls").innerHTML = "Stats Rolls: " + statsRoll;
+			sessionStorage.setItem("statroll", statsRoll);
 		}
-		/*leveling up stuff*/
-		function StatsUp() {
-			var newHp = parseInt(sessionStorage.getItem("hp")) + 2;
-			var newMp = parseInt(sessionStorage.getItem("mp")) + 2;
-			var newPa = parseInt(sessionStorage.getItem("pa")) + 1;
-			var newPd = parseInt(sessionStorage.getItem("pd")) + 1;
-			var newMa = parseInt(sessionStorage.getItem("ma")) + 1;
-			var newMd = parseInt(sessionStorage.getItem("md")) + 1;
-			var newD = parseInt(sessionStorage.getItem("d")) + 1;
-
-			sessionStorage.setItem("hp", newHp);
-			sessionStorage.setItem("mp", newMp);
-			sessionStorage.setItem("pa", newPa);
-			sessionStorage.setItem("pd", newPd);
-			sessionStorage.setItem("ma", newMa);
-			sessionStorage.setItem("md", newMd);
-			sessionStorage.setItem("d", newD);
+		else if (statsRoll == 0) {
+			document.getElementById("statsrolls").className = "hidden"
+			document.getElementById("dhp").className = "hidden"
+			document.getElementById("dmp").className = "hidden"
+			document.getElementById("dpa").className = "hidden"
+			document.getElementById("dpd").className = "hidden"
+			document.getElementById("dma").className = "hidden"
+			document.getElementById("dmd").className = "hidden"
+			document.getElementById("dd").className = "hidden"
+			sessionStorage.setItem("statroll", statsRoll);
 		}
-
-		function LvUp() {
-			var NewLevel = parseInt(sessionStorage.getItem("Level"));
-			var OldMaxExpCap = EXPLV;
-			var NewExpSet = parseInt(sessionStorage.getItem("exp"));
-			if (NewExpSet >= OldMaxExpCap) {
-				NewExpSet -= OldMaxExpCap;
-			}
-			NewLevel = NewLevel + 1;
-			statsRoll += 2;
-			sessionStorage.setItem("Level", NewLevel);
-			sessionStorage.setItem("exp", NewExpSet);
-			StatsUp();
-			getstats();
-			window.location = window.location.href;
-
+		if (sessionStorage.getItem("exp") >= EXPLV && (sessionStorage.getItem("Level") != 20)) {
+			LvUp();
 		}
+	}
+	////////
 
+	var EQweapon = "Hands";
 
-		/*stat display */
-		function getstats() {
-			EXPLV = sessionStorage.getItem("classADV") * 10 + (sessionStorage.getItem("Level") * 15);
-			document.getElementById("class").innerHTML = sessionStorage.getItem("Class");
-			document.getElementById("lv").innerHTML = sessionStorage.getItem("Level");
-			document.getElementById("exp").innerHTML = sessionStorage.getItem("exp") + "/" + EXPLV;
-			document.getElementById("hp").innerHTML = sessionStorage.getItem("hp");
-			document.getElementById("mp").innerHTML = sessionStorage.getItem("mp");
-			document.getElementById("pa").innerHTML = sessionStorage.getItem("pa");
-			document.getElementById("pd").innerHTML = sessionStorage.getItem("pd");
-			document.getElementById("ma").innerHTML = sessionStorage.getItem("ma");
-			document.getElementById("md").innerHTML = sessionStorage.getItem("md");
-			document.getElementById("d").innerHTML = sessionStorage.getItem("d");
-			if (statsRoll != 0) {
-				document.getElementById("statsrolls").className = "show"
-				document.getElementById("dhp").className = "show"
-				document.getElementById("dmp").className = "show"
-				document.getElementById("dpa").className = "show"
-				document.getElementById("dpd").className = "show"
-				document.getElementById("dma").className = "show"
-				document.getElementById("dmd").className = "show"
-				document.getElementById("dd").className = "show"
-				document.getElementById("statsrolls").innerHTML = "Stats Rolls: " + statsRoll;
-				sessionStorage.setItem("statroll", statsRoll);
-			}
-			else if (statsRoll == 0) {
-				document.getElementById("statsrolls").className = "hidden"
-				document.getElementById("dhp").className = "hidden"
-				document.getElementById("dmp").className = "hidden"
-				document.getElementById("dpa").className = "hidden"
-				document.getElementById("dpd").className = "hidden"
-				document.getElementById("dma").className = "hidden"
-				document.getElementById("dmd").className = "hidden"
-				document.getElementById("dd").className = "hidden"
-				sessionStorage.setItem("statroll", statsRoll);
-			}
-			if (sessionStorage.getItem("exp") >= EXPLV && (sessionStorage.getItem("Level") != 20)) {
-				LvUp();
-			}
+	function loadEquipments() {
+		if (sessionStorage.getItem("Weapon") == null || sessionStorage.getItem("Weapon") == "") {
+			sessionStorage.setItem("Weapon", EQweapon);
 		}
-		////////
-
-		var EQweapon = "Hands";
-
-		function loadEquipments(){
-			if(sessionStorage.getItem("Weapon") == null || sessionStorage.getItem("Weapon") == ""){
-				sessionStorage.setItem("Weapon",EQweapon);
-			}
-			else{
-				EQweapon = (sessionStorage.getItem("Weapon"));
-			}
-			document.getElementById("weapon").innerHTML = EQweapon;
+		else {
+			EQweapon = (sessionStorage.getItem("Weapon"));
 		}
+		document.getElementById("weapon").innerHTML = EQweapon;
+	}
 
-		loadEquipments();
+	loadEquipments();
 
 
 
 
 
-		///
-		/*dev Corner*/
-		var expbt = document.getElementById("free exp");
+	///
+	/*dev Corner*/
+	var expbt = document.getElementById("free exp");
 
-		expbt.onclick = function () {
-			var currentExp = parseInt(sessionStorage.getItem("exp"));
-			var gainExp = currentExp + EXPLV;
-			sessionStorage.setItem("exp", gainExp);
-			getstats();
-		}
+	expbt.onclick = function () {
+		var currentExp = parseInt(sessionStorage.getItem("exp"));
+		var gainExp = currentExp + EXPLV;
+		sessionStorage.setItem("exp", gainExp);
+		getstats();
+	}
 		/**/
 
 
-	</script>
+</script>
 
 
-</body>
 
 </html>

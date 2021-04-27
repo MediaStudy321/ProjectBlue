@@ -5,6 +5,10 @@ const statSchema = new mongoose.Schema({
     max_hp: {
         type: Number,
         default: 1
+    },
+    max_mp: {
+        type: Number,
+        default: 1
     }
 });
 
@@ -28,10 +32,10 @@ const partySchema = new mongoose.Schema({
     }
 })
 
-const Character = mongoose.model(characterSchema);
 
-const Party = mongoose.model(partySchema);
+const Character = mongoose.model('Character',characterSchema);
 
+const Party = mongoose.model('Party',partySchema);
 
 
 // const monsterSchema = new mongoose.Schema({
