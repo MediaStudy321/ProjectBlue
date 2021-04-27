@@ -1,10 +1,18 @@
 const mongoose = require('mongoose');
 
 const profileSchema = new mongoose.Schema({
-    UserName:{
+    username:{
         type: String,
-        require: true,
+        required: true,
         unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    isModerator: {
+        type: Boolean,
+        default: false
     }
 });
 

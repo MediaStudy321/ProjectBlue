@@ -73,3 +73,49 @@ app.use((req,res,next)=>{
 
 const chatserver = require('./chatserver');
 chatserver.launch(server);
+
+//Login
+const authenticated = function(req, res, next) {
+    if(req.session.authenticated) {
+        next();
+    }
+    else{
+        res.send("Acess Denied");
+    }
+}
+
+app.post('/register', async (req, res)=> {
+    console.log("Hello there");
+    res.redirect('/login.html');
+});
+
+app.post('/login', (req, res)=> {
+    console.log("logging in");
+    UserProfile.findOne({username: req.body.username}, async (error, result)=> {
+        if(error) {
+            console.log(error);
+            res.send("!");
+        }
+        else if(!result) {
+            res.send("User not found");
+        }
+        else {
+            try {
+                let match = await bcrypt.compare(req.body.password, result.password);
+                if(match){
+                    req.session.username = result.username;
+                    req.session.authenticated = true;
+                    req.session.isModerator = result.isModerator;
+                    res.redirect('/game.html');
+                }
+                else {
+                    res.send('Incorrect Password');
+                }
+            }
+            catch(e) {
+                console.log(e);
+                res.send('Error');
+            }
+        }
+    });
+});

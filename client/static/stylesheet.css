@@ -7,3 +7,10 @@ body {
     background-color: purple;
 }
 
+#mainpanel {
+    position: absolute;
+    top: 20%;
+    right: 20%;
+    left: 20%;
+}
+
