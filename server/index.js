@@ -4,9 +4,10 @@ const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const {UserProfile} = require("./model.js");
+const bcrypt = require ('bcrypt');
 
 const dotenv = require('dotenv').config();
-const dburl = process.env.DB_URL;
+const dburl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/ProjectBlue';
 const sessionSecret = process.env.SECRET || 'dice';
 const port = process.env.PORT || 2000;
 
@@ -20,7 +21,7 @@ const staticPath = path.join(clientPath, '/static/');
 
 const app = express();
 const server = http.createServer(app);
-//mongoose.connect(dburl, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(dburl, {useNewUrlParser: true, useUnifiedTopology: true});
 server.listen(port);
 
 
@@ -85,8 +86,19 @@ const authenticated = function(req, res, next) {
 }
 
 app.post('/register', async (req, res)=> {
-    console.log("Hello there");
-    res.redirect('/login.html');
+    console.log(req.body);
+    try {
+        let rawpass = req.body.password;
+        var hashedpass = await bcrypt.has(rawpass, 10);
+        var user = new  UserProfile(req.body);
+        user.password = hashedpass;
+        await user.save();
+        res.redirect('/login.html');
+    }
+    catch(e) {
+        console.log(e);
+        res.send("Unable to register");
+    }
 });
 
 app.post('/login', (req, res)=> {

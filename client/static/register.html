@@ -35,7 +35,7 @@
                 $('input').on('keyup', ()=> {
                     if($('#password').val()==$('#confirmpassword').val() && $('#username').val()!="" && $('#password')!="") {
                         console.log($('#username').val());
-                        $('register').prop('enabled', fasle);
+                        $('#register').prop('disabled', false);
                     }
                     else {
                         $('#register').prop('disabled', true);
