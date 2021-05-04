@@ -5,19 +5,20 @@
 </head>
 
 <style>
-    .hidden{
+    .hidden {
         display: none;
     }
-    .show{
+
+    .show {
         display: inline;
     }
 </style>
 
 <body>
     <p>Name: <a id="name"></a></p>
-    <input id="UserName" name="UserName" type="text" value =""><button id="setname">Set Name</button><br/>
+    <input id="UserName" name="name" type="text" value=""><button id="setname">Set Name</button><br />
     <p id="class">Class: </p>
-    <p>Health: <a id="hp">0</a> <button id="dhp">Roll For Stats</button></p>
+    <p>Health: <a id="hp" name="max_hp">0</a> <button id="dhp">Roll For Stats</button></p>
     <p>Mana: <a id="mp">0</a> <button id="dmp">Roll For Stats</button></p>
     <p>Phy.Attack: <a id="pa">0</a> <button id="dpa">Roll For Stats</button></p>
     <p>Phy.Defense: <a id="pd">0</a> <button id="dpd">Roll For Stats</button></p>
@@ -27,10 +28,8 @@
 
 
 
-
-    <button id="mission" type="submit" class = "hidden"><a href="mission.html">Finish Roll</a></button>
+    <button id="mission" type="submit" class="hidden"><a href="mission.html">Finish Roll</a></button>
 </body>
-
 <script>
     var next = document.getElementById("mission");
     var Charclass = sessionStorage.getItem("Class");
@@ -119,107 +118,190 @@
     }
 
     bhp.onclick = function () {
-        Rhp += hpdice();
-        if (Hp > 0) {
-            document.getElementById("hp").innerHTML = Rhp;
+        var rolls = " - [Rolls: ";
+        var hproll = 0;
+        if (Rhp > 0) {
+            rolls = rolls + Rhp + " + ";
+        }
+        while (Hp > 0) {
+            hproll = hpdice();
+            Rhp += hproll;
+            if (Hp > 1) {
+                rolls = rolls + hproll + " + ";
+            }
+            else {
+                rolls = rolls + hproll + " ]";
+            }
             Hp -= 1;
         }
         if (Hp == 0) {
+            document.getElementById("hp").innerHTML = Rhp + rolls;
             document.getElementById("dhp").style.display = "none";
             sessionStorage.setItem("hp", Rhp);
             toggleButton();
         }
     }
     bmp.onclick = function () {
-        Rmp += statdice();
-        if (Mp > 0) {
-            document.getElementById("mp").innerHTML = Rmp;
+        var rolls = " - [Rolls: ";
+        var mproll = 0;
+        if (Rmp > 0) {
+            rolls = rolls + Rmp + " + ";
+        }
+        while (Mp > 0) {
+            mproll = statdice();
+            Rmp += mproll;
+            if (Mp > 1) {
+                rolls = rolls + mproll + " + ";
+            }
+            else {
+                rolls = rolls + mproll + " ]";
+            }
             Mp -= 1;
         }
         if (Mp == 0) {
+            document.getElementById("mp").innerHTML = Rmp + rolls;
             document.getElementById("dmp").style.display = "none";
             sessionStorage.setItem("mp", Rmp);
             toggleButton();
         }
     }
     bpa.onclick = function () {
-        Rpa += statdice();
-        if (PhyAtk > 0) {
-            document.getElementById("pa").innerHTML = Rpa;
+        var rolls = " - [Rolls: ";
+        var paroll = 0;
+        if (Rpa > 0) {
+            rolls = rolls + Rpa + " + ";
+        }
+        while (PhyAtk > 0) {
+            paroll = statdice();
+            Rpa += paroll;
+            if (PhyAtk > 1) {
+                rolls = rolls + paroll + " + ";
+            }
+            else {
+                rolls = rolls + paroll + " ]";
+            }
             PhyAtk -= 1;
         }
         if (PhyAtk == 0) {
+            document.getElementById("pa").innerHTML = Rpa + rolls;
             document.getElementById("dpa").style.display = "none";
             sessionStorage.setItem("pa", Rpa);
             toggleButton();
         }
     }
     bpd.onclick = function () {
-        Rpd += statdice();
-        if (PhyDef > 0) {
-            document.getElementById("pd").innerHTML = Rpd;
+        var rolls = " - [Rolls: ";
+        var pdroll = 0;
+        if (Rpd > 0) {
+            rolls = rolls + Rpd + " + ";
+        }
+        while (PhyDef > 0) {
+            pdroll = statdice();
+            Rpd += pdroll;
+            if (PhyDef > 1) {
+                rolls = rolls + pdroll + " + ";
+            }
+            else {
+                rolls = rolls + pdroll + " ]";
+            }
             PhyDef -= 1;
         }
         if (PhyDef == 0) {
+            document.getElementById("pd").innerHTML = Rpd + rolls;
             document.getElementById("dpd").style.display = "none";
             sessionStorage.setItem("pd", Rpd);
             toggleButton();
         }
     }
     bma.onclick = function () {
-        Rma += statdice();
-        if (MagAtk > 0) {
-            document.getElementById("ma").innerHTML = Rma;
+        var rolls = " - [Rolls: ";
+        var maroll = 0;
+        if (Rma > 0) {
+            rolls = rolls + Rma + " + ";
+        }
+        while (MagAtk > 0) {
+            maroll = statdice();
+            Rma += maroll;
+            if (MagAtk > 1) {
+                rolls = rolls + maroll + " + ";
+            }
+            else {
+                rolls = rolls + maroll + " ]";
+            }
             MagAtk -= 1;
         }
         if (MagAtk == 0) {
+            document.getElementById("ma").innerHTML = Rma + rolls;
             document.getElementById("dma").style.display = "none";
             sessionStorage.setItem("ma", Rma);
             toggleButton();
         }
     }
     bmd.onclick = function () {
-        Rmd += statdice();
-        if (MagDef > 0) {
-            document.getElementById("md").innerHTML = Rmd;
+        var rolls = " - [Rolls: ";
+        var mdroll = 0;
+        if (Rmd > 0) {
+            rolls = rolls + Rmd + " + ";
+        }
+        while (MagDef > 0) {
+            mdroll = statdice();
+            Rmd += mdroll;
+            if (MagDef > 1) {
+                rolls = rolls + mdroll + " + ";
+            }
+            else {
+                rolls = rolls + mdroll + " ]";
+            }
             MagDef -= 1;
         }
         if (MagDef == 0) {
+            document.getElementById("md").innerHTML = Rmd + rolls;
             document.getElementById("dmd").style.display = "none";
             sessionStorage.setItem("md", Rmd);
             toggleButton();
         }
     }
     bd.onclick = function () {
-        Rd += statdice();
-        if (Dex > 0) {
-            document.getElementById("d").innerHTML = Rd;
+        var rolls = " - [Rolls: ";
+        var droll = 0;
+        if (Rd > 0) {
+            rolls = rolls + Rd + " + ";
+        }
+        while (Dex > 0) {
+            droll = statdice();
+            Rd += droll;
+            if (Dex > 1) {
+                rolls = rolls + droll + " + ";
+            }
+            else {
+                rolls = rolls + droll + " ]";
+            }
             Dex -= 1;
         }
         if (Dex == 0) {
+            document.getElementById("d").innerHTML = Rd + rolls;
             document.getElementById("dd").style.display = "none";
             sessionStorage.setItem("d", Rd);
             toggleButton();
         }
     }
-    setname.onclick = function (){
+    setname.onclick = function () {
         UName = document.getElementById("UserName").value;
-        if(UName != ""){
+        if (UName != "") {
             document.getElementById("name").innerHTML = UName;
-            sessionStorage.setItem("UserName",UName);
+            sessionStorage.setItem("UserName", UName);
             toggleButton();
         }
-        else{
+        else {
             alert("Invalid Name");
         }
     }
-    function toggleButton(){
-        
-        if(UName != "" && Hp == 0 && Mp == 0 && PhyAtk == 0 && PhyDef == 0 && MagAtk == 0 && MagDef == 0 && Dex == 0){
+    function toggleButton() {
+
+        if (UName != "" && Hp == 0 && Mp == 0 && PhyAtk == 0 && PhyDef == 0 && MagAtk == 0 && MagDef == 0 && Dex == 0) {
             document.getElementById("mission").className = 'show';
         }
     }
-
 </script>
 
 </html>

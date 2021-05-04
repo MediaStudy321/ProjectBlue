@@ -14,11 +14,25 @@
             left:40%;
             top:11%;
         }
+        .show {
+            display: inline;
+        }
+
+        .showABL:hover+.hidden {
+            display: block;
+        }
+        #boxloce1 {
+            background-color: white;
+            position: absolute;
+            border: 1px solid black;
+            top: 11%;
+            right: 21%;
+        }
     </style>
 
     <body>
-        <div class="shift">
-        <button class="button">         
+        <div class="shift showABL">
+        <button id="MOB" class="button">         
             ████░░░░░░░░░░████      <br/> 
           ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██    <br/>
         ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██  <br/>
@@ -32,37 +46,39 @@
           ██████████████████████ </button>
 
           </div>
-
-        <p class="hidden">Name: <a id ="Mob Name">Slime A</a></p>
-        <p class="hidden">Level: <a id="lv">1</a> </p>
-        <p class="hidden">Health: <a id="hp">6</a> </p>
-        <p class="hidden">Mana: <a id="mp">2</a> </p>
-        <p class="hidden">Phy.Attack: <a id="pa">3</a> </p>
-        <p class="hidden">Phy.Defense: <a id="pd">5</a> </p>
-        <p class="hidden">Mag.Attack: <a id="ma">1</a> </p>
-        <p class="hidden">Mag.Defense: <a id="md">1</a> </p>
-        <p class="hidden">Dexterity: <a id="d">1</a> </p>
+        
+        <div id="boxloce1" class = "hidden">
+            <p>Name: <a id ="Mob Name">Slime A</a></p>
+            <p>Level: <a id="mlv">1</a> </p>
+            <p>Health: <a id="mhp">6</a> </p>
+            <p>Mana: <a id="mmp">2</a> </p>
+            <p>Phy.Attack: <a id="mpa">0</a> </p>
+            <p>Phy.Defense: <a id="mpd">0</a> </p>
+            <p>Mag.Attack: <a id="mma">1</a> </p>
+            <p>Mag.Defense: <a id="mmd">1</a> </p>
+            <p>Dexterity: <a id="md">1</a> </p>
+        </div>
 
         <script>
             var MobName = document.getElementById("Mob Name").innerHTML;
-            var Level = document.getElementById("lv").innerHTML;
-            var Hp = document.getElementById("hp").innerHTML;
-            var Mp = document.getElementById("mp").innerHTML;
-            var PhyAtk = document.getElementById("pa").innerHTML;
-            var PhyDef = document.getElementById("pd").innerHTML;
-            var MagAtk = document.getElementById("ma").innerHTML;
-            var MagDef = document.getElementById("md").innerHTML;
-            var Dex = document.getElementById("d").innerHTML;
+            var MobLevel = document.getElementById("mlv").innerHTML;
+            var MobHP = document.getElementById("mhp").innerHTML;
+            var MobMP = document.getElementById("mmp").innerHTML;
+            var MobPATK = document.getElementById("mpa").innerHTML;
+            var MobPDEF = document.getElementById("mpd").innerHTML;
+            var MobMATK = document.getElementById("mma").innerHTML;
+            var MobMDEF = document.getElementById("mmd").innerHTML;
+            var MobDEX = document.getElementById("md").innerHTML;
+            sessionStorage.setItem("mob name",MobName);
+            sessionStorage.setItem("mob level",MobLevel);
+            sessionStorage.setItem("mob hp",MobHP);
+            sessionStorage.setItem("mob mp",MobMP);
+            sessionStorage.setItem("mob patk",MobPATK);
+            sessionStorage.setItem("mob pdef",MobPDEF);
+            sessionStorage.setItem("mob matk",MobMATK);
+            sessionStorage.setItem("mob mdef",MobMDEF);
+            sessionStorage.setItem("mob dex",MobDEX);
 
-            sessionStorage.setItem("Mob name",MobName);
-            sessionStorage.setItem("Mob level",Level);
-            sessionStorage.setItem("Mob hp",Hp);
-            sessionStorage.setItem("Mob mp",Mp);
-            sessionStorage.setItem("Mob patk",PhyAtk);
-            sessionStorage.setItem("Mob pdef",PhyDef);
-            sessionStorage.setItem("Mob matk",MagAtk);
-            sessionStorage.setItem("Mob mdef",MagDef);
-            sessionStorage.setItem("Mob d",Dex);
 
         </script>
     </body>
