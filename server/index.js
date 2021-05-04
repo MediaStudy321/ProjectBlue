@@ -126,7 +126,13 @@ app.post('/login', (req, res)=> {
                     req.session.username = result.username;
                     req.session.authenticated = true;
                     req.session.isModerator = result.isModerator;
-                    res.redirect('/game.html');
+                    if(!req.body.character) {
+                        res.redirect('/mission.html');
+
+                    }
+                    else {
+                        res.redirect('/game.html');
+                    }
                 }
                 else {
                     res.send('Incorrect Password');
@@ -139,5 +145,3 @@ app.post('/login', (req, res)=> {
         }
     });
 });
-
-//Once again a typo ruins everything

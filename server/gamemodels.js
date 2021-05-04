@@ -11,6 +11,10 @@ const profileSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    character: {
+        type: Boolean,
+        default: false
+    },
     isModerator: {
         type: Boolean,
         default: false
