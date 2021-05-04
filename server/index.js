@@ -4,7 +4,8 @@ const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const {UserProfile} = require("./model.js");
-const bcrypt = require ('bcrypt');
+const bcrypt = require('bcrypt');
+//const bodyparser = require('body-parser');
 
 const dotenv = require('dotenv').config();
 const dburl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/ProjectBlue';
@@ -23,7 +24,7 @@ const app = express();
 const server = http.createServer(app);
 mongoose.connect(dburl, {useNewUrlParser: true, useUnifiedTopology: true});
 server.listen(port);
-
+app.use(express.urlencoded({extended:true}));
 
 // Site-wide middleware
 
@@ -40,7 +41,7 @@ app.use(session({
     name: 'dicecapades'
 }));
 
-
+//app.use(bodyParser);
 
 
 app.set('view engine', 'ejs');
@@ -89,8 +90,8 @@ app.post('/register', async (req, res)=> {
     console.log(req.body);
     try {
         let rawpass = req.body.password;
-        var hashedpass = await bcrypt.has(rawpass, 10);
-        var user = new  UserProfile(req.body);
+        var hashedpass = await bcrypt.hash(rawpass, 10);
+        var user = new UserProfile(req.body);
         user.password = hashedpass;
         await user.save();
         res.redirect('/login.html');
