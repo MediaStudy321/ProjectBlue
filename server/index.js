@@ -94,10 +94,8 @@ const authenticated = function(req, res, next) {
 }
 
 app.post('/register', async (req, res)=> {
-    console.log(req.body);
     try {
-        let rawpass = req.body.password;
-        var hashedpass = await bcrypt.hash(rawpass, 10);
+        var hashedpass = await bcrypt.hash(req.body.password, 10);
         var user = new UserProfile(req.body);
         user.password = hashedpass;
         await user.save();
