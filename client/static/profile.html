@@ -122,8 +122,10 @@
 	</div>
 
 </body>
+<script src="battle/gamestats.js"></script>
 <script>
-	document.getElementById("charname").innerHTML = sessionStorage.getItem("UserName");
+	//document.getElementById("charname").innerHTML = sessionStorage.getItem("UserName");
+	document.getElementById("charname").innerHTML = player.name;
 	var EXPLV = 0;
 	var statsRoll = parseInt(sessionStorage.getItem("statroll"));
 

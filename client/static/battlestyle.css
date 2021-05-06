@@ -1,27 +1,37 @@
-#banner {
+#turnbar {
+    background-color: grey;
+    text-align: center;
+    width: 100%;
+    font-size: 2em;
+}
+#turnbar > tr {
+    background-color: white;
+}
+#banner{
+    text-align: center;
+}
+#monsters{
+    font-size: 10em;
     text-align: center
 }
-
+#monsterstats {
+    text-align: center;
+}
+#controls {
+    text-align: center;
+}
 #heroStats {
     background-color: grey;
     width: 100%;
     font-size: 2em;
+    position: relative;
+    bottom: 0%;
 }
 
 #heroStats > tr {
     background-color: white;
 }
-
-#monsters {
-    font-size: 10em;
-    text-align: center
-}
-
 #heroIcons {
     font-size: 10em;
     text-align: center
-}
-
-#controls {
-    text-align: center;
 }
