@@ -1,6 +1,26 @@
 const mongoose = require('mongoose');
 const ObjectID = require('mongodb').ObjectID;
 
+const profileSchema = new mongoose.Schema({
+    username:{
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    character: {
+        type: Boolean,
+        default: false
+    },
+    isModerator: {
+        type: Boolean,
+        default: false
+    }
+});
+
 const statSchema = new mongoose.Schema({
     max_hp: {
         type: Number,
@@ -32,6 +52,7 @@ const partySchema = new mongoose.Schema({
     }
 })
 
+const UserProfile = mongoose.model("UserProfile", profileSchema, "userprofile");
 
 const Character = mongoose.model('Character',characterSchema);
 
@@ -50,4 +71,4 @@ const Party = mongoose.model('Party',partySchema);
 // });
 
 
-module.exports = {Character, Party}
+module.exports = {UserProfile, Character, Party}
