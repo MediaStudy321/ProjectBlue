@@ -1,0 +1,53 @@
+This file is a documentation of every file in the project
+
+ProjectBlue/Server
+    
+    -chatserver.js
+        Designed to run the chat feature in game
+
+    -gameconstants.js
+        Has default stat values for players and enemies
+
+    -gamemodels.js
+        Holds mongoose schemas for player profiles, stats, character information, and party information
+
+    -gameserver.js
+        File that contatins socket.io implementation for battle
+
+    -index.js
+        The main file the server runs off of. Code to launch the server in is this file. 
+        There is routing for the chat server and login/registeration system.
+
+    -router.js
+        Has routes to get players and enemies 
+
+ProjectBlue/client/static
+    
+    -about.html
+        Page that contians information about the game
+
+    -actionbox.html
+        Contains battle mechanics
+
+    -battle.html
+        Contains battle mechanics
+    
+    -battle2.html
+        ???
+    
+    -battlestyle.css
+        Stylesheet for battle menu
+
+    -cave.html
+        Page for the caves area
+
+    -charactersheet.html
+        ???
+
+    -CharacterCreation.html
+        Page where you create your character
+
+    -forest.html
+        Page for the forest area
+
+    -game.html
