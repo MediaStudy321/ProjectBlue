@@ -47,8 +47,6 @@ app.use(session({
 //app.use(bodyParser);
 app.listen(5000);
 
-
-
 app.set('view engine', 'ejs');
 app.set('views', path.join(clientPath, '/views/'));
 

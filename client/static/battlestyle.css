@@ -14,14 +14,42 @@
     font-size: 10em;
     text-align: center
 }
-#monsterstats {
+#monsterStats {
+    background-color: black;
+    width: auto;
+    font-size: 1em;
+    text-align: center;
+    position: relative;
+    margin-left:auto;
+    margin-right:auto;
+
+}
+#monsterStats > tr{
+    background-color: white;
+    text-align: center
+}
+#monsterStats > td{
+    background-color: white;
     text-align: center;
 }
 #controls {
     text-align: center;
+    background-color: black;
+    width: 100%;
+    font-size: 1em;
+    text-align: center;
+
+}
+#controls > tr {
+    background-color: white;
+    width:30%;
+}
+#controls > td {
+    background-color: white;
+    width:70%;
 }
 #heroStats {
-    background-color: grey;
+    background-color: black;
     width: 100%;
     font-size: 2em;
     position: relative;
@@ -30,8 +58,22 @@
 
 #heroStats > tr {
     background-color: white;
+    text-align: left;
+}
+
+#heroStats > th {
+    background-color: white;
+    text-align: left;
+    padding: 15%;
+}
+
+
+#heroStats > td {
+    background-color: white;
 }
 #heroIcons {
     font-size: 10em;
     text-align: center
 }
+
+.pointer {cursor: pointer;}

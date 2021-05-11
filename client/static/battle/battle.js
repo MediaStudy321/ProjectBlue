@@ -22,13 +22,19 @@ $(async () => {
         return move;
     }
 
+    function monsterselect() {
+        var dice = [1, 2, 3];
+        var roll = dice[Math.floor(Math.random() * dice.length)];
+        return roll;
+    }
+
     function atkdice() {
         var dice = [1, 2, 3, 4, 5, 6];
         var roll = dice[Math.floor(Math.random() * dice.length)];
         return roll;
     }
     function defdice() {
-        var dice = [8,9,10,11,12];
+        var dice = [8, 9, 10, 11, 12];
         var roll = dice[Math.floor(Math.random() * dice.length)];
         return roll;
     }
@@ -49,6 +55,8 @@ $(async () => {
 
             element.hp = element.max_hp;
             element.mp = element.max_mp;
+
+            loadstatusELM(element)
 
             loadweapon(element);
             element.move = intdice(player.dex);
@@ -76,9 +84,33 @@ $(async () => {
         function selectmonster() {
             return monsters[Math.floor(Math.random() * monsters.length)];
         }
+        var total = monsterselect();
 
-        monster.push(selectmonster());
-        monster.push(selectmonster());
+        function repeatcheck(mon) {
+            for (a = 0; a < monster.length; a++) {
+                if (monster[a] == mon) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        function loadmonsterintoarray() {
+            for (a = 0; a < total; a++) {
+                var newmon = selectmonster();
+                if (monster.length == 0) {
+                    monster.push(newmon);
+                }
+                else {
+                    var checks = repeatcheck(newmon);
+                    while (checks == true) {
+                        newmon = selectmonster();
+                        checks = repeatcheck(newmon);
+                    }
+                    monster.push(newmon);
+                }
+            }
+        }
+        loadmonsterintoarray();
 
         monster.forEach(element => {
             element.faction = 'monster';
@@ -87,6 +119,8 @@ $(async () => {
             element.hp = element.max_hp;
             element.mp = element.max_mp;
 
+            loadstatusELM(element);
+
             element.move = intdice(element.dex);
 
             loadweapon(element);
@@ -94,6 +128,20 @@ $(async () => {
             console.log(element.name + " has rolled: " + element.move);
         })
 
+    }
+
+    function loadstatusELM(element) {
+        if (element.status == null) {
+            element.status = "";
+            element.statusturn = "";
+        }
+    }
+
+    function applystatus(element, status) {
+        if (element.status == "") {
+            element.status = "[ " + status.name + ": ";
+            element.statusturn = status.turn + " ]";
+        }
     }
 
 
@@ -130,9 +178,9 @@ $(async () => {
 
         turns = sorting(actors);
         console.log("turns: ")
-        console.log(turns[0])
-        console.log(turns[1])
-        console.log(turns[2])
+        for(a = 0; a < turns.length; a++){
+            console.log(turns[a]);
+        }
         console.log("turns//")
 
     }
@@ -182,6 +230,8 @@ $(async () => {
 
         turns.push(first);
 
+        console.log(turns[0].name + " turn to move")
+
 
     }
 
@@ -211,9 +261,6 @@ $(async () => {
                     currentActors.push(reference);
                 }
             }
-            else {
-                nextturn();
-            }
         }
 
 
@@ -224,23 +271,23 @@ $(async () => {
 
     function runAction() {
         console.log("run action")
+        console.log(currentActors.length)
         if (currentActors.length > 0) {
             let currentReference = currentActors[currentActors.length - 1];
             var current;
             if (currentReference[0] == 'party') current = party[currentReference[1]];
             else current = monster[currentReference[1]];
+            console.log(current.stance);
             switch (current.stance) {
                 case 'ready':
                     $('#banner').html(current.name + ' is ready!');
                     if (current.faction == "party") displayControls(current);
                     current.stance = 'active';
                     drawField();
-                    nextturn();
                     break;
                 case 'active':
                     console.log(current.name)
                     if (current.faction == "monster") {
-                        console.log("monster turn")
                         current.type = "physical"
                         doAttack(current, randomHero());
                     }
@@ -250,11 +297,10 @@ $(async () => {
                     current.stance = 'waiting';
                     currentActors.pop();
                     drawField();
-                    console.log("next turn");
                     nextturn();
-                    console.log("turn shift");
                     break;
                 case 'fainted':
+                    console.log(current.name + " fainted")
                     currentActors.pop();
                     drawField();
                     break;
@@ -294,10 +340,11 @@ $(async () => {
         }
     }
 
+
     function drawField() {
         displayHeroes();
         displayEnemies();
-        displayturnbar()
+        displayturnbar();
 
     }
 
@@ -305,7 +352,7 @@ $(async () => {
         $('#turnbar').html('');
         var position = "<tr><th>Turns";
         turns.forEach(element => {
-            position += "<th>" + element.name + "</th>"
+                position += "<th>" + element.name + "</th>"
         });
         position += "</tr>"
         $('#turnbar').append(position);
@@ -314,32 +361,41 @@ $(async () => {
     function heroStats() {
         $('#heroStats').html('');
         party.forEach(element => {
-            let stats = "<tr><th>" + element.name + "</th><td>" +
-                "[HP: " + element.hp + "/" + element.max_hp + "] [" +
-                "MP: " + element.mp + "/" + element.max_mp + "]</td><td>" +
-                element.stance + "</td></tr>"
+            let stats = "<tr><th>" + element.name + "</th><td style='width:70%'>" + element.status + " "
+                + element.statusturn + "</td><td>" + element.stance + "</td></tr>" +
+                "<tr><td>HP: [ " + element.hp + " / " + element.max_hp + " ] </br> " +
+                "MP: [ " + element.mp + " / " + element.max_mp + " ]</td><tr>"
             $('#heroStats').append(stats);
         });
+        monstats();
     }
 
-    function monsterStats(){
+    function monstats() {
         $('#monsterStats').html('');
-        console.log("stats")
+        var stat = "<tr>";
         monster.forEach(element => {
-            let stats = element.name + "\n" +
-                "[HP: " + element.hp + "/" + element.max_hp + "] \n [" +
-                "MP: " + element.mp + "/" + element.max_mp + "]"
-            $('#monsterStats').append(stats);
+            stat += "<td><table><tr><th>" + element.name + "</th></tr>" +
+                "<tr><td>HP: [ " + element.hp + " / " + element.max_hp + " ]" +
+                "</br>" +
+                "MP: [ " + element.mp + " / " + element.max_mp + " ]" + "</td></tr>" +
+                "<tr><td>" + element.stance + "</td></tr></table></td>"
         });
-    }
+        stat += "</tr>"
+        $('#monsterStats').append(stat);
 
+    }
 
 
     function doAttack(attacker, defender) {
-        var dmgnum = damage(defender, attacker,dmgnum)
+        var dmgnum = damage(defender, attacker, dmgnum)
         if (defender.hp <= 0) {
             $('#banner').html(attacker.name + ' slays ' + defender.name + '!');
             defender.stance = 'fainted';
+            for(a = 0; a < turns.length; a++){
+                if(turns[a] == defender){
+                    turns.splice(a,1);
+                }
+            }
         }
         else $('#banner').html(attacker.name + ' attacks ' + defender.name + ' for ' + dmgnum + ' damage.');
         attacker.stance = 'finished';
@@ -349,42 +405,46 @@ $(async () => {
         var roll = atkdice();
         var dmg = 0;
         var crit = attacker.weapon.crit_chance[Math.floor(Math.random() * attacker.weapon.crit_chance.length)]
-        console.log("crit: " + crit + " roll: "+roll);
+        console.log("crit: " + crit + " roll: " + roll);
         if (attacker.type == "physical") {
             console.log("physical dmg")
-                dmg = attacker.phy_atk
-                if(crit == 1){
-                    dmg = Math.floor(dmg * 1.5);
-                }
+            dmg = attacker.phy_atk
+            if (crit == 1) {
+                dmg = Math.floor(dmg * 1.5);
+            }
         }
         else if (attacker.type == "magical") {
-            dmg = ((attacker.mag_atk * Math.floor(roll/2))/Math.floor(defender.mag_def * defdice()/10)) - defender.mag_def + + attacker.weapon.mag_dmg;
-                if(crit == 1){
-                    dmg = Math.floor(dmg * 1.5);
-                }
+            dmg = ((attacker.mag_atk * Math.floor(roll / 2)) / Math.floor(defender.mag_def * defdice() / 10)) - defender.mag_def + + attacker.weapon.mag_dmg;
+            if (crit == 1) {
+                dmg = Math.floor(dmg * 1.5);
+            }
         }
-        if(dmg < 1){
+        if (dmg < 1) {
             dmg = 1;
         }
-        console.log(dmg);
+        console.log("damage: " + dmg);
         defender.hp -= dmg;
-        console.log(defender.hp)
+        console.log("hp: " + defender.hp)
+        if (defender.hp < 0) {
+            defender.hp = 0;
+        }
         return dmg;
     }
 
     function displayControls(hero) {
-        $('#banner').html(hero.name+' is up!');
-        $('#controls').html('');  
-        
+        $('#banner').html(hero.name + ' is up!');
+        $('#controls').html('');
 
-        $('#controls').append("<button id='attackbutton'>Attack</button>");
+        var wepname = hero.weapon.attackname;
+
+        $('#controls').append("<tr><button id='attackbutton' class='pointer'>" + wepname + "</button></tr>");
         hero.type = "physical"
-        $('#attackbutton').on('click', ()=>{
-            for(let i=0; i<monster.length; i++) {
-                $('#monster_'+i).on('click', (click)=>{
+        $('#attackbutton').on('click', () => {
+            for (let i = 0; i < monster.length; i++) {
+                $('#monster_' + i).on('click', (click) => {
                     doAttack(hero, monster[i]);
                     hero.stance = 'finished';
-                   
+
                     displayEnemies();
                     $('#controls').html('');
                 });
@@ -399,16 +459,10 @@ $(async () => {
         return party[choice];
     }
 
-
-
-
-
-
     await load();
     $('#banner').html('You have been attacked by ' + monster.length + ' beasties!');
     drawField();
     heroStats();
-    //monsterStats();
     var battle = setInterval(frame, framedelay)
 
 })

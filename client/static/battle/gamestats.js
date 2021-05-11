@@ -18,6 +18,7 @@ var player = {
 var mobs = {
     Goblin: {
         name: 'Goblin',
+        id: 1,
         level: 1,
         max_hp: 12,
         max_mp: 3,
@@ -32,6 +33,7 @@ var mobs = {
     },
     Slime: {
         name: 'Slime',
+        id: 1,
         level: 1,
         max_hp: 10,
         max_mp: 0,
@@ -46,6 +48,7 @@ var mobs = {
     },
     Bug: {
         name: 'Bug',
+        id: 1,
         level: 1,
         max_hp: 7,
         max_mp: 3,
@@ -54,6 +57,21 @@ var mobs = {
         mag_atk: 1,
         mag_def: 2,
         dex: 2,
+        weaponname: 'Hands',
+        icon: '&#9752;',
+        color: '#DDFFDD'
+    },
+    Ent:{
+        name: 'Ent',
+        id: 1,
+        level: 1,
+        max_hp: 17,
+        max_mp: 8,
+        phy_atk: 5,
+        phy_def: 8,
+        mag_atk: 7,
+        mag_def: 4,
+        dex: 1,
         weaponname: 'Hands',
         icon: '&#9752;',
         color: '#DDFFDD'
