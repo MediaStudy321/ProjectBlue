@@ -437,7 +437,8 @@ $(async () => {
 
         var wepname = hero.weapon.attackname;
 
-        $('#controls').append("<tr><button id='attackbutton' class='pointer'>" + wepname + "</button></tr>");
+        $('#controls').append("<button id='attackbutton' class='pointer'>Attack</button>" + 
+        "</br> <button id='skillbutton' class='pointer'>Skills</button>");
         hero.type = "physical"
         $('#attackbutton').on('click', () => {
             for (let i = 0; i < monster.length; i++) {
