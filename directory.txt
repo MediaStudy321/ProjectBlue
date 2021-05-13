@@ -21,6 +21,7 @@ ProjectBlue/Server
     -router.js
         Has routes to get players and enemies 
 
+
 ProjectBlue/client/static
     
     -about.html
@@ -45,9 +46,48 @@ ProjectBlue/client/static
         ???
 
     -CharacterCreation.html
-        Page where you create your character
+        Page where you roll dice to decide your stats for your character
 
     -forest.html
         Page for the forest area
 
     -game.html
+        Page where you pick a class for your character
+
+    -Hands.html
+        Stores what each player is holding(?)
+    
+    -index.html
+        Home page for the server, gices links to login/registeration and about page
+
+    -login.html
+        Page where you can log into your account
+
+    -magic.html
+        (nothing yet)
+    
+    -mission.html
+        Overworld area map for after login and player creation
+
+    -mountain.html
+        Page for the mountain area
+
+    -profile.html
+        functions for profile navigation(?)
+
+    -register.html
+        Page where you can create you profile with username and password
+
+    -Slime_A.html
+        Defines stats and appearence for Slime A
+
+    -store.html
+        Page for the store
+
+    -stylesheet.css
+        A stylesheet
+
+ProjectBlue/client/static/battle
+    
+    -battle.js
+        file for battle

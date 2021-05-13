@@ -1,5 +1,5 @@
 #body {
-    background-color: antiquewhite;
+    background-color: gray;
 }
 
 #navbar {
@@ -11,10 +11,11 @@
     top: 20%;
     right: 20%;
     left: 20%;
+    background-color: goldenrod;
 }
 
 #content {
-    background-color: aqua;
+    background-color: goldenrod;
     margin-left: 10%;
     margin-right: 10%;
 }
