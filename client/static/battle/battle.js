@@ -376,11 +376,25 @@ $(async () => {
         }
     }
 
+    function displaymap(){
+        map = sessionStorage.getItem("map")
+        if(map == "forest"){
+            document.body.style.backgroundImage = 'url("images/forest.jpg")'
+        }
+        else if(map == "mountain"){
+            document.body.style.backgroundImage = 'url("images/mountain.png")'
+        }
+        else if(map == "cave"){
+            document.body.style.backgroundImage = 'url("images/caves.jpg")'
+        }
+        
+    }
 
     function drawField() {
         displayHeroes();
         displayEnemies();
         displayturnbar();
+        displaymap();
 
     }
 

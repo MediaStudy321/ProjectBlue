@@ -11,6 +11,7 @@
 
 	});
 	//sessionStorage.setItem("entering","true");
+
 	</script>
 
 	<link rel=stylesheet type=text/css href="stylesheet.css">
@@ -25,13 +26,27 @@ Welcome to Town! Stock up on supplies at a store or Vote on a mission to start w
 
 <ol>
 	<li><button><a href="store.html">Store</a></button></li>
-	<li><button><a href="forest.html">Forest</a></button></li>
-	<li><button><a href="cave.html">Caves</a></button></li>
-	<li><button><a href="mountain.html">Mountain</a></button></li>
-	<li><button><a href="battle2.html">Battle Test</a></button></li>
+	<li><button id="forest">Forest</button></li>
+	<li><button id="cave">Caves</button></li>
+	<li><button id="mountain">Mountain</button></li>
 
 </ol>
 </div>
+
+<script>
+	document.getElementById("forest").onclick = function(){
+		sessionStorage.setItem("map","forest")
+		window.location = "battle2.html"
+	}
+	document.getElementById("cave").onclick = function(){
+		sessionStorage.setItem("map","cave")
+		window.location = "battle2.html"
+	}
+	document.getElementById("mountain").onclick = function(){
+		sessionStorage.setItem("map","mountain")
+		window.location = "battle2.html"
+	}
+</script>
 
 <div id = "content"></div>
 

@@ -48,38 +48,55 @@ var mobs = {
         img: 'images/Slime.png',
         color: '#DDFFDD'
     },
-    Bug: {
-        name: 'Bug',
+    GiantSpider: {
+        name: 'Giant Spider',
         id: 1,
-        level: 1,
-        max_hp: 7,
-        max_mp: 3,
-        phy_atk: 2,
-        phy_def: 3,
-        mag_atk: 1,
-        mag_def: 2,
-        dex: 2,
-        exp: 7,
+        level: 2,
+        max_hp: 16,
+        max_mp: 6,
+        phy_atk: 6,
+        phy_def: 4,
+        mag_atk: 3,
+        mag_def: 4,
+        dex: 4,
+        exp: 17,
         weaponname: 'Hands',
-        img: 'images/Bug.png',
+        img: 'images/Spider.png',
         color: '#DDFFDD'
     },
-    Ent:{
-        name: 'Ent',
+    RatHoard: {
+        name: 'Rat Hoard',
         id: 1,
         level: 1,
-        max_hp: 17,
-        max_mp: 8,
+        max_hp: 18,
+        max_mp: 1,
         phy_atk: 5,
-        phy_def: 8,
-        mag_atk: 7,
-        mag_def: 4,
-        dex: 1,
-        exp: 10,
+        phy_def: 1,
+        mag_atk: 1,
+        mag_def: 1,
+        dex: 6,
+        exp: 9,
         weaponname: 'Hands',
-        img: 'images/Ent.png',
+        img: 'images/RatHoard.png',
+        color: '#DDFFDD'
+    },
+    Dragon: {
+        name: 'Dragon',
+        id: 1,
+        level: 4,
+        max_hp: 26,
+        max_mp: 18,
+        phy_atk: 10,
+        phy_def: 10,
+        mag_atk: 10,
+        mag_def: 10,
+        dex: 10,
+        exp: 40,
+        weaponname: 'Hands',
+        img: 'images/Dragon.png',
         color: '#DDFFDD'
     }
+
 }
 
-var monsters = [mobs.Goblin, mobs.Slime, mobs.Bug];
+var monsters = [mobs.Dragon ,mobs.Goblin, mobs.Slime, mobs.GiantSpider, mobs.RatHoard];
