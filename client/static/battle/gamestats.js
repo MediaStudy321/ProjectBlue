@@ -27,9 +27,10 @@ var mobs = {
         mag_atk: 1,
         mag_def: 1,
         dex: 2,
+        exp: 8,
         weaponname: 'Hands',
-        icon: '&#9752;',
-        color: '#DDFFDD'
+        img: 'images/Goblin.png',
+        color: '#DDFFDD',
     },
     Slime: {
         name: 'Slime',
@@ -42,8 +43,9 @@ var mobs = {
         mag_atk: 1,
         mag_def: 4,
         dex: 1,
+        exp: 4,
         weaponname: 'Hands',
-        icon: '&#9752;',
+        img: 'images/Slime.png',
         color: '#DDFFDD'
     },
     Bug: {
@@ -57,8 +59,9 @@ var mobs = {
         mag_atk: 1,
         mag_def: 2,
         dex: 2,
+        exp: 7,
         weaponname: 'Hands',
-        icon: '&#9752;',
+        img: 'images/Bug.png',
         color: '#DDFFDD'
     },
     Ent:{
@@ -72,8 +75,9 @@ var mobs = {
         mag_atk: 7,
         mag_def: 4,
         dex: 1,
+        exp: 10,
         weaponname: 'Hands',
-        icon: '&#9752;',
+        img: 'images/Ent.png',
         color: '#DDFFDD'
     }
 }

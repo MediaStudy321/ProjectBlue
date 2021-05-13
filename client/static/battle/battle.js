@@ -1,8 +1,8 @@
 $(async () => {
 
     const framedelay = 400;
-    const happyIcon = "&#9786;";
-    const deadIcon = "&#9760;";
+    const happyIcon = "images/Player.png";
+    const deadIcon = "images/Dead.png";
     const timeout = 100000;
 
     var party = [];
@@ -11,6 +11,8 @@ $(async () => {
     var clockRunning = true;
     var currentActors = [];
     var turns = [];
+    var skillarray = [];
+    var exppool = 0;
 
     var frames = 0;
     var countdown = 1;
@@ -29,12 +31,7 @@ $(async () => {
     }
 
     function atkdice() {
-        var dice = [1, 2, 3, 4, 5, 6];
-        var roll = dice[Math.floor(Math.random() * dice.length)];
-        return roll;
-    }
-    function defdice() {
-        var dice = [8, 9, 10, 11, 12];
+        var dice = [0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3];
         var roll = dice[Math.floor(Math.random() * dice.length)];
         return roll;
     }
@@ -59,10 +56,45 @@ $(async () => {
             loadstatusELM(element)
 
             loadweapon(element);
+
+            loadskills(element);
             element.move = intdice(player.dex);
             console.log(player.name + " rolled a: " + element.move);
 
         })
+    }
+
+
+    function loadskills(hero) {
+        if (hero.class == "Mage") {
+            mageskills.forEach(element => {
+                if (hero.level >= element.level) {
+                    skillarray.push(element);
+                }
+            })
+        }
+        else if (hero.class == "Warrior") {
+            warskills.forEach(element => {
+                if (hero.level >= element.level) {
+                    skillarray.push(element);
+                }
+            })
+        }
+        else if (hero.class == "Rouge") {
+            rouskills.forEach(element => {
+                if (hero.level >= element.level) {
+                    skillarray.push(element);
+                }
+            })
+        }
+        else if (hero.class == "Bard") {
+            bardskills.forEach(element => {
+                if (hero.level >= element.level) {
+                    skillarray.push(element);
+                }
+            })
+        }
+        hero.skill = skillarray;
     }
 
     function loadweapon(element) {
@@ -125,6 +157,8 @@ $(async () => {
 
             loadweapon(element);
 
+            exppool += element.exp;
+
             console.log(element.name + " has rolled: " + element.move);
         })
 
@@ -178,7 +212,7 @@ $(async () => {
 
         turns = sorting(actors);
         console.log("turns: ")
-        for(a = 0; a < turns.length; a++){
+        for (a = 0; a < turns.length; a++) {
             console.log(turns[a]);
         }
         console.log("turns//")
@@ -204,7 +238,9 @@ $(async () => {
                 battleState = 'end';
                 break;
             case 'victory':
-                window.alert('You win!');
+                window.alert('You win! \n Exp Gained: +' + exppool + '\n Gold Gained: +' + Math.floor(exppool * atkdice()));
+                var gainedexp = parseInt(sessionStorage.getItem("exp")) + exppool;
+                sessionStorage.setItem("exp",gainedexp)
                 battleStage = 'end';
                 break;
             case 'defeat':
@@ -289,7 +325,7 @@ $(async () => {
                     console.log(current.name)
                     if (current.faction == "monster") {
                         current.type = "physical"
-                        doAttack(current, randomHero());
+                        doAttack(current, randomHero(), 1);
                     }
                     break;
                 case 'finished':
@@ -316,10 +352,10 @@ $(async () => {
         for (let i = 0; i < party.length; i++) {
             let hero = party[i]
 
-            let icon;
-            if (hero.hp > 0) icon = happyIcon; else icon = deadIcon;
+            let img;
+            if (hero.hp > 0) img = happyIcon; else img = deadIcon;
             let id = "hero_" + i;
-            let avatar = "<span class='avatar' id='" + id + "'>" + icon + "</span>";
+            let avatar = "<img id='" + id + "' src = '" + img + "'/>";;
             $('#heroIcons').append(avatar);
             $('#' + id).css('color', hero.color);
             if (hero.stance == "active") $('#' + id).css('text-decoration', 'underline');
@@ -330,10 +366,10 @@ $(async () => {
         $('#monsters').html('');
         for (let i = 0; i < monster.length; i++) {
             let enemy = monster[i]
-            let icon;
-            if (enemy.hp > 0) icon = enemy.icon; else icon = deadIcon;
+            let img;
+            if (enemy.hp > 0) img = enemy.img; else img = deadIcon;
             let id = 'monster_' + i;
-            let avatar = "<span class='avatar' id='" + id + "'>" + icon + "</span>";
+            let avatar = "<img id='" + id + "' src = '" + img + "'/>";
             $('#monsters').append(avatar);
             $('#' + id).css('color', enemy.color);
             if (enemy.stance == "active") $('#' + id).css('text-decoration', 'underline');
@@ -352,24 +388,22 @@ $(async () => {
         $('#turnbar').html('');
         var position = "<tr><th>Turns";
         turns.forEach(element => {
-                position += "<th>" + element.name + "</th>"
+            position += "<th>" + element.name + "</th>"
         });
         position += "</tr>"
         $('#turnbar').append(position);
     }
-
     function heroStats() {
         $('#heroStats').html('');
         party.forEach(element => {
             let stats = "<tr><th>" + element.name + "</th><td style='width:70%'>" + element.status + " "
-                + element.statusturn + "</td><td>" + element.stance + "</td></tr>" +
+                + element.statusturn + "</td><td style = 'text-align: center;'>" + element.stance + "</td></tr>" +
                 "<tr><td>HP: [ " + element.hp + " / " + element.max_hp + " ] </br> " +
-                "MP: [ " + element.mp + " / " + element.max_mp + " ]</td><tr>"
+                "MP: [ " + element.mp + " / " + element.max_mp + " ]</td><td><td><tr>"
             $('#heroStats').append(stats);
         });
         monstats();
     }
-
     function monstats() {
         $('#monsterStats').html('');
         var stat = "<tr>";
@@ -384,37 +418,34 @@ $(async () => {
         $('#monsterStats').append(stat);
 
     }
-
-
-    function doAttack(attacker, defender) {
-        var dmgnum = damage(defender, attacker, dmgnum)
+    function doAttack(attacker, defender, damagemod) {
+        var dmgnum = damage(defender, attacker, damagemod)
         if (defender.hp <= 0) {
             $('#banner').html(attacker.name + ' slays ' + defender.name + '!');
             defender.stance = 'fainted';
-            for(a = 0; a < turns.length; a++){
-                if(turns[a] == defender){
-                    turns.splice(a,1);
+            for (a = 0; a < turns.length; a++) {
+                if (turns[a] == defender) {
+                    turns.splice(a, 1);
                 }
             }
         }
         else $('#banner').html(attacker.name + ' attacks ' + defender.name + ' for ' + dmgnum + ' damage.');
         attacker.stance = 'finished';
     }
-
-    function damage(defender, attacker) {
+    function damage(defender, attacker, damagemod) {
         var roll = atkdice();
         var dmg = 0;
         var crit = attacker.weapon.crit_chance[Math.floor(Math.random() * attacker.weapon.crit_chance.length)]
         console.log("crit: " + crit + " roll: " + roll);
         if (attacker.type == "physical") {
             console.log("physical dmg")
-            dmg = attacker.phy_atk
+            dmg = (((attacker.phy_atk * damagemod) + attacker.weapon.phy_dmg) * roll - defender.phy_def)
             if (crit == 1) {
                 dmg = Math.floor(dmg * 1.5);
             }
         }
         else if (attacker.type == "magical") {
-            dmg = ((attacker.mag_atk * Math.floor(roll / 2)) / Math.floor(defender.mag_def * defdice() / 10)) - defender.mag_def + + attacker.weapon.mag_dmg;
+            dmg = (((attacker.mag_atk * damagemod) + attacker.weapon.mag_dmg) * roll - defender.mag_def)
             if (crit == 1) {
                 dmg = Math.floor(dmg * 1.5);
             }
@@ -422,6 +453,7 @@ $(async () => {
         if (dmg < 1) {
             dmg = 1;
         }
+        dmg = Math.floor(dmg)
         console.log("damage: " + dmg);
         defender.hp -= dmg;
         console.log("hp: " + defender.hp)
@@ -435,23 +467,93 @@ $(async () => {
         $('#banner').html(hero.name + ' is up!');
         $('#controls').html('');
 
+        var buttonvalue = 0;
+
         var wepname = hero.weapon.attackname;
 
-        $('#controls').append("<button id='attackbutton' class='pointer'>Attack</button>" + 
-        "</br> <button id='skillbutton' class='pointer'>Skills</button>");
-        hero.type = "physical"
         $('#attackbutton').on('click', () => {
-            for (let i = 0; i < monster.length; i++) {
-                $('#monster_' + i).on('click', (click) => {
-                    doAttack(hero, monster[i]);
-                    hero.stance = 'finished';
+            hero.type = "physical"
+            $('#controls').html("<button id='basicattack' style='font-size: 0.9em;'>" + wepname +
+                "</button> [Physical: + " + hero.weapon.phy_dmg +
+                " Damage ]<p>" + hero.weapon.discription + "</p>");
+            $('#basicattack').on('click', () => {
+                buttonvalue = 1;
+                for (let i = 0; i < monster.length; i++) {
+                    $('#monster_' + i).on('click', (click) => {
+                        if (buttonvalue == 1) {
+                            doAttack(hero, monster[i], 1);
+                            hero.stance = 'finished';
 
-                    displayEnemies();
-                    $('#controls').html('');
-                });
-                $('#attackbutton').on('click', displayControls(hero));
-                $('#attackbutton').html('cancel attack')
-            }
+                            displayEnemies();
+                            $('#controls').html('');
+                            $('#attackbutton').html('Attack')
+                        }
+                    });
+                    $('#basicattack').on('click', displayControls(hero));
+                    $('#controls').html('<p> Select an enemy <p>');
+                    $('#attackbutton').html('cancel attack')
+                    $('#attackbutton').on('click', () => {
+                        $('#attackbutton').html('Attack');
+                        buttonvalue = 0;
+                        displayControls(hero);
+                    })
+
+
+                }
+
+            })
+        })
+
+        $('#skillbutton').on('click', () => {
+            var skills = "";
+            hero.skill.forEach(element => {
+                skills += "<button id='" + element.id + "' style='font-size: 0.9em;'' >" + element.name +
+                    "</button> [ " + element.type + ": + " + (element.damage * 100) + "% ] -- [ Cost: " +
+                    element.cost + "] -- " + element.description + "</br>"
+            })
+            $('#controls').html(skills);
+            hero.skill.forEach(element => {
+                $('#' + element.id).on('click', () => {
+                    buttonvalue = 1;
+                    if (element.cost > hero.mp) {
+                        alert("not enough mana!")
+                        displayControls(hero);
+                    }
+                    else {
+                        hero.type = element.type;
+                        for (let i = 0; i < monster.length; i++) {
+                            $('#monster_' + i).on('click', (click) => {
+                                if (buttonvalue == 1) {
+                                    doAttack(hero, monster[i], element.damage);
+                                    hero.stance = 'finished';
+
+                                    displayEnemies();
+                                    $('#controls').html('');
+                                    $('#skillbutton').html('Skill')
+                                    hero.mp -= element.cost;
+                                }
+                            });
+                            $('#' + element.name).on('click', displayControls(hero));
+                            $('#controls').html('<p> Select an enemy <p>');
+                            $('#skillbutton').html('cancel attack')
+                            $('#skillbutton').on('click', () => {
+                                $('#skillbutton').html('Skill');
+                                buttonvalue = 0;
+                                displayControls(hero);
+                            })
+
+
+                        }
+                    }
+                })
+            })
+        })
+        $('#itembutton').on('click', () => {
+            alert("No Items!");
+        })
+        $('#escapebutton').on('click', () => {
+            alert("Escaped!")
+            window.location = "mission.html";
         })
     }
 
