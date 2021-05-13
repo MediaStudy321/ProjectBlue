@@ -18,6 +18,7 @@
     <p>Name: <a id="name"></a></p>
     <input id="UserName" name="name" type="text" value=""><button id="setname">Set Name</button><br />
     <p id="class">Class: </p>
+    <p>Welcome to the Stats Roller. On this screen, you will roll the stats for your new character! Depending on your class, the dice will be rolled severeal times in order to determine your base stats, such as HP, Mana, and other physical attributes. After you've set a name for your character and determined their stats, you're ready to begin your adventure!</p>
     <p>Health: <a id="hp" name="max_hp">0</a> <button id="dhp">Roll For Stats</button></p>
     <p>Mana: <a id="mp">0</a> <button id="dmp">Roll For Stats</button></p>
     <p>Phy.Attack: <a id="pa">0</a> <button id="dpa">Roll For Stats</button></p>
@@ -30,6 +31,7 @@
 
     <button id="mission" type="submit" class="hidden"><a href="mission.html">Finish Roll</a></button>
 </body>
+<script src="battle/gamestats.js"></script>
 <script>
     var next = document.getElementById("mission");
     var Charclass = sessionStorage.getItem("Class");

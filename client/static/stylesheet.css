@@ -1,6 +1,5 @@
-body {
-    color:red
-
+#body {
+    background-color: antiquewhite;
 }
 
 #navbar {
@@ -14,3 +13,8 @@ body {
     left: 20%;
 }
 
+#content {
+    background-color: aqua;
+    margin-left: 10%;
+    margin-right: 10%;
+}

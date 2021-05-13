@@ -1,27 +1,79 @@
-#banner {
+#turnbar {
+    background-color: grey;
+    text-align: center;
+    width: 100%;
+    font-size: 2em;
+}
+#turnbar > tr {
+    background-color: white;
+}
+#banner{
+    text-align: center;
+}
+#monsters{
+    font-size: 10em;
     text-align: center
 }
+#monsterStats {
+    background-color: black;
+    width: auto;
+    font-size: 1em;
+    text-align: center;
+    position: relative;
+    margin-left:auto;
+    margin-right:auto;
 
-#heroStats {
+}
+#monsterStats > tr{
+    background-color: white;
+    text-align: center
+}
+#monsterStats > td{
+    background-color: white;
+    text-align: center;
+}
+#controls {
+    text-align: center;
+}
+#options {
+    background-color: white;
+    width: 100%;
+    font-size: 1em;
+    border: 1px solid black;
+}
+#options > tr {
+    background-color: white;
+    text-align: left;
+    border: 1px solid black;
+}
+#options > td {
     background-color: grey;
+    border: 1px solid black;
+}
+#heroStats {
+    background-color: black;
     width: 100%;
     font-size: 2em;
 }
 
 #heroStats > tr {
     background-color: white;
+    text-align: left;
 }
 
-#monsters {
-    font-size: 10em;
-    text-align: center
+#heroStats > th {
+    background-color: white;
+    text-align: left;
+    padding: 15%;
 }
 
+
+#heroStats > td {
+    background-color: white;
+}
 #heroIcons {
     font-size: 10em;
     text-align: center
 }
 
-#controls {
-    text-align: center;
-}
+.pointer {cursor: pointer;}
