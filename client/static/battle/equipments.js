@@ -3,7 +3,7 @@ var weaponsstuff = {
         id: 1,
         name: 'Hands',
         attackname: "Catch these Hands",
-        phy_dmg: 0,
+        phy_dmg: 1,
         mag_dmg: 0,
         type: 'physical',
         crit_chance: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
