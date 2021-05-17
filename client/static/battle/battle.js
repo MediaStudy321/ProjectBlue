@@ -240,8 +240,13 @@ $(async () => {
             case 'victory':
                 window.alert('You win! \n Exp Gained: +' + exppool + '\n Gold Gained: +' + Math.floor(exppool * atkdice()));
                 var gainedexp = parseInt(sessionStorage.getItem("exp")) + exppool;
-                sessionStorage.setItem("exp",gainedexp)
+                sessionStorage.setItem("exp", gainedexp)
                 battleStage = 'end';
+               /* $.ajax( {
+                    type : "POST",
+                    url : "/victory",
+                    data : "exp"
+                })*/
                 break;
             case 'defeat':
                 window.alert('You lose!');
@@ -376,18 +381,18 @@ $(async () => {
         }
     }
 
-    function displaymap(){
+    function displaymap() {
         map = sessionStorage.getItem("map")
-        if(map == "forest"){
+        if (map == "forest") {
             document.body.style.backgroundImage = 'url("images/forest.jpg")'
         }
-        else if(map == "mountain"){
+        else if (map == "mountain") {
             document.body.style.backgroundImage = 'url("images/mountain.png")'
         }
-        else if(map == "cave"){
+        else if (map == "cave") {
             document.body.style.backgroundImage = 'url("images/caves.jpg")'
         }
-        
+
     }
 
     function drawField() {
@@ -484,91 +489,94 @@ $(async () => {
         var buttonvalue = 0;
 
         var wepname = hero.weapon.attackname;
+        if (hero.stance == 'ready') {
 
-        $('#attackbutton').on('click', () => {
-            hero.type = "physical"
-            $('#controls').html("<button id='basicattack' style='font-size: 0.9em;'>" + wepname +
-                "</button> [Physical: + " + hero.weapon.phy_dmg +
-                " Damage ]<p>" + hero.weapon.discription + "</p>");
-            $('#basicattack').on('click', () => {
-                buttonvalue = 1;
-                for (let i = 0; i < monster.length; i++) {
-                    $('#monster_' + i).on('click', (click) => {
-                        if (buttonvalue == 1) {
-                            doAttack(hero, monster[i], 1);
-                            hero.stance = 'finished';
-
-                            displayEnemies();
-                            $('#controls').html('');
-                            $('#attackbutton').html('Attack')
-                        }
-                    });
-                    $('#basicattack').on('click', displayControls(hero));
-                    $('#controls').html('<p> Select an enemy <p>');
-                    $('#attackbutton').html('cancel attack')
-                    $('#attackbutton').on('click', () => {
-                        $('#attackbutton').html('Attack');
-                        buttonvalue = 0;
-                        displayControls(hero);
-                    })
-
-
-                }
-
-            })
-        })
-
-        $('#skillbutton').on('click', () => {
-            var skills = "";
-            hero.skill.forEach(element => {
-                skills += "<button id='" + element.id + "' style='font-size: 0.9em;'' >" + element.name +
-                    "</button> [ " + element.type + ": + " + (element.damage * 100) + "% ] -- [ Cost: " +
-                    element.cost + "] -- " + element.description + "</br>"
-            })
-            $('#controls').html(skills);
-            hero.skill.forEach(element => {
-                $('#' + element.id).on('click', () => {
+            $('#attackbutton').on('click', () => {
+                hero.type = "physical"
+                $('#controls').html("<button id='basicattack' style='font-size: 0.9em;'>" + wepname +
+                    "</button> [Physical: + " + hero.weapon.phy_dmg +
+                    " Damage ]<p>" + hero.weapon.discription + "</p>");
+                $('#basicattack').on('click', () => {
                     buttonvalue = 1;
-                    if (element.cost > hero.mp) {
-                        alert("not enough mana!")
-                        displayControls(hero);
+                    for (let i = 0; i < monster.length; i++) {
+                        $('#monster_' + i).on('click', (click) => {
+                            if (buttonvalue == 1) {
+                                doAttack(hero, monster[i], 1);
+                                hero.stance = 'finished';
+
+                                displayEnemies();
+                                $('#controls').html('');
+                                $('#attackbutton').html('Attack')
+                            }
+                        });
+                        $('#basicattack').on('click', displayControls(hero));
+                        $('#controls').html('<p> Select an enemy <p>');
+                        $('#attackbutton').html('cancel attack')
+                        $('#attackbutton').on('click', () => {
+                            $('#attackbutton').html('Attack');
+                            buttonvalue = 0;
+                            displayControls(hero);
+                        })
+
+
                     }
-                    else {
-                        hero.type = element.type;
-                        for (let i = 0; i < monster.length; i++) {
-                            $('#monster_' + i).on('click', (click) => {
-                                if (buttonvalue == 1) {
-                                    doAttack(hero, monster[i], element.damage);
-                                    hero.stance = 'finished';
 
-                                    displayEnemies();
-                                    $('#controls').html('');
-                                    $('#skillbutton').html('Skill')
-                                    hero.mp -= element.cost;
-                                }
-                            });
-                            $('#' + element.name).on('click', displayControls(hero));
-                            $('#controls').html('<p> Select an enemy <p>');
-                            $('#skillbutton').html('cancel attack')
-                            $('#skillbutton').on('click', () => {
-                                $('#skillbutton').html('Skill');
-                                buttonvalue = 0;
-                                displayControls(hero);
-                            })
+                })
 
+            })
 
+            $('#skillbutton').on('click', () => {
+                var skills = "";
+                hero.skill.forEach(element => {
+                    skills += "<button id='" + element.id + "' style='font-size: 0.9em;'' >" + element.name +
+                        "</button> [ " + element.type + ": + " + (element.damage * 100) + "% ] -- [ Cost: " +
+                        element.cost + "] -- " + element.description + "</br>"
+                })
+                $('#controls').html(skills);
+                hero.skill.forEach(element => {
+                    $('#' + element.id).on('click', () => {
+                        buttonvalue = 1;
+                        if (element.cost > hero.mp) {
+                            alert("not enough mana!")
+                            displayControls(hero);
                         }
-                    }
+                        else {
+                            hero.type = element.type;
+                            for (let i = 0; i < monster.length; i++) {
+                                $('#monster_' + i).on('click', (click) => {
+                                    if (buttonvalue == 1) {
+                                        doAttack(hero, monster[i], element.damage);
+                                        hero.stance = 'finished';
+
+                                        displayEnemies();
+                                        $('#controls').html('');
+                                        $('#skillbutton').html('Skill')
+                                        hero.mp -= element.cost;
+                                    }
+                                });
+                                $('#' + element.name).on('click', displayControls(hero));
+                                $('#controls').html('<p> Select an enemy <p>');
+                                $('#skillbutton').html('cancel attack')
+                                $('#skillbutton').on('click', () => {
+                                    $('#skillbutton').html('Skill');
+                                    buttonvalue = 0;
+                                    displayControls(hero);
+                                })
+
+
+                            }
+                        }
+                    })
                 })
             })
-        })
-        $('#itembutton').on('click', () => {
-            alert("No Items!");
-        })
-        $('#escapebutton').on('click', () => {
-            alert("Escaped!")
-            window.location = "mission.html";
-        })
+            $('#itembutton').on('click', () => {
+                alert("No Items!");
+            })
+            $('#escapebutton').on('click', () => {
+                alert("Escaped!")
+                window.location = "mission.html";
+            })
+        }
     }
 
     function randomHero() {

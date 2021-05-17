@@ -24,7 +24,7 @@
     <p>Name: <a id="name"></a></p>
     <input id="UserName" name="name" type="text" value=""><button id="setname">Set Name</button><br />
     <p id="class">Class: </p>
-    <p>Welcome to the Stats Roller. On this screen, you will roll the stats for your new character! Depending on your class, the dice will be rolled severeal times in order to determine your base stats, such as HP, Mana, and other physical attributes. After you've set a name for your character and determined their stats, you're ready to begin your adventure!</p>
+    <p>Welcome to the Stats Roller. On this screen, you will roll the stats for your new character! Depending on your class, the dice will be rolled severeal times in ocharacter.dexer to determine your base stats, such as HP, Mana, and other physical attributes. After you've set a name for your character and determined their stats, you're ready to begin your adventure!</p>
     <p>Health: <a id="hp" name="max_hp">0</a> <button id="dhp">Roll For Stats</button></p>
     <p>Mana: <a id="mp">0</a> <button id="dmp">Roll For Stats</button></p>
     <p>Phy.Attack: <a id="pa">0</a> <button id="dpa">Roll For Stats</button></p>
@@ -45,12 +45,23 @@
     var Level = 0
     sessionStorage.setItem("Level", Level);
     document.getElementById("class").innerHTML = "Class: " + Charclass;
-
     var Hp, Mp, PhyAtk, PhyDef, MagAtk, MagDef, Dex;
-    var Rhp = 0, Rmp = 0, Rpa = 0, Rpd = 0, Rma = 0, Rmd = 0, Rd = 0;
     var exp = 0;
     var statroll = 0;
     sessionStorage.setItem("statroll", statroll);
+    var character = {
+        max_hp: 0,
+        max_mp: 0,
+        level: 0, 
+        exp: 0,
+        max_hp: 0, 
+        max_mp: 0,
+        physical_atk: 0,
+        physical_def: 0,
+        magical_atk: 0,
+        magical_def: 0,
+        dex: 0
+    }
     var bhp = document.getElementById("dhp");
     var bmp = document.getElementById("dmp");
     var bpa = document.getElementById("dpa");
@@ -62,22 +73,25 @@
     var UName = document.getElementById("UserName").value;
 
     if (Charclass == "Mage") {
-        Rmp = 3;
-        Rma = 3;
-        Hp = 2;
-        Mp = 6;
+        character.max_mp = 3;
+        character.magical_atk = 3;
+        character.max_hp = 3;
+        Hp = 3;
+        Mp = 5;
         PhyAtk = 1;
         PhyDef = 1;
-        MagAtk = 3;
+        MagAtk = 4;
         MagDef = 3;
         Dex = 2;
 
     }
     if (Charclass == "Warrior") {
-        Rhp = 3;
-        Rpa = 3;
-        Hp = 7;
-        Mp = 1;
+        character.max_hp = 3;
+        character.physical_atk = 3;
+        character.physical_def = 2;
+        character.max_mp = 1;
+        Hp = 6;
+        Mp = 2;
         PhyAtk = 3;
         PhyDef = 3;
         MagAtk = 1;
@@ -85,8 +99,10 @@
         Dex = 1;
     }
     if (Charclass == "Rouge") {
-        Rd = 3;
-        Rpa = 3;
+        character.dex = 3;
+        character.physical_atk = 3;
+        character.max_hp = 2;
+        character.max_mp = 1;
         Hp = 5;
         Mp = 3;
         PhyAtk = 2;
@@ -95,11 +111,12 @@
         MagDef = 2;
         Dex = 3;
     }
-    if (Charclass == "Bard") {
-        Rhp = 2;
-        Rmp = 2;
-        Rpd = 1;
-        Rmd = 1;
+    if (Charclass == "Bacharacter.dex") {
+        character.max_hp = 2;
+        character.max_mp = 2;
+        character.physical_def = 2;
+        character.magical_def = 2;
+        character.dex = 1;
         Hp = 4;
         Mp = 4;
         PhyAtk = 2;
@@ -129,12 +146,12 @@
     bhp.onclick = function () {
         var rolls = " - [Rolls: ";
         var hproll = 0;
-        if (Rhp > 0) {
-            rolls = rolls + Rhp + " + ";
+        if (character.max_hp > 0) {
+            rolls = rolls + character.max_hp + " + ";
         }
         while (Hp > 0) {
             hproll = hpdice();
-            Rhp += hproll;
+            character.max_hp += hproll;
             if (Hp > 1) {
                 rolls = rolls + hproll + " + ";
             }
@@ -144,21 +161,21 @@
             Hp -= 1;
         }
         if (Hp == 0) {
-            document.getElementById("hp").innerHTML = Rhp + rolls;
+            document.getElementById("hp").innerHTML = character.max_hp + rolls;
             document.getElementById("dhp").style.display = "none";
-            sessionStorage.setItem("hp", Rhp);
+            sessionStorage.setItem("hp", character.max_hp);
             toggleButton();
         }
     }
     bmp.onclick = function () {
         var rolls = " - [Rolls: ";
         var mproll = 0;
-        if (Rmp > 0) {
-            rolls = rolls + Rmp + " + ";
+        if (character.max_mp > 0) {
+            rolls = rolls + character.max_mp + " + ";
         }
         while (Mp > 0) {
             mproll = statdice();
-            Rmp += mproll;
+            character.max_mp += mproll;
             if (Mp > 1) {
                 rolls = rolls + mproll + " + ";
             }
@@ -168,21 +185,21 @@
             Mp -= 1;
         }
         if (Mp == 0) {
-            document.getElementById("mp").innerHTML = Rmp + rolls;
+            document.getElementById("mp").innerHTML = character.max_mp + rolls;
             document.getElementById("dmp").style.display = "none";
-            sessionStorage.setItem("mp", Rmp);
+            sessionStorage.setItem("mp", character.max_mp);
             toggleButton();
         }
     }
     bpa.onclick = function () {
         var rolls = " - [Rolls: ";
         var paroll = 0;
-        if (Rpa > 0) {
-            rolls = rolls + Rpa + " + ";
+        if (character.physical_atk > 0) {
+            rolls = rolls + character.physical_atk + " + ";
         }
         while (PhyAtk > 0) {
             paroll = statdice();
-            Rpa += paroll;
+            character.physical_atk += paroll;
             if (PhyAtk > 1) {
                 rolls = rolls + paroll + " + ";
             }
@@ -192,21 +209,21 @@
             PhyAtk -= 1;
         }
         if (PhyAtk == 0) {
-            document.getElementById("pa").innerHTML = Rpa + rolls;
+            document.getElementById("pa").innerHTML = character.physical_atk + rolls;
             document.getElementById("dpa").style.display = "none";
-            sessionStorage.setItem("pa", Rpa);
+            sessionStorage.setItem("pa", character.physical_atk);
             toggleButton();
         }
     }
     bpd.onclick = function () {
         var rolls = " - [Rolls: ";
         var pdroll = 0;
-        if (Rpd > 0) {
-            rolls = rolls + Rpd + " + ";
+        if (character.physical_def > 0) {
+            rolls = rolls + character.physical_def + " + ";
         }
         while (PhyDef > 0) {
             pdroll = statdice();
-            Rpd += pdroll;
+            character.physical_def += pdroll;
             if (PhyDef > 1) {
                 rolls = rolls + pdroll + " + ";
             }
@@ -216,21 +233,21 @@
             PhyDef -= 1;
         }
         if (PhyDef == 0) {
-            document.getElementById("pd").innerHTML = Rpd + rolls;
+            document.getElementById("pd").innerHTML = character.physical_def + rolls;
             document.getElementById("dpd").style.display = "none";
-            sessionStorage.setItem("pd", Rpd);
+            sessionStorage.setItem("pd", character.physical_def);
             toggleButton();
         }
     }
     bma.onclick = function () {
         var rolls = " - [Rolls: ";
         var maroll = 0;
-        if (Rma > 0) {
-            rolls = rolls + Rma + " + ";
+        if (character.magical_atk > 0) {
+            rolls = rolls + character.magical_atk + " + ";
         }
         while (MagAtk > 0) {
             maroll = statdice();
-            Rma += maroll;
+            character.magical_atk += maroll;
             if (MagAtk > 1) {
                 rolls = rolls + maroll + " + ";
             }
@@ -240,21 +257,21 @@
             MagAtk -= 1;
         }
         if (MagAtk == 0) {
-            document.getElementById("ma").innerHTML = Rma + rolls;
+            document.getElementById("ma").innerHTML = character.magical_atk + rolls;
             document.getElementById("dma").style.display = "none";
-            sessionStorage.setItem("ma", Rma);
+            sessionStorage.setItem("ma", character.magical_atk);
             toggleButton();
         }
     }
     bmd.onclick = function () {
         var rolls = " - [Rolls: ";
         var mdroll = 0;
-        if (Rmd > 0) {
-            rolls = rolls + Rmd + " + ";
+        if (character.magical_def > 0) {
+            rolls = rolls + character.magical_def + " + ";
         }
         while (MagDef > 0) {
             mdroll = statdice();
-            Rmd += mdroll;
+            character.magical_def += mdroll;
             if (MagDef > 1) {
                 rolls = rolls + mdroll + " + ";
             }
@@ -264,21 +281,21 @@
             MagDef -= 1;
         }
         if (MagDef == 0) {
-            document.getElementById("md").innerHTML = Rmd + rolls;
+            document.getElementById("md").innerHTML = character.magical_def + rolls;
             document.getElementById("dmd").style.display = "none";
-            sessionStorage.setItem("md", Rmd);
+            sessionStorage.setItem("md", character.magical_def);
             toggleButton();
         }
     }
     bd.onclick = function () {
         var rolls = " - [Rolls: ";
         var droll = 0;
-        if (Rd > 0) {
-            rolls = rolls + Rd + " + ";
+        if (character.dex > 0) {
+            rolls = rolls + character.dex + " + ";
         }
         while (Dex > 0) {
             droll = statdice();
-            Rd += droll;
+            character.dex += droll;
             if (Dex > 1) {
                 rolls = rolls + droll + " + ";
             }
@@ -288,9 +305,9 @@
             Dex -= 1;
         }
         if (Dex == 0) {
-            document.getElementById("d").innerHTML = Rd + rolls;
+            document.getElementById("d").innerHTML = character.dex + rolls;
             document.getElementById("dd").style.display = "none";
-            sessionStorage.setItem("d", Rd);
+            sessionStorage.setItem("d", character.dex);
             toggleButton();
         }
     }

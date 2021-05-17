@@ -93,13 +93,14 @@
 			<p>Dexterity: <a id="d">0</a> <button id="dd" class="hidden">Roll For Stats</button></p>
 			<p> </p>
 			<p id="statsrolls"></p>
-			<button id="free exp" class = "hidden">free lv up</button>
+			<button id="free exp" class="hidden">free lv up</button>
 
 		</div>
 
 		<div id="Skills & Talents" class="tabcontent">
-			<h5><a id="skill">Skills</a></h5>
-			<h5>Talents</h5>
+			<h5><a>Skills</a></h5>
+			<br />
+			<div id="skills"></div>
 		</div>
 
 		<div id="Equipment" class="tabcontent">
@@ -119,11 +120,13 @@
 		</div>
 
 		<div id="Quest" class="tabcontent">
-			<p>Your party has tracked down Lord Superius to his underground lair, but a magic forcefield blocks its entrance. You must find a way to bring down the forcefield in order to retrieve the Eternal Stone.</p>
+			<p>Your party has tracked down Lord Superius to his underground lair, but a magic forcefield blocks its
+				entrance. You must find a way to bring down the forcefield in order to retrieve the Eternal Stone.</p>
 		</div>
 	</div>
 
-</body>
+
+<script src="battle/skills.js"></script>
 <script src="battle/gamestats.js"></script>
 <script>
 	//document.getElementById("charname").innerHTML = sessionStorage.getItem("UserName");
@@ -141,12 +144,7 @@
 	var bd = document.getElementById("dd");
 	/////
 
-	if (sessionStorage.getItem("Class") == "Mage") {
-		document.getElementById("skill").innerHTML = "Magic"
-	}
-	else if (sessionStorage.getItem("Class") == "Bard") {
-		document.getElementById("skill").innerHTML = "Songs"
-	}
+	var characterclass = sessionStorage.getItem("Class");
 
 	/*rolling stats*/
 	if (statsRoll != 0) {
@@ -228,7 +226,6 @@
 		}
 	}
 	///
-	getstats();
 
 	/*tab functions*/
 	function openProfile(evt, profileTab) {
@@ -335,9 +332,26 @@
 		document.getElementById("weapon").innerHTML = EQweapon;
 	}
 
-	loadEquipments();
+	///// skills
 
-
+	function loadskills(){
+		var characterskills = [];
+		if(characterclass == "Mage"){
+			characterskills = mageskills;
+		}
+		else if(characterclass == "Warrior")
+		{
+			characterskills = warskills;
+		}
+		else if(characterclass == "Rouge")
+		{
+			characterskills = rouskills;
+		}
+		else if(characterclass == "Bard")
+		{
+			
+		}
+	}
 
 
 
@@ -351,11 +365,12 @@
 		sessionStorage.setItem("exp", gainExp);
 		getstats();
 	}
-		/**/
-
+	/**/
+	getstats();
+	loadEquipments();
 
 </script>
 
-
+</body>
 
 </html>
