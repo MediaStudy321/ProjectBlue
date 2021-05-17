@@ -21,16 +21,6 @@ const profileSchema = new mongoose.Schema({
     }
 });
 
-const statSchema = new mongoose.Schema({
-    max_hp: {
-        type: Number,
-        default: 1
-    },
-    max_mp: {
-        type: Number,
-        default: 1
-    }
-});
 
 const characterSchema = new mongoose.Schema({
     player: {
@@ -41,8 +31,55 @@ const characterSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    characterclass: {
+        type: String,
+        default: 1
+    }, 
     stats: {
-        type: statSchema
+        max_hp: {
+            type: Number,
+            default: 1
+        },
+        max_mp: {
+            type: Number,
+            default: 1
+        },
+        level: {
+            type: Number,
+            default: 0
+        }, 
+        exp: {
+            type: Number,
+            default: 0
+        },
+        max_hp: {
+            type: Number,
+            default: 1
+        }, 
+        max_mp: {
+            type: Number,
+            default: 1
+        },
+        physical_atk: {
+            type: Number,
+            default: 1
+        },
+        physical_def: {
+            type: Number,
+            default: 1
+        },
+        magical_atk: {
+            type: Number,
+            default: 1
+        },
+        magical_def: {
+            type: Number,
+            default: 1
+        },
+        dex: {
+            type: Number,
+            default: 1
+        },
     }
 });
 
