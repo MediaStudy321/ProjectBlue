@@ -123,12 +123,10 @@ app.post('/login', (req, res)=> {
                     req.session.username = result.username;
                     req.session.authenticated = true;
                     req.session.isModerator = result.isModerator;
-                    
-                    //this still needs some tinkering
-                    if(result.character) {
-                        req.session.character = result.character
-                        res.redirect('/mission.html');
 
+                    //this still needs some tinkering
+                    if(result.character.name) {
+                        res.redirect('/mission.html');
                     }
                     else {
                         res.redirect('/game.html');

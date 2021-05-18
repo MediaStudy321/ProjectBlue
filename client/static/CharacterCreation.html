@@ -43,7 +43,7 @@
 
 
 
-        <button id="mission" class="hidden"><a href="mission.html">Finish Roll</a></button>
+        <button id="mission" style="display: none">Finish Roll</button>
     </div>
 
     <script src="battle/gamestats.js"></script>
@@ -62,7 +62,7 @@
                 dex: 0
             }
         }
-        var next = document.getElementById("mission");
+    
         var Charclass = sessionStorage.getItem("Class");
         sessionStorage.setItem("Level", character.level);
         document.getElementById("class").innerHTML = "Class: " + Charclass;
@@ -100,10 +100,16 @@
             Hp = 6;
             Mp = 2;
             PhyAtk = 3;
-            PhyDef = 4;
-            MagAtk = 1;
-            MagDef = 2;
-            Dex = 1;
+            PhyDef = 4;        var bhp = document.getElementById("dhp");
+        var bmp = document.getElementById("dmp");
+        var bpa = document.getElementById("dpa");
+        var bpd = document.getElementById("dpd");
+        var bma = document.getElementById("dma");
+        var bmd = document.getElementById("dmd");
+        var bd = document.getElementById("dd");
+        var setname = document.getElementById("setname");
+        var UName = document.getElementById("UserName").value;
+
         }
         if (Charclass == "Rouge") {
             character.stats.dex = 3;
@@ -319,7 +325,6 @@
             character.name = document.getElementById("UserName").value;
             if (character.name != "") {
                 document.getElementById("name").innerHTML = character.name;
-                sessionStorage.setItem("UserName", character.name);
                 toggleButton();
             }
             else {
@@ -327,15 +332,19 @@
             }
         }
         function toggleButton() {
-
-            if (character.name != "" && Hp == 0 && Mp == 0 && PhyAtk == 0 && PhyDef == 0 && MagAtk == 0 && MagDef == 0 && Dex == 0) {
-                document.getElementById("mission").className = 'show';
+            if (character.name != ""
+                && Hp == 0 && Mp == 0 &&
+                PhyAtk == 0 && PhyDef == 0 &&
+                MagAtk == 0 && MagDef == 0 &&
+                Dex == 0) {
+                $('#mission').show();
                 $("#mission").on('click', (event) => {
                     $.ajax({
                         url: "/charactersheet",
                         type: "POST",
                         data: character,
-                        success: result => {
+                        success: (result) => {
+                            console.log(result)
                             window.location = "mission.html"
                         }
                     });

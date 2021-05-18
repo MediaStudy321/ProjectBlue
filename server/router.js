@@ -44,7 +44,7 @@ router.post('/charactersheet', async (req,res) => {
     }
 })
 
-router.post('/getcharacter', async (req,res) => {
+router.get('/getcharacter', async (req,res) => {
     try {
         let user = await User.findOne( {username: req.session.username})
         res.send(user.character);
@@ -52,6 +52,27 @@ router.post('/getcharacter', async (req,res) => {
     }
     catch(e){
 
+    }
+})
+
+router.post('/characterupdates', async(req, res)=>{
+    try {
+        User.findOne({username: req.session.username},(error, result)=>{
+            if(error) {
+                console.log(error);
+                res.send('ERROR');
+            }
+            else if(!result) res.send('ERROR');
+            else {
+                result.character = req.body;
+                result.save();
+                res.send('SUCCESS')
+            }
+        })
+    }
+    catch(e) {
+        console.log(e);
+        res.send('ERROR');
     }
 })
 
