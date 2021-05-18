@@ -91,6 +91,7 @@ const authenticated = function(req, res, next) {
     }
 }
 
+
 app.post('/register', async (req, res)=> {
     try {
         var hashedpass = await bcrypt.hash(req.body.password, 10);
@@ -124,7 +125,8 @@ app.post('/login', (req, res)=> {
                     req.session.isModerator = result.isModerator;
                     
                     //this still needs some tinkering
-                    if(req.body.character) {
+                    if(result.character) {
+                        req.session.character = result.character
                         res.redirect('/mission.html');
 
                     }
