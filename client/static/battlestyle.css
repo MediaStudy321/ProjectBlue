@@ -2,7 +2,7 @@
     background-color: grey;
     text-align: center;
     width: 100%;
-    font-size: 2em;
+    font-size: 1.5em;
 }
 #turnbar > tr {
     background-color: white;
@@ -26,7 +26,7 @@
 #monsterStats {
     background-color: black;
     width: auto;
-    font-size: 2em;
+    font-size: 1em;
     text-align: center;
     position: relative;
     margin-left:auto;
@@ -43,12 +43,13 @@
 }
 #controls {
     text-align: center;
+    bottom: auto
 }
 
 #heroStats {
     background-color: black;
     width: 100%;
-    font-size: 3em;
+    font-size: 1.5em;
 }
 
 #heroStats > tr {

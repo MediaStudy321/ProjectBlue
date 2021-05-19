@@ -69,7 +69,7 @@ $(async () => {
         loadequipments(element);
 
         loadskills(element);
-        
+
         element.move = intdice(element.stats.dex);
         console.log(element.name + " rolled a: " + element.move);
 
@@ -280,10 +280,10 @@ $(async () => {
                 player.exp += exppool;
                 battleStage = 'end';
                 $.ajax({
-					type: 'POST',
-					url: 'characterupdates',
-					data: player,
-				});
+                    type: 'POST',
+                    url: 'characterupdates',
+                    data: player,
+                });
                 break;
             case 'defeat':
                 window.alert('You lose!');
@@ -393,7 +393,7 @@ $(async () => {
 
         let img;
         if (hero.hp > 0) img = happyIcon; else img = deadIcon;
-        let avatar = "<img src = '" + img + "'/>";
+        let avatar = "<img src = '" + img + "' width = 250px height = 150px/>";
         $('#heroIcons').append(avatar);
     }
 
@@ -404,7 +404,7 @@ $(async () => {
             let img;
             if (enemy.hp > 0) img = enemy.img; else img = deadIcon;
             let id = 'monster_' + i;
-            let avatar = "<img id='" + id + "' src = '" + img + "'/>";
+            let avatar = "<img id='" + id + "' src = '" + img + "'width = 250px height = 150px/>";
             $('#monsters').append(avatar);
             $('#' + id).css('color', enemy.color);
             if (enemy.stance == "active") $('#' + id).css('text-decoration', 'underline');
@@ -553,11 +553,12 @@ $(async () => {
         var buttonvalue = 0;
 
         var wepname = hero.weapon.attackname;
-        if (hero.stance == 'ready') {
 
-            $('#attackbutton').on('click', () => {
+
+        $('#attackbutton').on('click', () => {
+            if (hero.stance == "active") {
                 hero.type = "physical"
-                $('#controls').html("<button id='basicattack' style='font-size: 0.9em;'>" + wepname +
+                $('#controls').html("<button id='basicattack'>" + wepname +
                     "</button> [Physical: + " + hero.weapon.phy_dmg +
                     " Damage ]<p>" + hero.weapon.discription + "</p>");
                 $('#basicattack').on('click', () => {
@@ -586,13 +587,15 @@ $(async () => {
                     }
 
                 })
+            }
 
-            })
+        })
 
-            $('#skillbutton').on('click', () => {
+        $('#skillbutton').on('click', () => {
+            if (hero.stance == "active") {
                 var skills = "";
                 hero.skill.forEach(element => {
-                    skills += "<button id='" + element.id + "' style='font-size: 0.9em;'' >" + element.name +
+                    skills += "<button id='" + element.id + "' >" + element.name +
                         "</button> [ " + element.type + ": + " + (element.damage * 100) + "% ] -- [ Cost: " +
                         element.cost + "] -- " + element.description + "</br>"
                 })
@@ -632,15 +635,21 @@ $(async () => {
                         }
                     })
                 })
-            })
-            $('#itembutton').on('click', () => {
-                alert("No Items!");
-            })
-            $('#escapebutton').on('click', () => {
-                alert("Escaped!")
+            }
+        })
+        $('#itembutton').on('click', () => {
+            if (hero.stance == "active") {
+                console.log("clicakble")
+                window.alert("No Items!");
+            }
+        })
+        $('#escapebutton').on('click', () => {
+            if (hero.stance == "active") {
+                window.alert("Escaped!")
                 window.location = "mission.html";
-            })
-        }
+            }
+        })
+
     }
 
     await load();
