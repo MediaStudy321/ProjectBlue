@@ -13,13 +13,14 @@
 			background-color: goldenrod;
 			font-family: 'Times New Roman', Times, serif;
 		}
+
 		#boxloc {
 			background-color: white;
 			position: absolute;
 			border: 5px solid black;
 			right: 0%;
 			top: 0%;
-			bottom: 0%;
+			bottom: auto;
 		}
 
 		#shift {
@@ -104,24 +105,30 @@
 			<p>Mag.Attack: <span id="ma">0</span> <button id="roll_ma" class="rollbutton">Roll For Stats</button></p>
 			<p>Mag.Defense: <span id="md">0</span> <button id="roll_md" class="rollbutton">Roll For Stats</button></p>
 			<p>Dexterity: <span id="d">0</span> <button id="roll_dex" class="rollbutton">Roll For Stats</button></p>
-			<br/>
+			<br />
 			<p id="statsrolls"></p>
 			<button id="freeexp">free lv up</button>
 		</div>
 
 		<div id="Skills & Talents" class="tabcontent">
-			<h5><a>Skills</a></h5>
+			<h3><a>Skills</a></h3>
 			<br />
 			<div id="skills"></div>
 		</div>
 
 		<div id="Equipment" class="tabcontent">
-			<p>Weapon: <a id="weapon"></a></p>
-			<p>Head: <a id="head"></a></p>
-			<p>Armor: <a id="armor"></a></p>
-			<p>Gloves: <a id="gloves"></a></p>
-			<p>Pants: <a id="pants"></a></p>
-			<p>Shoes: <a id="shoes"></a></p>
+			<h4>
+				<p>Weapon: </p>
+			</h4><a id="weapon"></a>
+			<h4>
+				<p>Head: </p>
+			</h4><a id="helmet"></a>
+			<h4>
+				<p>Armor: </p>
+			</h4><a id="armor"></a>
+			<h4>
+				<p>Pants: </p>
+			</h4><a id="pant"></a>
 		</div>
 
 		<div id="Inventory" class="tabcontent">
@@ -139,6 +146,7 @@
 
 	<script src="battle/skills.js"></script>
 	<script src="battle/gamestats.js"></script>
+	<script src="battle/equipments.js"></script>
 
 	<script>
 		function openProfile(evt, profileTab) {
@@ -168,10 +176,13 @@
 			window.location = "battle2.html"
 		}
 
+		var caplv = 20;
+		var capexp = 0;
 
 		$(() => {
 			var character = {
-				stats: {}
+				stats: {},
+				equipments: {}
 			};
 			$('#content').load("profile.html");
 
@@ -182,17 +193,25 @@
 						type: 'GET',
 						success: (data) => {
 							character = data;
+							console.log(data)
 							updateProfile();
+							loadEquipments();
+							loadskills();
+
+							checklevel(character)
 							console.log(character);
 						}
 					});
 				}
 				catch (e) { console.log(e) }
 			}
-
 			var updateProfile = () => {
-				$('#exp').html(character.exp);
+				capexp = Math.floor(Math.pow(10, 1 + ((character.level * 1.1) / 10)))
+				$('#exp').html(character.exp + " / " + capexp);
+				$('#class').html(character.class);
+				$('#lv').html(character.level);
 				// Stats tab
+				console.log(character.class)
 				$('#charname').html(character.name);
 				$('#hp').html(character.stats.max_hp);
 				$('#mp').html(character.stats.max_mp);
@@ -201,7 +220,8 @@
 				$('#ma').html(character.stats.magical_atk);
 				$('#md').html(character.stats.magical_def);
 				$('#d').html(character.stats.dex);
-				if(character.exp>0) {
+				$('#statsrolls').html("Stat Rolls: " + character.stats.roll);
+				if (character.stats.roll > 0) {
 					$('.rollbutton').show();
 				}
 				else {
@@ -223,60 +243,141 @@
 					url: 'characterupdates',
 					data: character,
 					success: (data) => {
-						if(data=='SUCCESS') updateProfile();
+						if (data == 'SUCCESS') updateProfile();
 						else location.reload();
 					}
 				});
 			}
-			
-			const increase = (stat)=> {
-				if(character.exp>0) {
+
+			const increase = (stat) => {
+				if (character.stats.roll > 0) {
 					let increase = statdice();
-					if(stat=='max_hp') increase++;
-					character.stats[stat]+=increase;
-					character.exp--;
+					character.stats[stat] += increase;
+					console.log(increase)
+					character.stats.roll--;
 					updateCharacter();
 				}
 				else updateProfile();
 			}
 
-			$('#roll_hp').click(()=>{increase('max_hp')});
-			$('#roll_mp').click(()=>{increase('max_mp');});
-			$('#roll_pa').click(()=>{increase('physical_atk');});
-			$('#roll_pd').click(()=>{increase('physical_def');});
-			$('#roll_ma').click(()=>{increase('magical_atk');});
-			$('#roll_md').click(()=>{increase('magical_def');});
-			$('#roll_dex').click(()=>{increase('dex');});
+			$('#roll_hp').click(() => { increase('max_hp') });
+			$('#roll_mp').click(() => { increase('max_mp'); });
+			$('#roll_pa').click(() => { increase('physical_atk'); });
+			$('#roll_pd').click(() => { increase('physical_def'); });
+			$('#roll_ma').click(() => { increase('magical_atk'); });
+			$('#roll_md').click(() => { increase('magical_def'); });
+			$('#roll_dex').click(() => { increase('dex'); });
 			/*tab functions*/
 			////////
 
-			var EQweapon = "Hands";
+			var weaponload = [];
+			var helmetload = [];
+			var armorload = [];
+			var pantload = [];
+
+			weaponload = weaponeq
+			helmetload = helmeteq
+			armorload = armoreq
+			pantload = panteq
 
 			function loadEquipments() {
-				if (sessionStorage.getItem("Weapon") == null || sessionStorage.getItem("Weapon") == "") {
-					sessionStorage.setItem("Weapon", EQweapon);
-				}
-				else {
-					EQweapon = (sessionStorage.getItem("Weapon"));
-				}
-				document.getElementById("weapon").innerHTML = EQweapon;
+				var weapondiscription = ''
+				var helmetdiscription = ''
+				var helmetdiscription = ''
+				var pantdiscription = ''
+
+				weaponload.forEach(element => {
+					if (character.equipments.weapon == element.name) {
+						weapondiscription = " - [ " + element.name + "] <br \> - [ Physical Damage: + " + element.phy_dmg + " ]  <br \> " +
+							" - [ Magical Damage: + " + element.mag_dmg + " ] <br \>" + " - [ Critical Chance: " +
+							element.crit + "% ] " + "<br \> - [ Attack: '" + element.attackname + "' ] <br \> - [ " + element.discription + " ]"
+					}
+				})
+				helmetload.forEach(element => {
+					if (character.equipments.helmet == element.name) {
+						helmetdiscription = " - [ " + element.name + "] <br \> - [ Physical Res: + " + element.phy_res + " ]  <br \> " +
+							" - [ Magical Res: + " + element.mag_res + " ] <br \>" + " - [ Critical Chance: " +
+							element.crit_dis + "% ] " + " <br \> - [ " + element.discription + " ]"
+					}
+				})
+				armorload.forEach(element => {
+					if (character.equipments.armor == element.name) {
+						armordiscription = " - [ " + element.name + "] <br \> - [ Physical Res: + " + element.phy_res + " ]  <br \> " +
+							" - [ Magical Res: + " + element.mag_res + " ] " + " <br \> - [ " + element.discription + " ]"
+					}
+				})
+				pantload.forEach(element => {
+					if (character.equipments.pant == element.name) {
+						pantdiscription = " - [ " + element.name + "] <br \> - [ Physical Res: + " + element.phy_res + " ]  <br \> " +
+							" - [ Magical Res: + " + element.mag_res + " ] " + "<br \> - [ Dexterity: + " +
+							element.dex + "% ] " + " <br \> - [ " + element.discription + " ]"
+					}
+				})
+
+				$('#weapon').html(weapondiscription);
+				$('#helmet').html(helmetdiscription);
+				$('#armor').html(armordiscription)
+				$('#pant').html(pantdiscription)
 			}
 
 			///// skills
 
-			function loadskills() {
-				var characterskills = [];
-				if (characterclass == "Mage") {
-					characterskills = mageskills;
-				}
-				else if (characterclass == "Warrior") {
-					characterskills = warskills;
-				}
-				else if (characterclass == "Rouge") {
-					characterskills = rouskills;
-				}
-				else if (characterclass == "Bard") {
+			var mageskilleq = mageskills
+			var warskilleq = warskills
+			var rouskilleq = rouskills
+			var bardskilleq = bardskills
 
+			function loadskills() {
+				var charskills = ""
+				if (character.class == "Mage") {
+					mageskilleq.forEach(element => {
+						if (character.level >= element.level) {
+							charskills += "[ " + element.name + " ] <br \> - [ Type: " + element.type + " ] <br \> - [ Power: " +
+								element.damage * 100 + "% ] <br \> - [ Cost: " + element.cost + " ] <br \> - [ Discription: " + element.description + " ] <br \> <br \>"
+						}
+					})
+				}
+				else if (character.class == "Warrior") {
+					warskilleq.forEach(element => {
+						if (character.level >= element.level) {
+							charskills += "[ " + element.name + " ] <br \> - [ Type: " + element.type + " ] <br \> - [ Power: " +
+								element.damage * 100 + "% ] <br \> - [ Cost: " + element.cost + " ] <br \> - [ Discription: " + element.description + " ] <br \> <br \>"
+						}
+					})
+				}
+				else if (character.class == "Rouge") {
+					rouskilleq.forEach(element => {
+						if (character.level >= element.level) {
+							charskills += "[ " + element.name + " ] <br \> - [ Type: " + element.type + " ] <br \> - [ Power: " +
+								element.damage * 100 + "% ] <br \> - [ Cost: " + element.cost + " ] <br \> - [ Discription: " + element.description + " ] <br \> <br \>"
+						}
+					})
+				}
+				else if (character.class == "Bard") {
+					bardskilleq.forEach(element => {
+						if (character.level >= element.level) {
+							charskills += "[ " + element.name + " ] <br \> - [ Type: " + element.type + " ] <br \> - [ Power: " +
+								element.damage * 100 + "% ] <br \> - [ Cost: " + element.cost + " ] <br \> - [ Discription: " + element.description + " ] <br \> <br \>"
+						}
+					})
+				}
+
+				$('#skills').html(charskills);
+			}
+
+			function checklevel(element) {
+				if (element.exp >= capexp && element.level < caplv) {
+					element.exp = element.exp - capexp;
+					element.level += 1;
+					element.stats.roll += 3;
+					element.stats.max_hp += 2;
+					element.stats.max_mp += 2;
+					element.stats.physical_atk += 1;
+					element.stats.physical_def += 1;
+					element.stats.magical_atk += 1;
+					element.stats.magical_def += 1;
+					element.stats.dex += 1;
+					updateCharacter();
 				}
 			}
 
@@ -284,9 +385,13 @@
 
 			///
 			/*dev Corner*/
-			$('#freeexp').on('click', (event)=>{
-				character.exp+=2;
+
+
+			$('#freeexp').on('click', (event) => {
+				character.exp += 10;
+				checklevel(character)
 				updateProfile();
+				updateCharacter();
 			});
 
 		});

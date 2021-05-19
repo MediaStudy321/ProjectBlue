@@ -7,7 +7,7 @@ const characterSchema = new mongoose.Schema({
     name:{
         type: String,
     },
-    characterclass: {
+    class: {
         type: String,
     }, 
     level: {
@@ -47,7 +47,30 @@ const characterSchema = new mongoose.Schema({
             type: Number,
             default: 0
         },
+        roll: {
+            type: Number,
+            default: 0
+        }
+    },
+    equipments: {
+        weapon: {
+            type: String,
+            default: 'Hands'
+        },
+        helmet: {
+            type: String,
+            default: "Skin"
+        },
+        armor: {
+            type: String,
+            default: "Skin"
+        },
+        pant:{
+            type: String,
+            default: "Skin"
+        }
     }
+    
 });
 
 const profileSchema = new mongoose.Schema({

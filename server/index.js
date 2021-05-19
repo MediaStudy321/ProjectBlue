@@ -125,7 +125,7 @@ app.post('/login', (req, res)=> {
                     req.session.isModerator = result.isModerator;
 
                     //this still needs some tinkering
-                    if(result.character.name) {
+                    if(result.character != null) {
                         res.redirect('/mission.html');
                     }
                     else {

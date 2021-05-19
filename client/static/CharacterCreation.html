@@ -48,8 +48,10 @@
 
     <script src="battle/gamestats.js"></script>
     <script>
+        var charclass = sessionStorage.getItem("Class")
         var character = {
             name: '',
+            class: '',
             level: 0,
             exp: 0,
             stats: {
@@ -59,27 +61,19 @@
                 physical_def: 0,
                 magical_atk: 0,
                 magical_def: 0,
-                dex: 0
+                dex: 0,
+                roll: 0
+            },
+            equipments: {
+                weapon: 'Hands',
+                helment: 'Skin',
+                armor: 'Skin',
+                pants: 'Skin',
             }
         }
-    
-        var Charclass = sessionStorage.getItem("Class");
-        sessionStorage.setItem("Level", character.level);
-        document.getElementById("class").innerHTML = "Class: " + Charclass;
-        var Hp, Mp, PhyAtk, PhyDef, MagAtk, MagDef, Dex;
-        var statroll = 0;
-        sessionStorage.setItem("statroll", statroll);
-        var bhp = document.getElementById("dhp");
-        var bmp = document.getElementById("dmp");
-        var bpa = document.getElementById("dpa");
-        var bpd = document.getElementById("dpd");
-        var bma = document.getElementById("dma");
-        var bmd = document.getElementById("dmd");
-        var bd = document.getElementById("dd");
-        var setname = document.getElementById("setname");
-        var UName = document.getElementById("UserName").value;
+        character.class = charclass;
 
-        if (Charclass == "Mage") {
+        if (character.class == "Mage") {
             character.stats.max_mp = 3;
             character.stats.magical_atk = 3;
             character.stats.max_hp = 3;
@@ -92,7 +86,7 @@
             Dex = 2;
 
         }
-        if (Charclass == "Warrior") {
+        if (character.class == "Warrior") {
             character.stats.max_hp = 3;
             character.stats.physical_atk = 3;
             character.stats.physical_def = 2;
@@ -100,18 +94,14 @@
             Hp = 6;
             Mp = 2;
             PhyAtk = 3;
-            PhyDef = 4;        var bhp = document.getElementById("dhp");
-        var bmp = document.getElementById("dmp");
-        var bpa = document.getElementById("dpa");
-        var bpd = document.getElementById("dpd");
-        var bma = document.getElementById("dma");
-        var bmd = document.getElementById("dmd");
-        var bd = document.getElementById("dd");
-        var setname = document.getElementById("setname");
-        var UName = document.getElementById("UserName").value;
+            PhyDef = 4;
+            MagAtk = 1;
+            MagDef = 2;
+            Dex = 1;
+
 
         }
-        if (Charclass == "Rouge") {
+        if (character.class == "Rouge") {
             character.stats.dex = 3;
             character.stats.physical_atk = 3;
             character.stats.max_hp = 2;
@@ -124,7 +114,7 @@
             MagDef = 2;
             Dex = 3;
         }
-        if (Charclass == "Bard") {
+        if (character.class == "Bard") {
             character.stats.max_hp = 2;
             character.stats.max_mp = 2;
             character.stats.physical_def = 2;
@@ -139,7 +129,21 @@
             Dex = 2;
         }
 
-        sessionStorage.setItem("exp", character.exp);
+        console.log(character.class)
+    
+        document.getElementById("class").innerHTML = "Class: " + character.class;
+        var Hp, Mp, PhyAtk, PhyDef, MagAtk, MagDef, Dex;
+        var statroll = 0;
+        sessionStorage.setItem("statroll", statroll);
+        var bhp = document.getElementById("dhp");
+        var bmp = document.getElementById("dmp");
+        var bpa = document.getElementById("dpa");
+        var bpd = document.getElementById("dpd");
+        var bma = document.getElementById("dma");
+        var bmd = document.getElementById("dmd");
+        var bd = document.getElementById("dd");
+        var setname = document.getElementById("setname");
+
         /*hp too little means you die too quickly*/
         function hpdice() {
             var dice = [2, 3, 4, 5];
@@ -154,6 +158,7 @@
         }
 
         bhp.onclick = function () {
+            console.log("click");
             var rolls = " - [Rolls: ";
             var hproll = 0;
             if (character.stats.max_hp > 0) {
@@ -173,11 +178,11 @@
             if (Hp == 0) {
                 document.getElementById("hp").innerHTML = character.stats.max_hp + rolls;
                 document.getElementById("dhp").style.display = "none";
-                sessionStorage.setItem("hp", character.stats.max_hp);
                 toggleButton();
             }
         }
         bmp.onclick = function () {
+            console.log("click");
             var rolls = " - [Rolls: ";
             var mproll = 0;
             if (character.stats.max_mp > 0) {
@@ -197,11 +202,11 @@
             if (Mp == 0) {
                 document.getElementById("mp").innerHTML = character.stats.max_mp + rolls;
                 document.getElementById("dmp").style.display = "none";
-                sessionStorage.setItem("mp", character.stats.max_mp);
                 toggleButton();
             }
         }
         bpa.onclick = function () {
+            console.log("click");
             var rolls = " - [Rolls: ";
             var paroll = 0;
             if (character.stats.physical_atk > 0) {
@@ -221,11 +226,11 @@
             if (PhyAtk == 0) {
                 document.getElementById("pa").innerHTML = character.stats.physical_atk + rolls;
                 document.getElementById("dpa").style.display = "none";
-                sessionStorage.setItem("pa", character.stats.physical_atk);
                 toggleButton();
             }
         }
         bpd.onclick = function () {
+            console.log("click");
             var rolls = " - [Rolls: ";
             var pdroll = 0;
             if (character.stats.physical_def > 0) {
@@ -245,11 +250,11 @@
             if (PhyDef == 0) {
                 document.getElementById("pd").innerHTML = character.stats.physical_def + rolls;
                 document.getElementById("dpd").style.display = "none";
-                sessionStorage.setItem("pd", character.stats.physical_def);
                 toggleButton();
             }
         }
         bma.onclick = function () {
+            console.log("click");
             var rolls = " - [Rolls: ";
             var maroll = 0;
             if (character.stats.magical_atk > 0) {
@@ -269,11 +274,11 @@
             if (MagAtk == 0) {
                 document.getElementById("ma").innerHTML = character.stats.magical_atk + rolls;
                 document.getElementById("dma").style.display = "none";
-                sessionStorage.setItem("ma", character.stats.magical_atk);
                 toggleButton();
             }
         }
         bmd.onclick = function () {
+            console.log("click");
             var rolls = " - [Rolls: ";
             var mdroll = 0;
             if (character.stats.magical_def > 0) {
@@ -293,11 +298,11 @@
             if (MagDef == 0) {
                 document.getElementById("md").innerHTML = character.stats.magical_def + rolls;
                 document.getElementById("dmd").style.display = "none";
-                sessionStorage.setItem("md", character.stats.magical_def);
                 toggleButton();
             }
         }
         bd.onclick = function () {
+            console.log("click");
             var rolls = " - [Rolls: ";
             var droll = 0;
             if (character.stats.dex > 0) {
@@ -317,7 +322,6 @@
             if (Dex == 0) {
                 document.getElementById("d").innerHTML = character.stats.dex + rolls;
                 document.getElementById("dd").style.display = "none";
-                sessionStorage.setItem("d", character.stats.dex);
                 toggleButton();
             }
         }

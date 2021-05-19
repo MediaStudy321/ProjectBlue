@@ -5,7 +5,7 @@ $(async () => {
     const deadIcon = "images/Dead.png";
     const timeout = 100000;
 
-    var party = [];
+    var player = [];
     var monster = [];
     var battleStage = "opening";
     var clockRunning = true;
@@ -36,32 +36,43 @@ $(async () => {
         return roll;
     }
 
-    function load() {
-        loadPlayer();
+    async function load() {
+        try {
+            await $.ajax({
+                url: '/getcharacter',
+                type: 'GET',
+                success: (data) => {
+                    player = data;
+                    loadPlayer(player);
+                }
+            });
+        }
+        catch (e) {
+            console.log(e);
+            window.alert("I'm sorry, the server is down!");
+        }
         loadMonster();
         if (turns.length == 0) {
             setturns();
         }
     }
 
-    function loadPlayer() {
-        party.push(player);
-        party.forEach(element => {
-            element.faction = 'party';
-            element.stance = 'waiting';
+    function loadPlayer(element) {
+        element.faction = 'party';
+        element.stance = 'waiting';
 
-            element.hp = element.max_hp;
-            element.mp = element.max_mp;
+        element.hp = element.stats.max_hp;
+        element.mp = element.stats.max_mp;
 
-            loadstatusELM(element)
+        loadstatusELM(element)
 
-            loadweapon(element);
+        loadequipments(element);
 
-            loadskills(element);
-            element.move = intdice(player.dex);
-            console.log(player.name + " rolled a: " + element.move);
+        loadskills(element);
+        
+        element.move = intdice(element.stats.dex);
+        console.log(element.name + " rolled a: " + element.move);
 
-        })
     }
 
 
@@ -97,12 +108,42 @@ $(async () => {
         hero.skill = skillarray;
     }
 
+    function loadequipments(element) {
+        var weaponusing = element.equipments.weapon
+        var wearhelment = element.equipments.helmet
+        var weararmor = element.equipments.armor
+        var wearpant = element.equipments.pant
+        var weap = 0;
+        while (weap < weaponeq.length) {
+            if (weaponusing == weaponeq[weap].name) {
+                element.weapon = weaponeq[weap];
+                console.log(element.weapon);
+                break;
+            }
+            else {
+                weap++;
+            }
+        }
+        var helm = 0
+        while (helm < helmeteq.length) {
+            if (weaponusing == helmeteq[helm].name) {
+                element.helmet = helmeteq[helm];
+                console.log(element.helmet);
+                break;
+            }
+            else {
+                helm++;
+            }
+        }
+    }
+    //for monsters
+
     function loadweapon(element) {
         var weaponusing = element.weaponname
         var a = 0;
-        while (a < weapons.length) {
-            if (weaponusing == weapons[a].name) {
-                element.weapon = weapons[a];
+        while (a < weaponeq.length) {
+            if (weaponusing == weaponeq[a].name) {
+                element.weapon = weaponeq[a];
                 console.log(element.weapon);
                 break;
             }
@@ -202,10 +243,7 @@ $(async () => {
             return sorted_actors;
         }
         var actors = [];
-        for (var a = 0; a < party.length; a++) {
-            actors.push(party[a]);
-
-        }
+        actors.push(player)
         for (var a = 0; a < monster.length; a++) {
             actors.push(monster[a]);
         }
@@ -239,14 +277,13 @@ $(async () => {
                 break;
             case 'victory':
                 window.alert('You win! \n Exp Gained: +' + exppool + '\n Gold Gained: +' + Math.floor(exppool * atkdice()));
-                var gainedexp = parseInt(sessionStorage.getItem("exp")) + exppool;
-                sessionStorage.setItem("exp", gainedexp)
+                player.exp += exppool;
                 battleStage = 'end';
-               /* $.ajax( {
-                    type : "POST",
-                    url : "/victory",
-                    data : "exp"
-                })*/
+                $.ajax({
+					type: 'POST',
+					url: 'characterupdates',
+					data: player,
+				});
                 break;
             case 'defeat':
                 window.alert('You lose!');
@@ -259,7 +296,7 @@ $(async () => {
                 break;
         }
         frames++;
-        heroStats(party);
+        heroStats(player);
     }
 
     var clockTicks = 0;
@@ -280,15 +317,13 @@ $(async () => {
         let partyActive = 0;
         let monstersActive = 0;
 
-        for (let i = 0; i < party.length; i++) {
-            if (party[i].hp > 0) {
-                partyActive++;
-                if (party[i] == turns[0]) {
-                    clockRunning = false;
-                    party[i].stance = 'ready';
-                    let reference = ['party', i]
-                    currentActors.push(reference);
-                }
+        if (player.hp > 0) {
+            partyActive++;
+            if (player == turns[0]) {
+                clockRunning = false;
+                player.stance = 'ready';
+                let reference = ['party']
+                currentActors.push(reference);
             }
         }
 
@@ -316,7 +351,7 @@ $(async () => {
         if (currentActors.length > 0) {
             let currentReference = currentActors[currentActors.length - 1];
             var current;
-            if (currentReference[0] == 'party') current = party[currentReference[1]];
+            if (currentReference[0] == 'party') current = player;
             else current = monster[currentReference[1]];
             console.log(current.stance);
             switch (current.stance) {
@@ -330,7 +365,7 @@ $(async () => {
                     console.log(current.name)
                     if (current.faction == "monster") {
                         current.type = "physical"
-                        doAttack(current, randomHero(), 1);
+                        doAttack(current, player, 1);
                     }
                     break;
                 case 'finished':
@@ -354,17 +389,12 @@ $(async () => {
 
     function displayHeroes() {
         $('#heroIcons').html('');
-        for (let i = 0; i < party.length; i++) {
-            let hero = party[i]
+        let hero = player
 
-            let img;
-            if (hero.hp > 0) img = happyIcon; else img = deadIcon;
-            let id = "hero_" + i;
-            let avatar = "<img id='" + id + "' src = '" + img + "'/>";;
-            $('#heroIcons').append(avatar);
-            $('#' + id).css('color', hero.color);
-            if (hero.stance == "active") $('#' + id).css('text-decoration', 'underline');
-        }
+        let img;
+        if (hero.hp > 0) img = happyIcon; else img = deadIcon;
+        let avatar = "<img src = '" + img + "'/>";
+        $('#heroIcons').append(avatar);
     }
 
     function displayEnemies() {
@@ -414,13 +444,11 @@ $(async () => {
     }
     function heroStats() {
         $('#heroStats').html('');
-        party.forEach(element => {
-            let stats = "<tr><th>" + element.name + "</th><td style='width:70%'>" + element.status + " "
-                + element.statusturn + "</td><td style = 'text-align: center;'>" + element.stance + "</td></tr>" +
-                "<tr><td>HP: [ " + element.hp + " / " + element.max_hp + " ] </br> " +
-                "MP: [ " + element.mp + " / " + element.max_mp + " ]</td><td><td><tr>"
-            $('#heroStats').append(stats);
-        });
+        let stats = "<tr><th>" + player.name + "</th><td style='width:70%'>" + player.status + " "
+            + player.statusturn + "</td><td style = 'text-align: center;'>" + player.stance + "</td></tr>" +
+            "<tr><td>HP: [ " + player.hp + " / " + player.stats.max_hp + " ] </br> " +
+            "MP: [ " + player.mp + " / " + player.stats.max_mp + " ]</td><td><td><tr>"
+        $('#heroStats').append(stats);
         monstats();
     }
     function monstats() {
@@ -438,7 +466,13 @@ $(async () => {
 
     }
     function doAttack(attacker, defender, damagemod) {
-        var dmgnum = damage(defender, attacker, damagemod)
+        var dmgnum = 0;
+        if (attacker.faction == 'monster') {
+            dmgnum = monsterdamage(defender, attacker, damagemod)
+        }
+        else {
+            dmgnum = playerdamage(defender, attacker, damagemod)
+        }
         if (defender.hp <= 0) {
             $('#banner').html(attacker.name + ' slays ' + defender.name + '!');
             defender.stance = 'fainted';
@@ -451,20 +485,50 @@ $(async () => {
         else $('#banner').html(attacker.name + ' attacks ' + defender.name + ' for ' + dmgnum + ' damage.');
         attacker.stance = 'finished';
     }
-    function damage(defender, attacker, damagemod) {
+    function playerdamage(defender, attacker, damagemod) {
         var roll = atkdice();
         var dmg = 0;
         var crit = attacker.weapon.crit_chance[Math.floor(Math.random() * attacker.weapon.crit_chance.length)]
         console.log("crit: " + crit + " roll: " + roll);
         if (attacker.type == "physical") {
             console.log("physical dmg")
-            dmg = (((attacker.phy_atk * damagemod) + attacker.weapon.phy_dmg) * roll - defender.phy_def)
+            dmg = (((attacker.stats.physical_atk * damagemod) + attacker.weapon.phy_dmg) * roll - defender.phy_def)
             if (crit == 1) {
                 dmg = Math.floor(dmg * 1.5);
             }
         }
         else if (attacker.type == "magical") {
-            dmg = (((attacker.mag_atk * damagemod) + attacker.weapon.mag_dmg) * roll - defender.mag_def)
+            dmg = (((attacker.stats.magical_atk * damagemod) + attacker.weapon.mag_dmg) * roll - defender.mag_def)
+            if (crit == 1) {
+                dmg = Math.floor(dmg * 1.5);
+            }
+        }
+        if (dmg < 1) {
+            dmg = 1;
+        }
+        dmg = Math.floor(dmg)
+        console.log("damage: " + dmg);
+        defender.hp -= dmg;
+        console.log("hp: " + defender.hp)
+        if (defender.hp < 0) {
+            defender.hp = 0;
+        }
+        return dmg;
+    }
+    function monsterdamage(defender, attacker, damagemod) {
+        var roll = atkdice();
+        var dmg = 0;
+        var crit = attacker.weapon.crit_chance[Math.floor(Math.random() * attacker.weapon.crit_chance.length)]
+        console.log("crit: " + crit + " roll: " + roll);
+        if (attacker.type == "physical") {
+            console.log("physical dmg")
+            dmg = (((attacker.phy_atk * damagemod) + attacker.weapon.phy_dmg) * roll - defender.stats.physical_def)
+            if (crit == 1) {
+                dmg = Math.floor(dmg * 1.5);
+            }
+        }
+        else if (attacker.type == "magical") {
+            dmg = (((attacker.mag_atk * damagemod) + attacker.weapon.mag_dmg) * roll - defender.stats.magical_def)
             if (crit == 1) {
                 dmg = Math.floor(dmg * 1.5);
             }
@@ -577,11 +641,6 @@ $(async () => {
                 window.location = "mission.html";
             })
         }
-    }
-
-    function randomHero() {
-        let choice = Math.floor(Math.random() * party.length);
-        return party[choice];
     }
 
     await load();
