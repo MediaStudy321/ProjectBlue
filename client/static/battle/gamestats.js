@@ -1,20 +1,3 @@
-var player = {
-    name: sessionStorage.getItem("UserName"),
-    class: sessionStorage.getItem("Class"),
-    level: sessionStorage.getItem("Level"),
-    exp: sessionStorage.getItem("exp"),
-    max_hp: sessionStorage.getItem("hp"),
-    max_mp: sessionStorage.getItem("mp"),
-    phy_atk: sessionStorage.getItem("pa"),
-    phy_def: sessionStorage.getItem("pd"),
-    mag_atk: sessionStorage.getItem("ma"),
-    mag_def: sessionStorage.getItem("md"),
-    dex: sessionStorage.getItem("d"),
-    weaponname: sessionStorage.getItem("Weapon"),
-    icon: '&#9752;',
-    color: 'blue'
-}
-
 var mobs = {
     Goblin: {
         name: 'Goblin',

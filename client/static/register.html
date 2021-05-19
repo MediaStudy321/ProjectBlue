@@ -1,55 +1,61 @@
 <html>
-    <head>
-        <title>Create an account</title>
-        <link rel=stylesheet type=text/css href="stylesheet.css">
-    </head>
-    <body>
-        <style>
-            body {
-              background-color: goldenrod;
-            }
-          </style>
-        
-        <div id="content">
-            <h1 align="center">Create Your Account</h1>
-            <br/><br/>
 
-            <form method="post" action="/register">
-                <table align="center">
-                    <tr>
-                        <td>Username: </td>
-                        <td><input type="text" name="username" id="username"/></td>
-                    </tr>
-                    <tr>
-                        <td>Password: </td>
-                        <td><input type="password" name="password" id="password"/></td>
-                    </tr>
-                    <tr>
-                        <td>Confirm Password: </td>
-                        <td><input type="password" id="confirmpassword"/></td>
-                    </tr>
-                    <tr>
-                        <td colespan="2">
-                            <button type="submit" id="register" enabled>Register</button>
-                        </td>
-                    </tr>
-                </table>
-            </form>
-        </div>
+<head>
+    <title>Create an account</title>
+    <link rel=stylesheet type=text/css href="stylesheet.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+</head>
 
-        <script>
-            $(()=> {
-                $('input').on('keyup', ()=> {
-                    if($('#password').val()==$('#confirmpassword').val() && $('#username').val()!="" && $('#password')!="") {
-                        console.log($('#username').val());
-                        $('#register').prop('disabled', true);
-                    }
-                    else {  
-                        $('#register').prop('disabled', false);
-                    }
-                })
-            });
-        </script>
+<body>
+    <style>
+        body {
+            background-color: goldenrod;
+        }
+    </style>
 
-    </body>
+    <div id="content">
+        <h1 align="center">Create Your Account</h1>
+        <br /><br />
+
+        <form method="post" action="/register">
+            <table align="center">
+                <tr>
+                    <td>Username: </td>
+                    <td><input type="text" name="username" id="username" /></td>
+                </tr>
+                <tr>
+                    <td>Password: </td>
+                    <td><input type="password" name="password" id="password" /></td>
+                </tr>
+                <tr>
+                    <td>Confirm Password: </td>
+                    <td><input type="password" id="confirmpassword" /></td>
+                </tr>
+                <tr>
+                    <td colespan="2">
+                        <button type="submit" id="register" enabled>Register</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <script>
+        $(() => {
+            $('input').on('keyup', () => {
+                if (($('#password').val() == $('#confirmpassword').val()) && $('#username').val() != "" && $('#password') != "") {
+                    console.log($('#username').val());
+                    $('#register').prop('disabled', false);
+                }
+                else {
+                    $('#register').prop('disabled', true);
+                }
+            })
+        });
+    </script>
+
+</body>
+
 </html>

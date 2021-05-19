@@ -4,55 +4,399 @@
 	<title>Choose your Mission</title>
 	<!-- This if used for displaying profile in mission-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script>
-	$(document).ready(function(){
-	
-	$('#content').load("profile.html");
-
-	});
-	//sessionStorage.setItem("entering","true");
-
-	</script>
-
 	<link rel=stylesheet type=text/css href="stylesheet.css">
-
 </head>
 
 <body>
 	<style>
 		body {
-		  background-color: goldenrod;
+			background-color: goldenrod;
+			font-family: 'Times New Roman', Times, serif;
 		}
-	  </style>
+
+		#boxloc {
+			background-color: white;
+			position: absolute;
+			border: 5px solid black;
+			right: 0%;
+			top: 0%;
+			bottom: auto;
+		}
+
+		#shift {
+			position: relative;
+			left: 3%;
+		}
+
+		/*style*/
+		.tab {
+			overflow: hidden;
+			border: 1px solid gray;
+			background-color: white;
+		}
+
+		.tab button {
+			background-color: inherit;
+			float: left;
+			border: 1px solid gray;
+			outline: none;
+			cursor: pointer;
+			padding: 14px 16px;
+			transition: 0.5s;
+			font-size: 12;
+		}
+
+		.tab button:hover {
+			background-color: gray;
+		}
+
+		.tab button.active {
+			background-color: red;
+		}
+
+		.tabcontent {
+			display: none;
+			padding: 6px 12px;
+			border: 1px solid grey;
+			border-top: none;
+		}
+
+		.hidden {
+			display: none;
+		}
+
+		.show {
+			display: inline;
+		}
+	</style>
 
 	<div id="mainpanel">
-Welcome to Town! Stock up on supplies at the store or Vote on a mission to start with your party!
+		Welcome to Town! Stock up on supplies at the store or Vote on a mission to start with your party!
 
-<ol>
-	<li><button><a href="store.html">Store</a></button></li>
-	<li><button id="forest">Forest</button></li>
-	<li><button id="cave">Caves</button></li>
-	<li><button id="mountain">Mountain</button></li>
+		<ol>
+			<li><button><a href="store.html">Store</a></button></li>
+			<li><button id="forest">Forest</button></li>
+			<li><button id="cave">Caves</button></li>
+			<li><button id="mountain">Mountain</button></li>
 
-</ol>
-</div>
+		</ol>
+	</div>
+	<div id="boxloc">
+		<div id="shift">
+			<h1 id="charname"></h1>
+			<h3> Class: <a id="class"></a></h3>
+			<h3> Lv: <a id="lv"></a></h3>
+			<h5> Exp: <a id="exp"></a></h5>
+		</div>
 
-<script>
-	document.getElementById("forest").onclick = function(){
-		sessionStorage.setItem("map","forest")
-		window.location = "battle2.html"
-	}
-	document.getElementById("cave").onclick = function(){
-		sessionStorage.setItem("map","cave")
-		window.location = "battle2.html"
-	}
-	document.getElementById("mountain").onclick = function(){
-		sessionStorage.setItem("map","mountain")
-		window.location = "battle2.html"
-	}
-</script>
+		<div class="tab">
+			<button class="tablinks" onclick="openProfile(event, 'Stats')">Stats</button>
+			<button class="tablinks" onclick="openProfile(event, 'Skills & Talents')">Skills & Talents</button>
+			<button class="tablinks" onclick="openProfile(event, 'Equipment')">Equipment</button>
+			<button class="tablinks" onclick="openProfile(event, 'Inventory')">Inventory</button>
+			<button class="tablinks" onclick="openProfile(event, 'Quest')">Quest</button>
+		</div>
 
-<div id = "content"></div>
+		<div id="Stats" class="tabcontent">
+			<p>Health: <span id="hp">0</span> <button id="roll_hp" class="rollbutton">Roll For Stats</button></p>
+			<p>Mana: <span id="mp">0</span> <button id="roll_mp" class="rollbutton">Roll For Stats</button></p>
+			<p>Phy.Attack: <span id="pa">0</span> <button id="roll_pa" class="rollbutton">Roll For Stats</button></p>
+			<p>Phy.Defense: <span id="pd">0</span> <button id="roll_pd" class="rollbutton">Roll For Stats</button></p>
+			<p>Mag.Attack: <span id="ma">0</span> <button id="roll_ma" class="rollbutton">Roll For Stats</button></p>
+			<p>Mag.Defense: <span id="md">0</span> <button id="roll_md" class="rollbutton">Roll For Stats</button></p>
+			<p>Dexterity: <span id="d">0</span> <button id="roll_dex" class="rollbutton">Roll For Stats</button></p>
+			<br />
+			<p id="statsrolls"></p>
+			<button id="freeexp" class="hidden">free lv up</button>
+		</div>
+
+		<div id="Skills & Talents" class="tabcontent">
+			<h3><a>Skills</a></h3>
+			<br />
+			<div id="skills"></div>
+		</div>
+
+		<div id="Equipment" class="tabcontent">
+			<h4>
+				<p>Weapon: </p>
+			</h4><a id="weapon"></a>
+			<h4>
+				<p>Head: </p>
+			</h4><a id="helmet"></a>
+			<h4>
+				<p>Armor: </p>
+			</h4><a id="armor"></a>
+			<h4>
+				<p>Pants: </p>
+			</h4><a id="pant"></a>
+		</div>
+
+		<div id="Inventory" class="tabcontent">
+			<p>10 Gold Coins</p>
+			<p>Beaten Up Backpack</p>
+			<p>Small Canteen</p>
+		</div>
+
+		<div id="Quest" class="tabcontent">
+			<p>Your party has tracked down Lord Superius to his underground lair, but a magic forcefield blocks its
+				entrance. You must find a way to bring down the forcefield in order to retrieve the Eternal Stone.</p>
+		</div>
+	</div>
+
+
+	<script src="battle/skills.js"></script>
+	<script src="battle/gamestats.js"></script>
+	<script src="battle/equipments.js"></script>
+
+	<script>
+		function openProfile(evt, profileTab) {
+			var i, tabcontent, tablinks;
+			tabcontent = document.getElementsByClassName("tabcontent");
+			for (i = 0; i < tabcontent.length; i++) {
+				tabcontent[i].style.display = "none";
+			}
+			tablinks = document.getElementsByClassName("tablinks");
+			for (i = 0; i < tablinks.length; i++) {
+				tablinks[i].className = tablinks[i].className.replace(" active", "");
+			}
+			document.getElementById(profileTab).style.display = "block";
+			evt.currentTarget.className += " active";
+		}
+
+		document.getElementById("forest").onclick = function () {
+			sessionStorage.setItem("map", "forest")
+			window.location = "battle2.html"
+		}
+		document.getElementById("cave").onclick = function () {
+			sessionStorage.setItem("map", "cave")
+			window.location = "battle2.html"
+		}
+		document.getElementById("mountain").onclick = function () {
+			sessionStorage.setItem("map", "mountain")
+			window.location = "battle2.html"
+		}
+
+		var caplv = 20;
+		var capexp = 0;
+
+		$(() => {
+			var character = {
+				stats: {},
+				equipments: {}
+			};
+			$('#content').load("profile.html");
+
+			const load = async () => {
+				try {
+					await $.ajax({
+						url: '/getcharacter',
+						type: 'GET',
+						success: (data) => {
+							character = data;
+							console.log(data)
+							updateProfile();
+							loadEquipments();
+							loadskills();
+
+							checklevel(character)
+							console.log(character);
+						}
+					});
+				}
+				catch (e) { console.log(e) }
+			}
+			var updateProfile = () => {
+				capexp = Math.floor(Math.pow(10, 1 + ((character.level * 1.1) / 10)))
+				$('#exp').html(character.exp + " / " + capexp);
+				$('#class').html(character.class);
+				$('#lv').html(character.level);
+				// Stats tab
+				console.log(character.class)
+				$('#charname').html(character.name);
+				$('#hp').html(character.stats.max_hp);
+				$('#mp').html(character.stats.max_mp);
+				$('#pa').html(character.stats.physical_atk);
+				$('#pd').html(character.stats.physical_def);
+				$('#ma').html(character.stats.magical_atk);
+				$('#md').html(character.stats.magical_def);
+				$('#d').html(character.stats.dex);
+				$('#statsrolls').html("Stat Rolls: " + character.stats.roll);
+				if (character.stats.roll > 0) {
+					$('.rollbutton').show();
+				}
+				else {
+					$('.rollbutton').hide();
+				}
+			}
+
+			load();
+
+			function statdice() {
+				var dice = [1, 2, 3];
+				var roll = dice[Math.floor(Math.random() * dice.length)];
+				return roll;
+			}
+
+			const updateCharacter = () => {
+				$.ajax({
+					type: 'POST',
+					url: 'characterupdates',
+					data: character,
+					success: (data) => {
+						if (data == 'SUCCESS') updateProfile();
+						else location.reload();
+					}
+				});
+			}
+
+			const increase = (stat) => {
+				if (character.stats.roll > 0) {
+					let increase = statdice();
+					character.stats[stat] += increase;
+					console.log(increase)
+					character.stats.roll--;
+					updateCharacter();
+				}
+				else updateProfile();
+			}
+
+			$('#roll_hp').click(() => { increase('max_hp') });
+			$('#roll_mp').click(() => { increase('max_mp'); });
+			$('#roll_pa').click(() => { increase('physical_atk'); });
+			$('#roll_pd').click(() => { increase('physical_def'); });
+			$('#roll_ma').click(() => { increase('magical_atk'); });
+			$('#roll_md').click(() => { increase('magical_def'); });
+			$('#roll_dex').click(() => { increase('dex'); });
+			/*tab functions*/
+			////////
+
+			var weaponload = [];
+			var helmetload = [];
+			var armorload = [];
+			var pantload = [];
+
+			weaponload = weaponeq
+			helmetload = helmeteq
+			armorload = armoreq
+			pantload = panteq
+
+			function loadEquipments() {
+				var weapondiscription = ''
+				var helmetdiscription = ''
+				var helmetdiscription = ''
+				var pantdiscription = ''
+
+				weaponload.forEach(element => {
+					if (character.equipments.weapon == element.name) {
+						weapondiscription = " - [ " + element.name + "] <br \> - [ Physical Damage: + " + element.phy_dmg + " ]  <br \> " +
+							" - [ Magical Damage: + " + element.mag_dmg + " ] <br \>" + " - [ Critical Chance: " +
+							element.crit + "% ] " + "<br \> - [ Attack: '" + element.attackname + "' ] <br \> - [ " + element.discription + " ]"
+					}
+				})
+				helmetload.forEach(element => {
+					if (character.equipments.helmet == element.name) {
+						helmetdiscription = " - [ " + element.name + "] <br \> - [ Physical Res: + " + element.phy_res + " ]  <br \> " +
+							" - [ Magical Res: + " + element.mag_res + " ] <br \>" + " - [ Critical Chance: " +
+							element.crit_dis + "% ] " + " <br \> - [ " + element.discription + " ]"
+					}
+				})
+				armorload.forEach(element => {
+					if (character.equipments.armor == element.name) {
+						armordiscription = " - [ " + element.name + "] <br \> - [ Physical Res: + " + element.phy_res + " ]  <br \> " +
+							" - [ Magical Res: + " + element.mag_res + " ] " + " <br \> - [ " + element.discription + " ]"
+					}
+				})
+				pantload.forEach(element => {
+					if (character.equipments.pant == element.name) {
+						pantdiscription = " - [ " + element.name + "] <br \> - [ Physical Res: + " + element.phy_res + " ]  <br \> " +
+							" - [ Magical Res: + " + element.mag_res + " ] " + "<br \> - [ Dexterity: + " +
+							element.dex + "% ] " + " <br \> - [ " + element.discription + " ]"
+					}
+				})
+
+				$('#weapon').html(weapondiscription);
+				$('#helmet').html(helmetdiscription);
+				$('#armor').html(armordiscription)
+				$('#pant').html(pantdiscription)
+			}
+
+			///// skills
+
+			var mageskilleq = mageskills
+			var warskilleq = warskills
+			var rouskilleq = rouskills
+			var bardskilleq = bardskills
+
+			function loadskills() {
+				var charskills = ""
+				if (character.class == "Mage") {
+					mageskilleq.forEach(element => {
+						if (character.level >= element.level) {
+							charskills += "[ " + element.name + " ] <br \> - [ Type: " + element.type + " ] <br \> - [ Power: " +
+								element.damage * 100 + "% ] <br \> - [ Cost: " + element.cost + " ] <br \> - [ Discription: " + element.description + " ] <br \> <br \>"
+						}
+					})
+				}
+				else if (character.class == "Warrior") {
+					warskilleq.forEach(element => {
+						if (character.level >= element.level) {
+							charskills += "[ " + element.name + " ] <br \> - [ Type: " + element.type + " ] <br \> - [ Power: " +
+								element.damage * 100 + "% ] <br \> - [ Cost: " + element.cost + " ] <br \> - [ Discription: " + element.description + " ] <br \> <br \>"
+						}
+					})
+				}
+				else if (character.class == "Rouge") {
+					rouskilleq.forEach(element => {
+						if (character.level >= element.level) {
+							charskills += "[ " + element.name + " ] <br \> - [ Type: " + element.type + " ] <br \> - [ Power: " +
+								element.damage * 100 + "% ] <br \> - [ Cost: " + element.cost + " ] <br \> - [ Discription: " + element.description + " ] <br \> <br \>"
+						}
+					})
+				}
+				else if (character.class == "Bard") {
+					bardskilleq.forEach(element => {
+						if (character.level >= element.level) {
+							charskills += "[ " + element.name + " ] <br \> - [ Type: " + element.type + " ] <br \> - [ Power: " +
+								element.damage * 100 + "% ] <br \> - [ Cost: " + element.cost + " ] <br \> - [ Discription: " + element.description + " ] <br \> <br \>"
+						}
+					})
+				}
+
+				$('#skills').html(charskills);
+			}
+
+			function checklevel(element) {
+				if (element.exp >= capexp && element.level < caplv) {
+					element.exp = element.exp - capexp;
+					element.level += 1;
+					element.stats.roll += 3;
+					element.stats.max_hp += 2;
+					element.stats.max_mp += 2;
+					element.stats.physical_atk += 1;
+					element.stats.physical_def += 1;
+					element.stats.magical_atk += 1;
+					element.stats.magical_def += 1;
+					element.stats.dex += 1;
+					updateCharacter();
+				}
+			}
+
+
+
+			///
+			/*dev Corner*/
+
+
+			$('#freeexp').on('click', (event) => {
+				character.exp += 10;
+				checklevel(character)
+				updateProfile();
+				updateCharacter();
+			});
+
+		});
+	</script>
 
 </body>
+
 </html>
