@@ -76,8 +76,12 @@
 		<ol>
 			<li><button><a href="store.html">Store</a></button></li>
 			<li><button id="forest">Forest</button></li>
-			<li><button id="cave">Caves</button></li>
-			<li><button id="mountain">Mountain</button></li>
+			<li><button id="cave" class="Area2">Caves</button></li>
+			<li><button id="mountain" class="Area3">Mountain</button></li>
+			<li><button id="ks" class="Boss1">The One that Devours all</button></li>
+			<li><button id="gd" class="Boss2">Awakening of the Ancient Being</button></li>
+			<li><button id="mks" class="Boss3">Return of the Glutton</button></li>
+			<li><button id="emer" class="Boss4">The Undeflectable</button></li>
 
 		</ol>
 	</div>
@@ -107,7 +111,7 @@
 			<p>Dexterity: <span id="d">0</span> <button id="roll_dex" class="rollbutton">Roll For Stats</button></p>
 			<br />
 			<p id="statsrolls"></p>
-			<button id="freeexp" class="hidden">free lv up</button>
+			<button id="freeexp" >free lv up</button>
 		</div>
 
 		<div id="Skills & Talents" class="tabcontent">
@@ -139,7 +143,10 @@
 
 		<div id="Quest" class="tabcontent">
 			<p>Your party has tracked down Lord Superius to his underground lair, but a magic forcefield blocks its
-				entrance. You must find a way to bring down the forcefield in order to retrieve the Eternal Stone.</p>
+				<br \>
+				entrance. You must find a way to bring down the forcefield in order to retrieve the Eternal Stone.
+			</p>
+			<p id="quest_marking"></p>
 		</div>
 	</div>
 
@@ -149,6 +156,8 @@
 	<script src="battle/equipments.js"></script>
 
 	<script>
+
+		var bosspick = ""
 		function openProfile(evt, profileTab) {
 			var i, tabcontent, tablinks;
 			tabcontent = document.getElementsByClassName("tabcontent");
@@ -165,14 +174,17 @@
 
 		document.getElementById("forest").onclick = function () {
 			sessionStorage.setItem("map", "forest")
+			sessionStorage.setItem("boss", bosspick)
 			window.location = "battle2.html"
 		}
 		document.getElementById("cave").onclick = function () {
 			sessionStorage.setItem("map", "cave")
+			sessionStorage.setItem("boss", bosspick)
 			window.location = "battle2.html"
 		}
 		document.getElementById("mountain").onclick = function () {
 			sessionStorage.setItem("map", "mountain")
+			sessionStorage.setItem("boss", bosspick)
 			window.location = "battle2.html"
 		}
 
@@ -181,6 +193,7 @@
 
 		$(() => {
 			var character = {
+				stages: {},
 				stats: {},
 				equipments: {}
 			};
@@ -197,7 +210,7 @@
 							updateProfile();
 							loadEquipments();
 							loadskills();
-
+							loadmissions();
 							checklevel(character)
 							console.log(character);
 						}
@@ -303,7 +316,8 @@
 				armorload.forEach(element => {
 					if (character.equipments.armor == element.name) {
 						armordiscription = " - [ " + element.name + "] <br \> - [ Physical Res: + " + element.phy_res + " ]  <br \> " +
-							" - [ Magical Res: + " + element.mag_res + " ] " + " <br \> - [ " + element.discription + " ]"
+							" - [ Magical Res: + " + element.mag_res + " ] " + " <br \> - [ 'Hp: '" + element.bonus_hp + " ]"
+							+ " <br \> - [ " + element.discription + " ]"
 					}
 				})
 				pantload.forEach(element => {
@@ -370,16 +384,107 @@
 					element.exp = element.exp - capexp;
 					element.level += 1;
 					element.stats.roll += 3;
-					element.stats.max_hp += 2;
-					element.stats.max_mp += 2;
-					element.stats.physical_atk += 1;
-					element.stats.physical_def += 1;
-					element.stats.magical_atk += 1;
-					element.stats.magical_def += 1;
-					element.stats.dex += 1;
+					element.stats.max_hp += 3;
+					element.stats.max_mp += 3;
+					element.stats.physical_atk += 2;
+					element.stats.physical_def += 2;
+					element.stats.magical_atk += 2;
+					element.stats.magical_def += 2;
+					element.stats.dex += 2;
 					updateCharacter();
+					window.location = "mission.html"
 				}
 			}
+
+
+			function loadmissions() {
+				$('.Area2').hide()
+				$('.Area3').hide()
+				$('.Boss1').hide();
+				$('.Boss2').hide();
+				$('.Boss3').hide()
+				$('.Boss4').hide()
+				if (character.stages.forest < 5) {
+					$('#quest_marking').html("Go into the Forest and look around for clues on how to crack open the forcefield <br \>" +
+						"Forest: [ " + (5 - character.stages.forest) + " ] quest remaining")
+				}
+				if (character.stages.forest > 4 && character.stages.kingslime == 0) {
+					$('#quest_marking').html("We have a found a lead to how to bring down the forcefield. But, it looks like <br \>" +
+					" we are blocked off by a ravenous creature! " + character.name + " join the fight and help us defeat that monster! <br \>" +
+					"Defeat King Slime")
+					$('.Boss1').show();
+				}
+				if (character.stages.kingslime > 0) {
+					$('#quest_marking').html( character.name + " apperantly, the clues lies in defeating those powerful creatures. <br \>" + 
+					" We found more of those same level of energy in a cave not too far from here. Go there and find the source. <br \>" + 
+					"Cave: [ " + (5 -  character.stages.cave) + " ] quest remaining")
+					$('.Boss1').hide();
+					$('.Area2').show();
+				}
+				if (character.stages.cave > 4 && character.stages.greendragon == 0) {
+					$('#quest_marking').html("This fool of a Wizard attact the core crystal fragment onto a sleeping ancient dragon. <br \>" +
+					" Its awakening almost wiped out the majoroty of the scouting party. " + character.name + " Go and defeat the dragon. <br \>" +
+					" Apperntly you are the only usful adventure here. <br \>" +
+					"Defeat the Ancient Dragon." )
+					$('.Boss2').show();
+				}
+				if (character.stages.greendragon > 0) {
+					$('#quest_marking').html("Okay I am cutting to the chase, our next energy source reader is in the mountains. <br \>" + 
+					"You know the drill by now, go. <br \>" +
+					"Mountain: [ " + (5 - character.stages.mountain) + " ] quest remaining")
+					$('.Boss2').hide();
+					$('.Area3').show()
+				}
+				if (character.stages.mountain > 4 && character.stages.mechaking == 0) {
+					$('#quest_marking').html("Apperntly this fool has a engineering and bio medical degree. He brought back the <br \>" + 
+					"Big Slime from the forest and planting a core fragment in it. " + character.name + " you know the drill by now. <br \>" +
+					"Put him back in the grave. Defeated it once, can't be too hard the second time, right? <br \>" + 
+					"Defeat Mecha King Slime")
+					$('.Boss3').show()
+				}
+				if (character.stages.mechaking > 0 && character.stages.finalboss == 0) {
+					$('#quest_marking').html("Looks like he finally appeared and is really angry. Well, I don't have to say it but, get ready <br \>" +
+					"To fight but there isn't really much prepping... anyways, good luck! <br \>" +
+					"Defeat the Wizard")
+					$('.Boss3').hide();
+					$('.Boss4').show()
+				}
+				if (character.stages.finalboss > 0) {
+					$('#Quest').html("Well, they all came back as a simulator...wait, am I in a simulation? What is this? <br \> Why is everytime so empty?" + 
+					"I have some mad lazy creators... anyways, enjoy whatever is left of the game. <br \> Thanks for playing!")
+					$('.Boss1').show();
+					$('.Boss2').show();
+					$('.Boss3').show()
+					$('.Boss4').show()
+				}
+			}
+
+
+
+			$('#ks').click(() => {
+				bosspick = "KingSlime"
+				sessionStorage.setItem("boss", bosspick)
+				sessionStorage.setItem("map", "forest")
+				window.location = "battle2.html"
+			});
+			$('#gd').click(() => {
+				bosspick = "Dragon"
+				sessionStorage.setItem("boss", bosspick)
+				sessionStorage.setItem("map", "cave")
+				window.location = "battle2.html"
+			});
+			$('#mks').click(() => {
+				bosspick = "Mecha"
+				sessionStorage.setItem("boss", bosspick)
+				sessionStorage.setItem("map", "mountain")
+				window.location = "battle2.html"
+			});
+			$('#emer').click(() => {
+				bosspick = "Final"
+				sessionStorage.setItem("boss", bosspick)
+				sessionStorage.setItem("map", "final")
+				window.location = "battle2.html"
+			});
 
 
 
@@ -388,7 +493,7 @@
 
 
 			$('#freeexp').on('click', (event) => {
-				character.exp += 10;
+				character.exp += 100;
 				checklevel(character)
 				updateProfile();
 				updateCharacter();

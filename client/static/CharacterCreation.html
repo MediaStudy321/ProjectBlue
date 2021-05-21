@@ -50,6 +50,15 @@
     <script>
         var charclass = sessionStorage.getItem("Class")
         var character = {
+            stages: {
+                forest: 0,
+                cave: 0,
+                mountain: 0,
+                kingslime: 0,
+                greendragon: 0,
+                mechaking: 0,
+                finalboss: 0
+            },
             name: '',
             class: '',
             level: 0,
@@ -66,7 +75,7 @@
             },
             equipments: {
                 weapon: 'Hands',
-                helment: 'Skin',
+                helmet: 'Skin',
                 armor: 'Skin',
                 pants: 'Skin',
             }
