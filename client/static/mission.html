@@ -76,8 +76,12 @@
 		<ol>
 			<li><button><a href="store.html">Store</a></button></li>
 			<li><button id="forest">Forest</button></li>
-			<li><button id="cave">Caves</button></li>
-			<li><button id="mountain">Mountain</button></li>
+			<li><button id="cave" class="hidden">Caves</button></li>
+			<li><button id="mountain" class="hidden">Mountain</button></li>
+			<li><button id="ks" class="hidden">The One that Devours all</button></li>
+			<li><button id="gd" class="hidden">Awakening of the Ancient Being</button></li>
+			<li><button id="mks" class="hidden">Return of the Glutton</button></li>
+			<li><button id="emer" class="hidden">The Undeflectable</button></li>
 
 		</ol>
 	</div>
@@ -107,7 +111,7 @@
 			<p>Dexterity: <span id="d">0</span> <button id="roll_dex" class="rollbutton">Roll For Stats</button></p>
 			<br />
 			<p id="statsrolls"></p>
-			<button id="freeexp" class="hidden">free lv up</button>
+			<button id="freeexp">free lv up</button>
 		</div>
 
 		<div id="Skills & Talents" class="tabcontent">
@@ -149,6 +153,8 @@
 	<script src="battle/equipments.js"></script>
 
 	<script>
+
+		var bosspick = ""
 		function openProfile(evt, profileTab) {
 			var i, tabcontent, tablinks;
 			tabcontent = document.getElementsByClassName("tabcontent");
@@ -165,14 +171,17 @@
 
 		document.getElementById("forest").onclick = function () {
 			sessionStorage.setItem("map", "forest")
+			sessionStorage.setItem("boss", bosspick)
 			window.location = "battle2.html"
 		}
 		document.getElementById("cave").onclick = function () {
 			sessionStorage.setItem("map", "cave")
+			sessionStorage.setItem("boss", bosspick)
 			window.location = "battle2.html"
 		}
 		document.getElementById("mountain").onclick = function () {
 			sessionStorage.setItem("map", "mountain")
+			sessionStorage.setItem("boss", bosspick)
 			window.location = "battle2.html"
 		}
 
@@ -303,7 +312,8 @@
 				armorload.forEach(element => {
 					if (character.equipments.armor == element.name) {
 						armordiscription = " - [ " + element.name + "] <br \> - [ Physical Res: + " + element.phy_res + " ]  <br \> " +
-							" - [ Magical Res: + " + element.mag_res + " ] " + " <br \> - [ " + element.discription + " ]"
+							" - [ Magical Res: + " + element.mag_res + " ] " + " <br \> - [ 'Hp: '" + element.bonus_hp + " ]"
+							+ " <br \> - [ " + element.discription + " ]"
 					}
 				})
 				pantload.forEach(element => {
@@ -370,16 +380,73 @@
 					element.exp = element.exp - capexp;
 					element.level += 1;
 					element.stats.roll += 3;
-					element.stats.max_hp += 2;
-					element.stats.max_mp += 2;
-					element.stats.physical_atk += 1;
-					element.stats.physical_def += 1;
-					element.stats.magical_atk += 1;
-					element.stats.magical_def += 1;
-					element.stats.dex += 1;
+					element.stats.max_hp += 3;
+					element.stats.max_mp += 3;
+					element.stats.physical_atk += 2;
+					element.stats.physical_def += 2;
+					element.stats.magical_atk += 2;
+					element.stats.magical_def += 2;
+					element.stats.dex += 2;
 					updateCharacter();
 				}
 			}
+
+
+			function loadmissions() {
+				if (character.stages.forest >= 5 && character.stages.kingslime == 0) {
+					$('.ks').show();
+				}
+				if (character.stages.kingslime > 0) {
+					$('.ks').hidden();
+					$('.cave').show();
+				}
+				if (character.stages.cave >= 5 && character.stages.greendragon == 0) {
+					$('.gd').show();
+				}
+				if (character.stages.greendragon > 0) {
+					$('.gd').hidden();
+					$('.mountain').show()
+				}
+				if (character.stages.mountain >= 5 && character.stages.mechaking == 0) {
+					$('.mks').show()
+				}
+				if (character.stages.mechaking > 0 && finalboss == 0) {
+					$('.mks').hidden()
+					$('.emer').show()
+				}
+				if (character.stages.finalboss > 0) {
+					$('.ks').show();
+					$('.gd').show();
+					$('.mks').show()
+					$('.emer').show()
+				}
+			}
+
+			loadmissions();
+
+
+			
+			$('#ks').click(() => {
+				bosspick = "KingSlime"
+				sessionStorage.setItem("boss", bosspick)
+				window.location = "battle2.html"
+			});
+			$('#gd').click(() => {
+				bosspick = "Dragon"
+				sessionStorage.setItem("boss", bosspick)
+				window.location = "battle2.html"
+			});
+			$('#mks').click(() => {
+				bosspick = "Mecha"
+				sessionStorage.setItem("boss", bosspick)
+				window.location = "battle2.html"
+			});
+			$('#emer').click(() => {
+				bosspick = "Final"
+				sessionStorage.setItem("boss", bosspick)
+				sessionStorage.setItem("map","final")
+				window.location = "battle2.html"
+			});
 
 
 
@@ -388,7 +455,7 @@
 
 
 			$('#freeexp').on('click', (event) => {
-				character.exp += 10;
+				character.exp += 100;
 				checklevel(character)
 				updateProfile();
 				updateCharacter();

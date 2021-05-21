@@ -4,16 +4,47 @@ const ObjectID = require('mongodb').ObjectID;
 
 
 const characterSchema = new mongoose.Schema({
-    name:{
+    stages: {
+        forest: {
+            type: Number,
+            default: 0
+        },
+        cave: {
+            type: Number,
+            default: 0
+        },
+        mountain: {
+            type: Number,
+            default: 0
+        },
+        kingslime: {
+            type: Number,
+            default: 0
+        },
+        greendragon: {
+            type: Number,
+            default: 0
+        },
+        mechaking: {
+            type: Number,
+            default: 0
+        },
+        finalboss: {
+            type: Number,
+            default: 0
+        }
+
+    },
+    name: {
         type: String,
     },
     class: {
         type: String,
-    }, 
+    },
     level: {
         type: Number,
         default: 0
-    }, 
+    },
     exp: {
         type: Number,
         default: 0
@@ -22,7 +53,7 @@ const characterSchema = new mongoose.Schema({
         max_hp: {
             type: Number,
             default: 0
-        }, 
+        },
         max_mp: {
             type: Number,
             default: 0
@@ -65,16 +96,16 @@ const characterSchema = new mongoose.Schema({
             type: String,
             default: "Skin"
         },
-        pant:{
+        pant: {
             type: String,
             default: "Skin"
         }
     }
-    
+
 });
 
 const profileSchema = new mongoose.Schema({
-    username:{
+    username: {
         type: String,
         required: true,
         unique: true
@@ -104,4 +135,4 @@ const UserProfile = mongoose.model("UserProfile", profileSchema, "userprofile");
 
 
 
-module.exports = {UserProfile}
+module.exports = { UserProfile }

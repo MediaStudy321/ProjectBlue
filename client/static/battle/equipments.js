@@ -39,6 +39,7 @@ var armor = {
     Skin: {
         id: 1,
         name: 'Skin',
+        bonus_hp: 0,
         phy_res: 0,
         mag_res: 0,
         discription: "Yep, you have no cover..."
