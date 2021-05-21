@@ -4,11 +4,8 @@ $(async () => {
     const happyIcon = "images/Player-1.png";
     var deadIcon = "images/Dead.png";
     const timeout = 100000;
-    var bossbattle = false;
     var finalboss = false;
-    if (finalboss == true) {
-        deadIcon = "images/Kdonut.png"
-    }
+    var bossbattle = false
 
     var player = [];
     var monster = [];
@@ -24,20 +21,25 @@ $(async () => {
 
     function checkboss() {
         if (sessionStorage.getItem("boss") != "") {
+            bossbattle = true;
             if (sessionStorage.getItem("boss") == "KingSlime") {
-                monster.push(bossf)
+                monster = bossf
             }
             else if (sessionStorage.getItem("boss") == "Dragon") {
-                monster.push(bossc)
+                monster = bossc
             }
             else if (sessionStorage.getItem("boss") == "Mecha") {
-                monster.push(bossm)
+                monster = bossm
             }
             else if (sessionStorage.getItem("boss") == "Final") {
-                monster.push(fboss)
+                monster = fboss
+                finalboss = true
             }
             return true
 
+        }
+        else{
+            return false
         }
     }
 
@@ -393,22 +395,22 @@ $(async () => {
                 if (map == "forest") {
                     player.stages.forest += 1;
                 }
-                else if (map == "mountain") {
+                if (map == "mountain") {
                     player.stages.mountain += 1;
                 }
-                else if (map == "cave") {
+                if (map == "cave") {
                     player.stages.cave += 1;
                 }
-                else if (boss == "KingSlime"){
+                if (boss == "KingSlime"){
                     player.stages.kingslime += 1;
                 }
-                else if (boss == "Dragon"){
+                if (boss == "Dragon"){
                     player.stages.greendragon += 1;
                 }
-                else if (boss == "Mecha"){
+                if (boss == "Mecha"){
                     player.stages.mechaking += 1;
                 }
-                else if (boss == "Final") {
+                if (boss == "Final") {
                     player.stages.finalboss += 1;
                 }
                 $.ajax({
@@ -534,6 +536,9 @@ $(async () => {
         for (let i = 0; i < monster.length; i++) {
             let enemy = monster[i]
             let img;
+            if(finalboss == true){
+                deadIcon = "images/Kdonut.png"
+            }
             if (enemy.hp > 0) img = enemy.img; else img = deadIcon;
             let id = 'monster_' + i;
             var avatar = "<img id='" + id + "' src = '" + img + "'width = 250px height = 150px'/>";
